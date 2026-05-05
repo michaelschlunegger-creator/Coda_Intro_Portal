@@ -1,0 +1,9 @@
+{
+  "name": "CODASOL Investor Introduction Portal",
+  "short_name": "CODASOL",
+  "start_url": "/Coda_Intro_Portal/",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#7a1122",
+  "icons": []
+}
