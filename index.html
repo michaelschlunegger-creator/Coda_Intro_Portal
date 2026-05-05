@@ -5,11 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="CODASOL Investor Introduction Portal - Stage 1 Non-NDA Investor Teaser" />
     <meta name="theme-color" content="#7a1122" />
-    <link rel="manifest" href="/Coda_Intro_Portal/manifest.json" />
     <title>CODASOL Investor Introduction Portal</title>
+    <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="app">
+      <div class="bg-grid"></div>
+      <header class="hero" id="top">
+        <div class="logo-top" aria-label="CODA logo">CODA</div>
+        <div class="pill">Stage 1 Investor Introduction · Non-NDA</div>
+        <h1>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence.</h1>
+        <p class="hero-sub">A premium investor teaser showcasing the transition from industrial MDM project depth to platform-driven, AI-enabled recurring value.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#investment">View Investment Summary</a>
+          <a class="btn btn-secondary" href="#team">Meet the Team</a>
+          <a class="btn btn-secondary" href="mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request">Request NDA Deck</a>
+        </div>
+      </header>
+
+      <main class="container">
+        <section id="problem"><h2>Problem</h2><p>Poor industrial master data creates friction across procurement, maintenance, inventory, compliance, and AI readiness. CODASOL addresses these inefficiencies through structured, domain-native intelligence built in real operating environments.</p></section>
+        <section id="substance"><h2>CODASOL Substance</h2><div class="grid metrics"><article class="card metric">15+ years industrial data experience</article><article class="card metric">100+ completed projects</article><article class="card metric">Exposure to 100M+ material master records</article><article class="card metric">Exposure to 20M+ asset records</article><article class="card metric">Exposure to 10M+ supplier, Bill of Materials, service, and operational records</article></div><p class="note">Metrics reflect exposure to and processed records in customer environments and do not imply data ownership.</p></section>
+        <section id="defensibility"><h2>Moat / Why Difficult to Copy</h2><div class="grid three"><article class="card">Industrial data logic learned over 15+ years</article><article class="card">Vertical taxonomy and classification depth</article><article class="card">Cross-system harmonization playbooks</article><article class="card">Asset and material governance context</article><article class="card">Supplier, service, and maintenance normalization</article><article class="card">Execution maturity from 100+ projects</article></div></section>
+        <section id="vision"><h2>CODA-AI Vision</h2><p>CODA-AI is designed as an intelligence layer above current customer systems to improve classification, cleansing, enrichment, and governance, enabling scalable AI-MDM by industry.</p></section>
+        <section id="investment"><h2>Investment Overview</h2><div class="grid two"><article class="card fund"><h3>USD 3.9M</h3><p>Orderly shareholder payout for selected early shareholders whose investment horizon has been reached.</p></article><article class="card fund"><h3>USD 3.9M</h3><p>Growth and transformation funding, including working capital and CODA-AI acceleration.</p></article></div></section>
+        <section id="structure"><h2>Group Structure</h2><ul class="list"><li>CTS is the investment vehicle.</li><li>CODASOL Pte Ltd Singapore is the group holding company.</li><li>CODA Technology LLC UAE supports UAE / Middle East.</li><li>CODA US supports the US market.</li><li>CODASOL India is the delivery and execution platform.</li></ul></section>
+
+        <section id="team"><h2>Meet the Team</h2><div class="grid team-grid">
+          <article class="team-card card"><h3>Azmat Taufique</h3><p class="role">Chairman of the Board of Directors, Coda Group</p><p>Global investment and infrastructure leader with 30+ years of experience.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-azmat">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-azmat" class="bio-extra" hidden>Azmat brings three decades of leadership in infrastructure and investment ecosystems, shaping institutional partnerships and long-horizon strategic growth initiatives.</p></article>
+          <article class="team-card card"><h3>Philip Ng</h3><p class="role">Director and Member of the Board of Directors</p><p>Singapore-based financial leader with 30+ years across audit, governance, and private equity.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-philip">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-philip" class="bio-extra" hidden>Philip contributes extensive board-level governance and finance discipline spanning audit controls and enterprise stewardship.</p></article>
+          <article class="team-card card"><h3>Naleem Bukari</h3><p class="role">Co-Founder, Managing Director, and Board Member</p><p>Technical and business leader with deep asset and master data management expertise.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-naleem">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-naleem" class="bio-extra" hidden>Naleem has been central to translating industrial operational complexity into structured data intelligence models and scalable delivery practices.</p></article>
+          <article class="team-card card"><h3>Michael J. Schlunegger</h3><p class="role">Chief Executive Officer (CEO)</p><p>Swiss business leader with 30+ years in growth, sales, and technology products.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-michael">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-michael" class="bio-extra" hidden>Michael leads commercial strategy and platform growth, converting CODASOL's industrial track record into global expansion.</p></article>
+          <article class="team-card card"><h3>Rizwan Nawab John</h3><p class="role">Co-Founder, COO, and Board Member</p><p>Operational leader with strong experience in SAP materials management and supply chain execution.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-rizwan">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-rizwan" class="bio-extra" hidden>Rizwan oversees operational execution with a focus on disciplined project implementation and data-driven transformation.</p></article>
+          <article class="team-card card"><h3>Marwa Haddar</h3><p class="role">Strategic Advisory Board</p><p>Corporate finance and restructuring advisor across Asia, the Middle East, and Africa.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-marwa">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-marwa" class="bio-extra" hidden>Marwa supports strategic advisory direction in finance and restructuring scenarios to align growth with resilient capital frameworks.</p></article>
+          <article class="team-card card"><h3>James P. Bond</h3><p class="role">Executive Advisory Council</p><p>Global finance and infrastructure strategy expert with World Bank Group leadership experience.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-james">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-james" class="bio-extra" hidden>James provides macro-level infrastructure strategy insight, positioning industrial data value within evolving global investment priorities.</p></article>
+        </div></section>
+
+        <section id="faq"><h2>FAQ</h2><div class="faq"><article class="faq-item"><button type="button" class="faq-toggle" aria-expanded="false">What does CODASOL do?</button><p hidden>CODASOL provides industrial data intelligence and Master Data Management solutions for asset-heavy industries.</p></article><article class="faq-item"><button type="button" class="faq-toggle" aria-expanded="false">What makes CODASOL different?</button><p hidden>CODASOL combines 15+ years of industrial project experience with deep material, asset, supplier, and maintenance data knowledge.</p></article><article class="faq-item"><button type="button" class="faq-toggle" aria-expanded="false">What is CODA-AI?</button><p hidden>CODA-AI is CODASOL's planned vertical AI-MDM intelligence layer designed to improve, govern, and enrich industrial master data.</p></article></div></section>
+
+        <section id="contact"><h2>Contact / Request NDA Deck</h2><p>Qualified investors may request next-stage materials for review under a suitable Non-Disclosure Agreement.</p><div class="hero-actions"><a class="btn btn-primary" href="mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request">Request NDA Deck</a></div></section>
+      </main>
+
+      <footer class="container"><section><p>Disclaimer: This Stage 1 investor teaser is informational only, non-binding, and not an offer to sell securities or a guarantee of future performance.</p></section></footer>
+    </div>
+
+    <script>
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', (event) => {
+          const id = anchor.getAttribute('href');
+          const target = id && document.querySelector(id);
+          if (!target) return;
+          event.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      document.querySelectorAll('.faq-toggle').forEach((button) => {
+        button.addEventListener('click', () => {
+          const panel = button.nextElementSibling;
+          const isOpen = button.getAttribute('aria-expanded') === 'true';
+          button.setAttribute('aria-expanded', String(!isOpen));
+          if (panel) panel.hidden = isOpen;
+        });
+      });
+
+      document.querySelectorAll('.bio-toggle').forEach((button) => {
+        button.addEventListener('click', () => {
+          const target = document.getElementById(button.dataset.target);
+          if (!target) return;
+          const nextHidden = !target.hidden;
+          target.hidden = nextHidden;
+          button.textContent = nextHidden ? 'View Bio' : 'Hide Bio';
+        });
+      });
+    </script>
   </body>
 </html>
