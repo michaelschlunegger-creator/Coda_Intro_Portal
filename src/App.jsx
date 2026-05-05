@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import React from 'react'
 
 const faqItems = [
   {
@@ -27,6 +28,25 @@ const faqItems = [
   }
 ]
 
+class SectionBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return null
+    }
+
+    return this.props.children
+  }
+}
+
 function App() {
   const [openFaq, setOpenFaq] = useState(0)
   const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
@@ -48,41 +68,41 @@ function App() {
       </header>
 
       <main className="container">
-        <section>
+        <SectionBoundary><section>
           <h2>Poor Industrial Master Data Creates Real Business Losses</h2>
           <p>Industrial companies depend on accurate material, asset, supplier, service, and maintenance data. When this data is incomplete, duplicated, wrongly classified, or inconsistent across systems, companies lose efficiency across procurement, maintenance, inventory, operations, finance, compliance, and Artificial Intelligence readiness.</p>
           <div className="grid three">
             {['Duplicate materials', 'Poor asset visibility', 'Procurement inefficiency', 'Inventory waste', 'Weak AI readiness', 'Compliance risk'].map((item) => <article className="card" key={item}>{item}</article>)}
           </div>
-        </section>
+        </section></SectionBoundary>
 
-        <section>
+        <SectionBoundary><section>
           <h2>Built from Real Industrial Complexity</h2>
           <p>CODASOL’s value is not only software. The real substance comes from years of work inside real industrial environments, with real asset, material, supplier, and maintenance data.</p>
           <div className="grid metrics">
             {['15+ years industrial data experience', '100+ completed projects', '100M+ material master records exposure', '20M+ asset records exposure', '10M+ supplier, Bill of Materials, service, and operational records exposure'].map((item) => <article className="card metric" key={item}>{item}</article>)}
           </div>
           <p className="note">Metrics reflect exposure to and processed records in customer environments and do not imply data ownership.</p>
-        </section>
+        </section></SectionBoundary>
 
-        <section>
+        <SectionBoundary><section>
           <h2>From Services to Vertical AI-MDM</h2>
           <p>CODA-AI is intended to convert CODASOL’s industrial data knowledge into a scalable Artificial Intelligence Master Data Management layer. It is designed to sit above existing customer systems such as SAP, Oracle, IBM, Microsoft systems, legacy databases, and spreadsheets.</p>
           <div className="grid two">
             {['Does not replace existing systems', 'Adds intelligence above them', 'Supports classification, cleansing, enrichment, and governance', 'Builds toward verticalized AI-MDM by industry'].map((item) => <article className="card" key={item}>{item}</article>)}
           </div>
           <p className="note">Artificial Intelligence Master Data Management (AI-MDM) means using AI to improve, govern, enrich, and continuously strengthen industrial master data.</p>
-        </section>
+        </section></SectionBoundary>
 
-        <section>
+        <SectionBoundary><section>
           <h2>Software Can Be Built. Industrial Data Knowledge Takes Years.</h2>
           <p>A competitor can build software, but it cannot quickly replicate CODASOL’s years of industrial project learning, data logic, terminology knowledge, and vertical experience.</p>
           <div className="grid three">
             {['15+ years of project learning', 'Industrial terminology knowledge', 'Golden record logic', 'Supplier and material normalization', 'Asset and maintenance context', 'Verticalization by industry', 'Real customer environment exposure'].map((item) => <article className="card" key={item}>{item}</article>)}
           </div>
-        </section>
+        </section></SectionBoundary>
 
-        <section id="investment">
+        <SectionBoundary><section id="investment">
           <h2>Stage 1 Investment Overview</h2>
           <p>CODASOL is preparing a funding round of approximately USD 7.8 million through CODA Technologies Pte Ltd, Singapore / CTS, the investment vehicle. The round is intended to support shareholder restructuring and CODASOL’s next phase of growth.</p>
           <div className="grid two">
@@ -90,9 +110,9 @@ function App() {
             <article className="card fund"><h3>USD 3.9M</h3><p>Growth and transformation funding, including working capital and CODA-AI acceleration.</p></article>
           </div>
           <p className="note">Detailed investment terms, share structure, and financial information are shared only with qualified investors under a suitable Non-Disclosure Agreement.</p>
-        </section>
+        </section></SectionBoundary>
 
-        <section>
+        <SectionBoundary><section>
           <h2>Simple Group Structure</h2>
           <div className="chain">
             <span>Investor</span><span>→</span><span>CTS</span><span>→</span><span>CODASOL Pte Ltd Singapore</span><span>→</span><span>Operating Companies</span>
@@ -105,9 +125,9 @@ function App() {
             <li>CODASOL India is the delivery and execution platform.</li>
           </ul>
           <p className="note">Investor ownership through CTS represents indirect ownership in the CODASOL group.</p>
-        </section>
+        </section></SectionBoundary>
 
-        <section>
+        <SectionBoundary><section>
           <h2>FAQ</h2>
           <div className="faq">
             {faqItems.map((item, i) => (
@@ -117,9 +137,9 @@ function App() {
               </article>
             ))}
           </div>
-        </section>
+        </section></SectionBoundary>
 
-        <section>
+        <SectionBoundary><section>
           <h2>Request Next-Stage Investor Access</h2>
           <p>Qualified investors may request the NDA investor deck and further discussion with the CODASOL investor taskforce.</p>
           <div className="hero-actions">
@@ -127,7 +147,7 @@ function App() {
             <a className="btn btn-secondary" href={mailto}>Contact Investor Taskforce</a>
           </div>
           <p className="contact">investor@codasol.com</p>
-        </section>
+        </section></SectionBoundary>
       </main>
 
       <a className="sticky-cta" href={mailto}>Request NDA Deck</a>
