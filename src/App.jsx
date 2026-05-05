@@ -1,162 +1,88 @@
-import { useState } from 'react'
-import React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-const faqItems = [
-  {
-    q: 'What does CODASOL do?',
-    a: 'CODASOL provides industrial data intelligence and Master Data Management solutions for asset-heavy industries.'
-  },
-  {
-    q: 'What makes CODASOL different?',
-    a: 'CODASOL combines 15+ years of real industrial project experience with deep material, asset, supplier, and maintenance data knowledge.'
-  },
-  {
-    q: 'What is CODA-AI?',
-    a: 'CODA-AI is CODASOL’s planned vertical AI-MDM intelligence layer designed to improve, govern, and enrich industrial master data.'
-  },
-  {
-    q: 'Why is funding being raised?',
-    a: 'The fundraise supports an orderly shareholder payout and growth and transformation funding, including working capital and CODA-AI acceleration.'
-  },
-  {
-    q: 'Why are early shareholders being paid out?',
-    a: 'Selected early shareholders have reached their investment horizon and portfolio cycle completed milestone.'
-  },
-  {
-    q: 'What happens after an investor is interested?',
-    a: 'Qualified investors can request the next-stage investor deck under a suitable Non-Disclosure Agreement.'
-  }
+const sectionFlow = [
+  { id: 'problem', title: 'The industrial data problem' },
+  { id: 'substance', title: 'CODASOL substance' },
+  { id: 'defensibility', title: 'Why CODASOL is difficult to copy' },
+  { id: 'vision', title: 'CODA-AI vision' },
+  { id: 'investment', title: 'Investment overview' },
+  { id: 'structure', title: 'Group structure' },
+  { id: 'team', title: 'Meet the Team' },
+  { id: 'faq', title: 'FAQ' },
+  { id: 'contact', title: 'Contact / request NDA deck' }
 ]
 
-class SectionBoundary extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { hasError: false }
-  }
+const teamMembers = [
+  { name: 'Azmat Taufique', role: 'Chairman of the Board of Directors, Coda Group', shortBio: 'Global investment and infrastructure leader with 30+ years of experience across private equity, fund management, and cross-border investments.', fullBio: 'Azmat brings three decades of leadership in infrastructure and investment ecosystems, shaping institutional partnerships and long-horizon strategic growth initiatives.', linkedIn: 'https://www.linkedin.com/in/placeholder', photo: '' },
+  { name: 'Philip Ng', role: 'Director and Member of the Board of Directors', shortBio: 'Singapore-based financial leader with 30+ years of experience across audit, finance, governance, and private equity.', fullBio: 'Philip contributes extensive board-level governance and finance discipline, with experience spanning audit controls, private equity evaluation, and enterprise financial stewardship.', linkedIn: 'https://www.linkedin.com/in/placeholder', photo: '' },
+  { name: 'Naleem Bukari', role: 'Co-Founder, Managing Director, and Member of the Board of Directors', shortBio: 'Technical and business leader with deep expertise in asset management, material management, ISO 55001, inventory optimization, and master data management.', fullBio: 'Naleem has been central to translating industrial operational complexity into structured data intelligence models and scalable delivery practices.', linkedIn: 'https://www.linkedin.com/in/placeholder', photo: '' },
+  { name: 'Michael J. Schlunegger', role: 'Chief Executive Officer (CEO)', shortBio: 'Swiss business leader with 30+ years of experience in business development, sales, and technology products across multiple regions.', fullBio: 'Michael leads commercial strategy and platform growth with a focus on converting CODASOL’s industrial track record into repeatable, global investor-grade expansion.', linkedIn: 'https://www.linkedin.com/in/placeholder', photo: '' },
+  { name: 'Rizwan Nawab John', role: 'Co-Founder, Chief Operating Officer (COO), and Member of the Board of Directors', shortBio: 'Operational leader with strong experience in SAP materials management, procurement, vendor development, supply chain management, and project implementation.', fullBio: 'Rizwan oversees operational execution with a strong focus on disciplined project implementation and data-driven transformation in asset-heavy environments.', linkedIn: 'https://www.linkedin.com/in/placeholder', photo: '' },
+  { name: 'Marwa Haddar', role: 'Strategic Advisory Board', shortBio: 'Corporate finance and restructuring advisor with experience across Asia, the Middle East, Africa, and infrastructure-related mandates.', fullBio: 'Marwa supports strategic advisory direction in finance and restructuring scenarios, helping align growth decisions with resilient capital frameworks.', linkedIn: 'https://www.linkedin.com/in/placeholder', photo: '' },
+  { name: 'James P. Bond', role: 'Executive Advisory Council', shortBio: 'Global finance and infrastructure strategy expert with World Bank Group leadership experience and advisory roles across emerging markets.', fullBio: 'James provides macro-level infrastructure strategy insight, enabling CODASOL to position long-term industrial data value within evolving global investment priorities.', linkedIn: 'https://www.linkedin.com/in/placeholder', photo: '' }
+]
 
-  static getDerivedStateFromError() {
-    return { hasError: true }
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return null
-    }
-
-    return this.props.children
-  }
-}
+const faqItems = [
+  { q: 'What does CODASOL do?', a: 'CODASOL provides industrial data intelligence and Master Data Management solutions for asset-heavy industries.' },
+  { q: 'What makes CODASOL different?', a: 'CODASOL combines 15+ years of industrial project experience with deep material, asset, supplier, and maintenance data knowledge.' },
+  { q: 'What is CODA-AI?', a: 'CODA-AI is CODASOL’s planned vertical AI-MDM intelligence layer designed to improve, govern, and enrich industrial master data.' },
+  { q: 'Why is funding being raised?', a: 'The fundraise supports an orderly shareholder payout and growth and transformation funding, including working capital and CODA-AI acceleration.' },
+  { q: 'What happens after an investor is interested?', a: 'Qualified investors can request the next-stage investor deck under a suitable Non-Disclosure Agreement.' }
+]
 
 function App() {
   const [openFaq, setOpenFaq] = useState(0)
+  const [selectedMember, setSelectedMember] = useState(null)
   const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
 
-  return (
-    <div className="app">
-      <header className="hero" id="top">
-        <div className="hero-glow" />
-        <div className="pill">Stage 1 Investor Introduction | Non-NDA</div>
-        <div className="wordmark">CODASOL</div>
-        <p className="wordmark-sub">Industrial Data Intelligence</p>
-        <h1>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence.</h1>
-        <p className="hero-sub">An industrial data intelligence company moving from project-based Master Data Management services toward vertical AI-powered recurring revenue.</p>
-        <div className="hero-actions">
-          <a className="btn btn-primary" href="#investment">View Investment Summary</a>
-          <a className="btn btn-secondary" href={mailto}>Request NDA Deck</a>
-        </div>
-        <p className="version">Investor Teaser Webapp v1.0 | Stage 1 | Non-NDA Information</p>
-      </header>
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('in-view')
+      })
+    }, { threshold: 0.16 })
 
-      <main className="container">
-        <SectionBoundary><section>
-          <h2>Poor Industrial Master Data Creates Real Business Losses</h2>
-          <p>Industrial companies depend on accurate material, asset, supplier, service, and maintenance data. When this data is incomplete, duplicated, wrongly classified, or inconsistent across systems, companies lose efficiency across procurement, maintenance, inventory, operations, finance, compliance, and Artificial Intelligence readiness.</p>
-          <div className="grid three">
-            {['Duplicate materials', 'Poor asset visibility', 'Procurement inefficiency', 'Inventory waste', 'Weak AI readiness', 'Compliance risk'].map((item) => <article className="card" key={item}>{item}</article>)}
-          </div>
-        </section></SectionBoundary>
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
 
-        <SectionBoundary><section>
-          <h2>Built from Real Industrial Complexity</h2>
-          <p>CODASOL’s value is not only software. The real substance comes from years of work inside real industrial environments, with real asset, material, supplier, and maintenance data.</p>
-          <div className="grid metrics">
-            {['15+ years industrial data experience', '100+ completed projects', '100M+ material master records exposure', '20M+ asset records exposure', '10M+ supplier, Bill of Materials, service, and operational records exposure'].map((item) => <article className="card metric" key={item}>{item}</article>)}
-          </div>
-          <p className="note">Metrics reflect exposure to and processed records in customer environments and do not imply data ownership.</p>
-        </section></SectionBoundary>
+  const metrics = useMemo(() => [
+    '15+ years industrial data experience',
+    '100+ completed projects',
+    'Exposure to 100M+ material master records',
+    'Exposure to 20M+ asset records',
+    'Exposure to 10M+ supplier, Bill of Materials, service, and operational records'
+  ], [])
 
-        <SectionBoundary><section>
-          <h2>From Services to Vertical AI-MDM</h2>
-          <p>CODA-AI is intended to convert CODASOL’s industrial data knowledge into a scalable Artificial Intelligence Master Data Management layer. It is designed to sit above existing customer systems such as SAP, Oracle, IBM, Microsoft systems, legacy databases, and spreadsheets.</p>
-          <div className="grid two">
-            {['Does not replace existing systems', 'Adds intelligence above them', 'Supports classification, cleansing, enrichment, and governance', 'Builds toward verticalized AI-MDM by industry'].map((item) => <article className="card" key={item}>{item}</article>)}
-          </div>
-          <p className="note">Artificial Intelligence Master Data Management (AI-MDM) means using AI to improve, govern, enrich, and continuously strengthen industrial master data.</p>
-        </section></SectionBoundary>
+  return <div className="app">
+    <div className="bg-grid" />
+    <header className="hero" id="top">
+      <div className="logo-top" aria-label="CODA logo placeholder">CODA</div>
+      <div className="pill">Stage 1 Investor Introduction · Non-NDA</div>
+      <h1>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence.</h1>
+      <p className="hero-sub">A premium investor teaser showcasing the transition from industrial MDM project depth to platform-driven, AI-enabled recurring value.</p>
+      <div className="hero-actions">
+        <a className="btn btn-primary" href="#investment">View Investment Summary</a>
+        <a className="btn btn-secondary" href="#team">Meet the Team</a>
+        <a className="btn btn-secondary" href={mailto}>Request NDA Deck</a>
+      </div>
+      <div className="story-row">{sectionFlow.map((s) => <a key={s.id} href={`#${s.id}`}>{s.title}</a>)}</div>
+    </header>
+    <main className="container">
+      <section id="problem" className="reveal"><h2>The industrial data problem</h2><p>Poor industrial master data creates friction across procurement, maintenance, inventory, compliance, and AI readiness. CODASOL addresses these inefficiencies through structured, domain-native intelligence built in real operating environments.</p></section>
+      <section id="substance" className="reveal"><h2>CODASOL substance</h2><div className="grid metrics">{metrics.map((m, i) => <article className="card metric" style={{ animationDelay: `${i * 80}ms` }} key={m}>{m}</article>)}</div><p className="note">Metrics reflect exposure to and processed records in customer environments and do not imply data ownership.</p></section>
+      <section id="defensibility" className="reveal"><h2>Why CODASOL is difficult to copy</h2><div className="grid three">{['Industrial data logic learned over 15+ years', 'Vertical taxonomy and classification depth', 'Cross-system harmonization playbooks', 'Asset and material governance context', 'Supplier, service, and maintenance normalization', 'Execution maturity from 100+ projects'].map((it) => <article className="card" key={it}>{it}</article>)}</div></section>
+      <section id="vision" className="reveal"><h2>CODA-AI vision</h2><p>CODA-AI is designed as an intelligence layer above current customer systems to improve classification, cleansing, enrichment, and governance, enabling scalable AI-MDM by industry.</p></section>
+      <section id="investment" className="reveal"><h2>Investment overview</h2><div className="grid two"><article className="card fund"><h3>USD 3.9M</h3><p>Orderly shareholder payout for selected early shareholders whose investment horizon has been reached.</p></article><article className="card fund"><h3>USD 3.9M</h3><p>Growth and transformation funding, including working capital and CODA-AI acceleration.</p></article></div></section>
+      <section id="structure" className="reveal"><h2>Group structure</h2><ul className="list"><li>CTS is the investment vehicle.</li><li>CODASOL Pte Ltd Singapore is the group holding company.</li><li>CODA Technology LLC UAE supports UAE / Middle East.</li><li>CODA US supports the US market.</li><li>CODASOL India is the delivery and execution platform.</li></ul></section>
+      <section id="team" className="reveal"><div className="section-header"><h2>Leadership & Advisory Team</h2><a className="btn btn-secondary" href="#team">Meet the Team</a></div><div className="grid team-grid">{teamMembers.map((p) => <article className="team-card card" key={p.name}><div className="avatar">{p.photo ? <img src={p.photo} alt={p.name} /> : <span>{p.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}</span>}</div><h3>{p.name}</h3><p className="role">{p.role}</p><p>{p.shortBio}</p><div className="team-actions"><button className="btn btn-secondary" onClick={() => setSelectedMember(p)}>View Bio</button><a className="btn btn-primary" href={p.linkedIn} target="_blank" rel="noreferrer">LinkedIn</a></div></article>)}</div></section>
+      <section id="faq" className="reveal"><h2>FAQ</h2><div className="faq">{faqItems.map((item, i) => <article className={`faq-item ${openFaq === i ? 'open' : ''}`} key={item.q}><button onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>{item.q}</button>{openFaq === i && <p>{item.a}</p>}</article>)}</div></section>
+      <section id="contact" className="reveal"><h2>Contact / request NDA deck</h2><p>Qualified investors may request next-stage materials for review under a suitable Non-Disclosure Agreement.</p><div className="hero-actions"><a className="btn btn-primary" href={mailto}>Request NDA Deck</a><a className="btn btn-secondary" href={mailto}>Contact Investor Team</a></div></section>
+    </main>
+    <a className="sticky-cta" href={mailto}>Request NDA Deck</a>
 
-        <SectionBoundary><section>
-          <h2>Software Can Be Built. Industrial Data Knowledge Takes Years.</h2>
-          <p>A competitor can build software, but it cannot quickly replicate CODASOL’s years of industrial project learning, data logic, terminology knowledge, and vertical experience.</p>
-          <div className="grid three">
-            {['15+ years of project learning', 'Industrial terminology knowledge', 'Golden record logic', 'Supplier and material normalization', 'Asset and maintenance context', 'Verticalization by industry', 'Real customer environment exposure'].map((item) => <article className="card" key={item}>{item}</article>)}
-          </div>
-        </section></SectionBoundary>
-
-        <SectionBoundary><section id="investment">
-          <h2>Stage 1 Investment Overview</h2>
-          <p>CODASOL is preparing a funding round of approximately USD 7.8 million through CODA Technologies Pte Ltd, Singapore / CTS, the investment vehicle. The round is intended to support shareholder restructuring and CODASOL’s next phase of growth.</p>
-          <div className="grid two">
-            <article className="card fund"><h3>USD 3.9M</h3><p>Orderly shareholder payout for selected early shareholders whose investment horizon has been reached.</p></article>
-            <article className="card fund"><h3>USD 3.9M</h3><p>Growth and transformation funding, including working capital and CODA-AI acceleration.</p></article>
-          </div>
-          <p className="note">Detailed investment terms, share structure, and financial information are shared only with qualified investors under a suitable Non-Disclosure Agreement.</p>
-        </section></SectionBoundary>
-
-        <SectionBoundary><section>
-          <h2>Simple Group Structure</h2>
-          <div className="chain">
-            <span>Investor</span><span>→</span><span>CTS</span><span>→</span><span>CODASOL Pte Ltd Singapore</span><span>→</span><span>Operating Companies</span>
-          </div>
-          <ul className="list">
-            <li>CODASOL Pte Ltd, Singapore is the group holding company.</li>
-            <li>CODA Technologies Pte Ltd / CTS is the investment vehicle.</li>
-            <li>CODA Technology LLC, UAE supports UAE / Middle East growth and operations.</li>
-            <li>CODA US supports the US market.</li>
-            <li>CODASOL India is the delivery and execution platform.</li>
-          </ul>
-          <p className="note">Investor ownership through CTS represents indirect ownership in the CODASOL group.</p>
-        </section></SectionBoundary>
-
-        <SectionBoundary><section>
-          <h2>FAQ</h2>
-          <div className="faq">
-            {faqItems.map((item, i) => (
-              <article className={`faq-item ${openFaq === i ? 'open' : ''}`} key={item.q}>
-                <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>{item.q}</button>
-                {openFaq === i && <p>{item.a}</p>}
-              </article>
-            ))}
-          </div>
-        </section></SectionBoundary>
-
-        <SectionBoundary><section>
-          <h2>Request Next-Stage Investor Access</h2>
-          <p>Qualified investors may request the NDA investor deck and further discussion with the CODASOL investor taskforce.</p>
-          <div className="hero-actions">
-            <a className="btn btn-primary" href={mailto}>Request NDA Deck</a>
-            <a className="btn btn-secondary" href={mailto}>Contact Investor Taskforce</a>
-          </div>
-          <p className="contact">investor@codasol.com</p>
-        </section></SectionBoundary>
-      </main>
-
-      <a className="sticky-cta" href={mailto}>Request NDA Deck</a>
-
-      <footer>
-        This material is provided for introductory discussion purposes only. It does not constitute an offer, solicitation, or investment recommendation in any jurisdiction. Any investment discussion is subject to further due diligence, legal documentation, and applicable regulatory requirements. Detailed information will only be shared with qualified parties under a suitable Non-Disclosure Agreement.
-      </footer>
-    </div>
-  )
+    {selectedMember && <div className="modal-backdrop" onClick={() => setSelectedMember(null)}><div className="modal" onClick={(e) => e.stopPropagation()}><h3>{selectedMember.name}</h3><p className="role">{selectedMember.role}</p><p>{selectedMember.fullBio}</p><div className="team-actions"><a className="btn btn-primary" href={selectedMember.linkedIn} target="_blank" rel="noreferrer">LinkedIn</a><button className="btn btn-secondary" onClick={() => setSelectedMember(null)}>Close</button></div></div></div>}
+  </div>
 }
 
 export default App
