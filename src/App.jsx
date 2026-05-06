@@ -172,9 +172,13 @@ function ensureInvestorAssistantScript() {
     return
   }
 
-  const existingScript = document.querySelector(`script[src="${elfsightScriptSrc}"]`)
-  if (existingScript) {
-    existingScript.async = true
+  const scripts = Array.from(document.querySelectorAll(`script[src="${elfsightScriptSrc}"]`))
+  const [primaryScript, ...duplicateScripts] = scripts
+
+  duplicateScripts.forEach((script) => script.remove())
+
+  if (primaryScript) {
+    primaryScript.async = true
     return
   }
 
@@ -182,7 +186,7 @@ function ensureInvestorAssistantScript() {
   script.src = elfsightScriptSrc
   script.async = true
   script.dataset.codaAssistantScript = 'true'
-  document.head.appendChild(script)
+  document.body.appendChild(script)
 }
 
 function isVisibleElement(element) {
@@ -208,10 +212,23 @@ function hasInvestorAssistantSignal(element) {
     element.getAttribute('title'),
     element.getAttribute('src'),
     element.getAttribute('class'),
+    element.getAttribute('id'),
     element.textContent
   ].filter(Boolean).join(' ')
 
-  return /elfsight|launcher|assistant|chat|message|support/i.test(signal)
+  return /elfsight|launcher|assistant|message|support|eapps/i.test(signal)
+}
+
+function isNonAssistantContactElement(element) {
+  const signal = [
+    element.getAttribute('aria-label'),
+    element.getAttribute('title'),
+    element.getAttribute('href'),
+    element.getAttribute('class'),
+    element.textContent
+  ].filter(Boolean).join(' ')
+
+  return /whatsapp|wa\.me|mailto:|linkedin|profile/i.test(signal)
 }
 
 function findInvestorAssistantLauncherElement() {
@@ -229,7 +246,12 @@ function findInvestorAssistantLauncherElement() {
   ].join(',')))
 
   return candidates.find((candidate) => {
-    if (candidate.closest('.assistant-launcher') || candidate === widgetMount || candidate.classList?.contains(assistantWidgetClassName)) {
+    if (
+      candidate.closest('.assistant-launcher') ||
+      candidate === widgetMount ||
+      candidate.classList?.contains(assistantWidgetClassName) ||
+      isNonAssistantContactElement(candidate)
+    ) {
       return false
     }
 
@@ -241,7 +263,6 @@ function activateInvestorAssistantWidget() {
   ensureInvestorAssistantScript()
 
   const widgetMount = document.getElementById(assistantWidgetMountId)
-  widgetMount?.removeAttribute('aria-hidden')
   widgetMount?.dispatchEvent(new CustomEvent('coda:investor-assistant-requested', { bubbles: true }))
   window.dispatchEvent(new Event('resize'))
 
@@ -262,7 +283,7 @@ function InvestorAssistantWidgetMount() {
   }, [])
 
   return (
-    <div id={assistantWidgetMountId} className='investor-assistant-widget' aria-hidden='true' tabIndex='-1'>
+    <div id={assistantWidgetMountId} className='investor-assistant-widget' tabIndex='-1'>
       <div className={assistantWidgetClassName} data-elfsight-app-lazy />
     </div>
   )
