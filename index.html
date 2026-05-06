@@ -6,6 +6,7 @@
     <meta name="description" content="CODASOL Investor Introduction Portal - Stage 1 Non-NDA Investor Teaser" />
     <meta name="theme-color" content="#7a1122" />
     <title>CODASOL Investor Introduction Portal</title>
+    <script src="https://elfsightcdn.com/platform.js" async></script>
   </head>
   <body>
     <div id="root">
@@ -19,6 +20,7 @@
           <div class="hero-actions">
             <a class="btn btn-primary" href="#investment">View Investment Overview</a>
             <a class="btn btn-secondary" href="#team">Meet the Team</a>
+            <a class="btn btn-secondary" href="#calculator">Ownership Calculator</a>
             <a class="btn btn-secondary" href="#contact">Request NDA Deck</a>
           </div>
         </header>
@@ -67,10 +69,14 @@
             <div class="structure-actions"><a class="btn btn-primary" href="%BASE_URL%Group.png" target="_blank" rel="noopener noreferrer">View Group Structure</a></div>
           </section>
 
-          <section id="calculator">
+          <section id="calculator" class="calculator-section">
             <h2>Indicative Ownership Calculator</h2>
             <p class="calculation-label">Indicative only | Non-binding | Subject to final documentation</p>
-            <p>Default assumptions: investment amount = USD 125,000; CTS ownership in CODASOL Pte Ltd = 23.46%; CTS pre-money valuation = USD 10,000,000. Interactive calculations load as an enhancement.</p>
+            <div class="calculator-static-card">
+              <p>Default assumptions: investment amount = USD 125,000; CTS pre-money valuation = USD 10,000,000; CTS ownership in CODASOL Pte Ltd = 23.46%.</p>
+              <p>Formula: investor ownership in CTS = investment amount / (CTS pre-money valuation + investment amount). Indirect ownership in CODASOL Group = investor ownership in CTS × CTS ownership in CODASOL.</p>
+            </div>
+            <div class="calculator-actions"><a class="btn btn-primary btn-calculate" href="#react-root">Calculate Ownership</a></div>
             <p>Because CTS owns a minority interest in CODASOL Pte Ltd, ownership through CTS represents indirect ownership in the CODASOL group.</p>
           </section>
 
@@ -138,6 +144,8 @@
           </section>
         </main>
       </div>
+      <div class="elfsight-app-786a347e-3f3b-4406-9a1e-0356b0f88b46" data-elfsight-app-lazy></div>
+      <a class="whatsapp-float" href="https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity." target="_blank" rel="noopener noreferrer" aria-label="Chat with CODASOL on WhatsApp"><span class="whatsapp-icon" aria-hidden="true">WA</span><span class="whatsapp-label">Chat with CODASOL</span></a>
     </div>
     <div id="react-root" aria-live="polite"></div>
     <script type="module" src="/src/main.jsx"></script>

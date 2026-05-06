@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
 const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
+const whatsappHref = 'https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity.'
+const elfsightScriptSrc = 'https://elfsightcdn.com/platform.js'
 
 
 function scrollToPortalTop() {
@@ -129,6 +131,48 @@ function formatUsd(value) {
 function formatPercent(value, digits = 4) {
   const safeValue = Number.isFinite(value) ? value : 0
   return `${safeValue.toFixed(digits)}%`
+}
+
+function WhatsAppIcon() {
+  return (
+    <svg viewBox='0 0 32 32' aria-hidden='true' focusable='false'>
+      <path d='M16.04 3.2c-7.02 0-12.73 5.62-12.73 12.54 0 2.21.59 4.37 1.72 6.26L3.2 28.8l6.98-1.79a12.9 12.9 0 0 0 5.86 1.42c7.02 0 12.73-5.62 12.73-12.54S23.06 3.2 16.04 3.2Zm0 22.98c-1.86 0-3.68-.49-5.27-1.42l-.38-.22-4.14 1.06 1.09-4.01-.25-.41a10.13 10.13 0 0 1-1.55-5.44c0-5.67 4.71-10.29 10.5-10.29s10.5 4.62 10.5 10.29-4.71 10.44-10.5 10.44Zm5.76-7.68c-.32-.16-1.86-.9-2.15-1-.29-.11-.5-.16-.71.16-.21.31-.82 1-.99 1.21-.18.21-.36.23-.67.08-.32-.16-1.34-.49-2.55-1.56-.94-.83-1.58-1.85-1.76-2.16-.18-.31-.02-.48.14-.64.14-.14.32-.36.48-.54.16-.18.21-.31.32-.52.11-.21.05-.39-.03-.54-.08-.16-.71-1.69-.98-2.31-.26-.6-.52-.52-.71-.53h-.61c-.21 0-.55.08-.84.39-.29.31-1.1 1.06-1.1 2.58s1.13 3 1.28 3.21c.16.21 2.23 3.34 5.39 4.68.75.32 1.34.51 1.8.65.76.24 1.45.2 2 .12.61-.09 1.86-.75 2.13-1.48.26-.73.26-1.36.18-1.49-.08-.13-.29-.21-.61-.37Z' />
+    </svg>
+  )
+}
+
+function WhatsAppContact() {
+  useEffect(() => {
+    if (document.querySelector(`script[src="${elfsightScriptSrc}"]`)) {
+      return undefined
+    }
+
+    const script = document.createElement('script')
+    script.src = elfsightScriptSrc
+    script.async = true
+    script.dataset.codaElfsight = 'whatsapp'
+    document.body.appendChild(script)
+
+    return () => {
+      script.remove()
+    }
+  }, [])
+
+  return (
+    <>
+      <div className='elfsight-app-786a347e-3f3b-4406-9a1e-0356b0f88b46' data-elfsight-app-lazy />
+      <a
+        className='whatsapp-float'
+        href={whatsappHref}
+        target='_blank'
+        rel='noopener noreferrer'
+        aria-label='Chat with CODASOL on WhatsApp'
+      >
+        <span className='whatsapp-icon'><WhatsAppIcon /></span>
+        <span className='whatsapp-label'>Chat with CODASOL</span>
+      </a>
+    </>
+  )
 }
 
 function ProfileAction({ person }) {
@@ -316,7 +360,7 @@ function OwnershipCalculator() {
             <span>Investment Amount in USD</span>
             <input
               type='number'
-              min='0'
+              min='10000'
               step='5000'
               inputMode='decimal'
               value={investment}
@@ -498,6 +542,7 @@ export default function App() {
         </section>
       </main>
 
+      <WhatsAppContact />
       <a className='sticky-cta' href={mailto}>Request NDA Deck</a>
     </div>
   )
