@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from 'react'
 const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
 const whatsappHref = 'https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity.'
 const elfsightScriptSrc = 'https://elfsightcdn.com/platform.js'
-
+const assistantWidgetClassName = 'elfsight-app-cb4a783d-3540-4ff8-8924-7818eaf61af7'
+const assistantWidgetMountId = 'investor-assistant-widget'
 
 function scrollToPortalTop() {
   if (window.location.hash) {
@@ -166,45 +167,131 @@ function HeaderWhatsAppButton() {
   )
 }
 
-function InvestorAssistantLauncher() {
-  const [isOpen, setIsOpen] = useState(false)
+function ensureInvestorAssistantScript() {
+  if (typeof document === 'undefined') {
+    return
+  }
 
+  const existingScript = document.querySelector(`script[src="${elfsightScriptSrc}"]`)
+  if (existingScript) {
+    existingScript.async = true
+    return
+  }
+
+  const script = document.createElement('script')
+  script.src = elfsightScriptSrc
+  script.async = true
+  script.dataset.codaAssistantScript = 'true'
+  document.head.appendChild(script)
+}
+
+function isVisibleElement(element) {
+  if (!(element instanceof HTMLElement)) {
+    return false
+  }
+
+  const style = window.getComputedStyle(element)
+  const bounds = element.getBoundingClientRect()
+
+  return (
+    style.display !== 'none' &&
+    style.visibility !== 'hidden' &&
+    Number(style.opacity) !== 0 &&
+    bounds.width > 0 &&
+    bounds.height > 0
+  )
+}
+
+function hasInvestorAssistantSignal(element) {
+  const signal = [
+    element.getAttribute('aria-label'),
+    element.getAttribute('title'),
+    element.getAttribute('src'),
+    element.getAttribute('class'),
+    element.textContent
+  ].filter(Boolean).join(' ')
+
+  return /elfsight|launcher|assistant|chat|message|support/i.test(signal)
+}
+
+function findInvestorAssistantLauncherElement() {
+  const widgetMount = document.getElementById(assistantWidgetMountId)
+  const candidates = Array.from(document.querySelectorAll([
+    'button',
+    'a[href]',
+    '[role="button"]',
+    'iframe',
+    '[class*="elfsight" i]',
+    '[class*="launcher" i]',
+    '[class*="chat" i]',
+    '[aria-label*="chat" i]',
+    '[aria-label*="assistant" i]'
+  ].join(',')))
+
+  return candidates.find((candidate) => {
+    if (candidate.closest('.assistant-launcher') || candidate === widgetMount || candidate.classList?.contains(assistantWidgetClassName)) {
+      return false
+    }
+
+    return hasInvestorAssistantSignal(candidate) && isVisibleElement(candidate)
+  })
+}
+
+function activateInvestorAssistantWidget() {
+  ensureInvestorAssistantScript()
+
+  const widgetMount = document.getElementById(assistantWidgetMountId)
+  widgetMount?.removeAttribute('aria-hidden')
+  widgetMount?.dispatchEvent(new CustomEvent('coda:investor-assistant-requested', { bubbles: true }))
+  window.dispatchEvent(new Event('resize'))
+
+  const launcher = findInvestorAssistantLauncherElement()
+  if (launcher) {
+    launcher.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    launcher.focus?.({ preventScroll: true })
+    launcher.click?.()
+    return
+  }
+
+  widgetMount?.focus?.({ preventScroll: true })
+}
+
+function InvestorAssistantWidgetMount() {
   useEffect(() => {
-    if (document.querySelector(`script[src="${elfsightScriptSrc}"]`)) {
-      return () => {}
-    }
-
-    const script = document.createElement('script')
-    script.src = elfsightScriptSrc
-    script.async = true
-    script.dataset.codaAssistantScript = 'true'
-    document.body.appendChild(script)
-
-    return () => {
-      script.remove()
-    }
+    ensureInvestorAssistantScript()
   }, [])
+
+  return (
+    <div id={assistantWidgetMountId} className='investor-assistant-widget' tabIndex='-1'>
+      <div className={assistantWidgetClassName} data-elfsight-app-lazy />
+    </div>
+  )
+}
+
+function InvestorAssistantLauncher() {
+  const [wasRequested, setWasRequested] = useState(false)
+
+  function handleClick() {
+    setWasRequested(true)
+    activateInvestorAssistantWidget()
+
+    window.setTimeout(activateInvestorAssistantWidget, 350)
+    window.setTimeout(activateInvestorAssistantWidget, 1200)
+  }
 
   return (
     <div className='assistant-launcher'>
       <button
         type='button'
         className='header-action-button assistant-header-button'
-        aria-expanded={isOpen}
-        aria-controls='investor-assistant-widget'
-        onClick={() => setIsOpen((open) => !open)}
+        aria-pressed={wasRequested}
+        aria-controls={assistantWidgetMountId}
+        onClick={handleClick}
       >
         <span className='header-action-icon assistant-header-icon' aria-hidden='true'><AssistantIcon /></span>
         <span className='assistant-header-label'>Investor Assistant</span>
         <span className='assistant-header-label-compact'>AI</span>
       </button>
-      <div
-        id='investor-assistant-widget'
-        className={`assistant-widget-popover${isOpen ? ' is-open' : ''}`}
-        aria-hidden={!isOpen}
-      >
-        <div className='elfsight-app-cb4a783d-3540-4ff8-8924-7818eaf61af7' data-elfsight-app-lazy />
-      </div>
     </div>
   )
 }
@@ -663,6 +750,7 @@ export default function App() {
       </main>
 
       <a className='sticky-cta' href={mailto}>Request NDA Deck</a>
+      <InvestorAssistantWidgetMount />
     </div>
   )
 }

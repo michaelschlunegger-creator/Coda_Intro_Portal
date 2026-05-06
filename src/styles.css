@@ -175,35 +175,24 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 .assistant-header-label { display: none; }
 .assistant-header-label-compact { display: inline; }
 
-.assistant-widget-popover {
-  position: absolute;
-  top: calc(100% + .7rem);
-  right: 0;
-  z-index: 12;
-  width: min(360px, calc(100vw - 2rem));
-  min-height: 56px;
-  max-height: min(560px, 72vh);
-  padding: .55rem;
-  border: 1px solid rgba(255, 216, 222, .24);
-  border-radius: 20px;
-  background: rgba(9, 11, 17, .94);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, .42);
-  backdrop-filter: blur(18px);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-6px) scale(.98);
-  transition: opacity .18s ease, transform .18s ease;
+.investor-assistant-widget {
+  position: fixed;
+  right: 1rem;
+  bottom: 5rem;
+  z-index: 4;
+  width: 1px;
+  height: 1px;
   overflow: visible;
+  pointer-events: none;
+  background: transparent;
 }
 
-.assistant-widget-popover.is-open {
-  opacity: 1;
+.investor-assistant-widget > div {
+  width: 1px;
+  min-width: 1px;
+  min-height: 1px;
+  overflow: visible;
   pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-
-.assistant-widget-popover > div {
-  min-height: 44px;
 }
 
 .whatsapp-header-button {
@@ -696,7 +685,7 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   .header-actions { gap: .35rem; }
   .header-action-button { min-height: 40px; padding: .42rem .52rem .42rem .42rem; }
   .header-action-icon { width: 26px; height: 26px; }
-  .assistant-widget-popover { right: -3.4rem; width: min(330px, calc(100vw - 1rem)); }
+  .investor-assistant-widget { right: .65rem; bottom: 4.8rem; }
 
   .structure-actions .btn,
   .calculator-actions .btn {
