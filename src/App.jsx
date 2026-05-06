@@ -205,6 +205,8 @@ function OwnershipCalculator() {
 }
 
 export default function App() {
+  const [logoLoadError, setLogoLoadError] = useState(false)
+
   useEffect(() => {
     document.documentElement.classList.add('react-mounted')
     return () => document.documentElement.classList.remove('react-mounted')
@@ -214,7 +216,18 @@ export default function App() {
     <div className='app'>
       <div className='bg-grid' />
       <header className='hero'>
-        <div className='logo-top'>CODA</div>
+        <div className='logo-top'>
+          {logoLoadError ? (
+            <span className='logo-fallback'>CODA</span>
+          ) : (
+            <img
+              className='coda-logo'
+              src={`${import.meta.env.BASE_URL}coda-logo.png`}
+              alt='CODA logo'
+              onError={() => setLogoLoadError(true)}
+            />
+          )}
+        </div>
         <p className='pill'>Stage 1 Investor Introduction · Non-NDA</p>
         <h1>CODASOL Investor Introduction Portal</h1>
         <p className='hero-sub'>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence for asset-intensive enterprises.</p>
