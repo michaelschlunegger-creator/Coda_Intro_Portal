@@ -101,9 +101,12 @@ const teamData = [
 ]
 
 const defaultAssumptions = {
+  investment: 125000,
   preMoney: 10000000,
   ctsOwnership: 23.46
 }
+
+const groupImageSrc = `${import.meta.env.BASE_URL}Group.png`
 
 function toFiniteNumber(value, defaultValue = 0) {
   const parsed = Number(value)
@@ -112,6 +115,20 @@ function toFiniteNumber(value, defaultValue = 0) {
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max)
+}
+
+function formatUsd(value) {
+  const safeValue = Math.max(0, toFiniteNumber(value))
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  }).format(safeValue)
+}
+
+function formatPercent(value, digits = 4) {
+  const safeValue = Number.isFinite(value) ? value : 0
+  return `${safeValue.toFixed(digits)}%`
 }
 
 function ProfileAction({ person }) {
@@ -153,64 +170,173 @@ function TeamCard({ person }) {
   )
 }
 
-function OwnershipCalculator() {
-  const [ctsPercent, setCtsPercent] = useState(1)
-  const [investment, setInvestment] = useState(1000000)
-  const [preMoney, setPreMoney] = useState(defaultAssumptions.preMoney)
-  const [ctsOwnership, setCtsOwnership] = useState(defaultAssumptions.ctsOwnership)
+function GroupStructure() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [imageStatus, setImageStatus] = useState('checking')
 
-  const result = useMemo(() => {
-    try {
-      const safePercent = clamp(toFiniteNumber(ctsPercent), 0, 100)
-      const safeInvestment = Math.max(0, toFiniteNumber(investment))
-      const safePreMoney = Math.max(1, toFiniteNumber(preMoney, defaultAssumptions.preMoney))
-      const safeCtsOwnership = clamp(toFiniteNumber(ctsOwnership, defaultAssumptions.ctsOwnership), 0, 100)
-      const directCtsLookThrough = (safePercent / 100) * (safeCtsOwnership / 100) * 100
-      const newMoneyLookThrough = (safeInvestment / (safePreMoney + safeInvestment)) * (safeCtsOwnership / 100) * 100
+  useEffect(() => {
+    let isActive = true
+    const image = new Image()
 
-      return {
-        directCtsLookThrough,
-        newMoneyLookThrough
-      }
-    } catch {
-      return {
-        directCtsLookThrough: 0,
-        newMoneyLookThrough: 0
+    image.onload = () => {
+      if (isActive) {
+        setImageStatus('available')
       }
     }
-  }, [ctsPercent, investment, preMoney, ctsOwnership])
+
+    image.onerror = () => {
+      if (isActive) {
+        setImageStatus('missing')
+      }
+    }
+
+    image.src = groupImageSrc
+
+    return () => {
+      isActive = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      return undefined
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsModalOpen(false)
+      }
+    }
+
+    document.body.classList.add('modal-open')
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.classList.remove('modal-open')
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isModalOpen])
+
+  const imageAvailable = imageStatus === 'available'
 
   return (
-    <section id='calculator'>
-      <h2>Indicative Ownership Calculator</h2>
-      <p className='calculation-label'>Indicative only | Non-binding | Subject to final documentation</p>
-      <div className='grid two calculator-grid'>
-        <label className='field-card'>
-          <span>CTS ownership in CODASOL (%)</span>
-          <input type='number' min='0' max='100' step='0.01' value={ctsOwnership} onChange={(event) => setCtsOwnership(event.target.value)} />
-        </label>
-        <label className='field-card'>
-          <span>CTS pre-money valuation (USD)</span>
-          <input type='number' min='1' step='100000' value={preMoney} onChange={(event) => setPreMoney(event.target.value)} />
-        </label>
-        <label className='field-card'>
-          <span>Investor ownership in CTS (%)</span>
-          <input type='number' min='0' max='100' step='0.01' value={ctsPercent} onChange={(event) => setCtsPercent(event.target.value)} />
-        </label>
-        <label className='field-card'>
-          <span>Indicative new investment amount (USD)</span>
-          <input type='number' min='0' step='50000' value={investment} onChange={(event) => setInvestment(event.target.value)} />
-        </label>
+    <section id='structure'>
+      <h2>Group Structure</h2>
+      <p>The investor pathway is presented through CTS and its indirect relationship to CODASOL Group. Final structure, ownership, allocation, documentation, and legal terms remain subject to diligence and final documentation.</p>
+      <div className='structure-actions'>
+        {imageAvailable ? (
+          <>
+            <button className='btn btn-primary' type='button' onClick={() => setIsModalOpen(true)}>View Group Structure</button>
+            <a className='btn btn-secondary' href={groupImageSrc} target='_blank' rel='noopener noreferrer'>Open image</a>
+          </>
+        ) : imageStatus === 'checking' ? (
+          <span className='btn btn-disabled' aria-disabled='true'>Checking group structure image…</span>
+        ) : (
+          <span className='btn btn-disabled' aria-disabled='true'>Group structure image to be added.</span>
+        )}
       </div>
-      <div className='grid two'>
-        <article className='card result-card'>
-          <h3>{result.directCtsLookThrough.toFixed(4)}%</h3>
-          <p>Indicative indirect CODASOL ownership based on entered CTS percentage.</p>
+
+      {isModalOpen && imageAvailable ? (
+        <div className='modal-backdrop' role='presentation' onClick={() => setIsModalOpen(false)}>
+          <div className='modal-card' role='dialog' aria-modal='true' aria-labelledby='group-structure-title' onClick={(event) => event.stopPropagation()}>
+            <div className='modal-header'>
+              <h3 id='group-structure-title'>Group Structure</h3>
+              <button className='modal-close' type='button' aria-label='Close group structure image' onClick={() => setIsModalOpen(false)}>×</button>
+            </div>
+            <img className='group-structure-image' src={groupImageSrc} alt='CODASOL group structure diagram' />
+          </div>
+        </div>
+      ) : null}
+    </section>
+  )
+}
+
+function OwnershipCalculator() {
+  const [investment, setInvestment] = useState(String(defaultAssumptions.investment))
+  const [preMoney, setPreMoney] = useState(String(defaultAssumptions.preMoney))
+  const [ctsOwnership, setCtsOwnership] = useState(String(defaultAssumptions.ctsOwnership))
+
+  const result = useMemo(() => {
+    const investmentAmount = Math.max(0, toFiniteNumber(investment))
+    const ctsPreMoneyValuation = Math.max(0, toFiniteNumber(preMoney, defaultAssumptions.preMoney))
+    const ctsOwnershipPercent = clamp(toFiniteNumber(ctsOwnership, defaultAssumptions.ctsOwnership), 0, 100)
+    const denominator = ctsPreMoneyValuation + investmentAmount
+    const investorOwnershipInCts = denominator > 0 ? investmentAmount / denominator : 0
+    const indirectOwnership = investorOwnershipInCts * (ctsOwnershipPercent / 100)
+
+    return {
+      investmentAmount,
+      investorOwnershipInCtsPercent: investorOwnershipInCts * 100,
+      indirectOwnershipPercent: indirectOwnership * 100,
+      ctsOwnershipPercent
+    }
+  }, [investment, preMoney, ctsOwnership])
+
+  const hasInvestmentValue = investment !== '' && result.investmentAmount > 0
+
+  return (
+    <section id='calculator' className='calculator-section'>
+      <div className='calculator-heading'>
+        <h2>Indicative Ownership Calculator</h2>
+        <p className='calculation-label'>Indicative only | Non-binding | Subject to final documentation</p>
+        <p>Enter a potential USD investment amount to estimate indicative indirect ownership of the full CODASOL group through CTS.</p>
+      </div>
+
+      <div className='calculator-shell'>
+        <label className='field-card investment-field'>
+          <span>Investment amount in USD</span>
+          <input
+            type='number'
+            min='10000'
+            step='5000'
+            inputMode='decimal'
+            value={investment}
+            placeholder='Enter investment amount'
+            onChange={(event) => setInvestment(event.target.value)}
+          />
+          <small>{hasInvestmentValue ? `Using ${formatUsd(result.investmentAmount)} for this indication.` : 'Enter an amount to calculate an indicative ownership result.'}</small>
+        </label>
+
+        <details className='assumptions-drawer'>
+          <summary>Advanced assumptions</summary>
+          <div className='grid two calculator-grid'>
+            <label className='field-card'>
+              <span>CTS pre-money valuation</span>
+              <input type='number' min='0' step='100000' inputMode='decimal' value={preMoney} onChange={(event) => setPreMoney(event.target.value)} />
+            </label>
+            <label className='field-card'>
+              <span>CTS ownership in CODASOL Pte Ltd (%)</span>
+              <input type='number' min='0' max='100' step='0.01' inputMode='decimal' value={ctsOwnership} onChange={(event) => setCtsOwnership(event.target.value)} />
+            </label>
+          </div>
+        </details>
+
+        <article className='result-card result-card-large'>
+          <p className='result-eyebrow'>Indicative CODASOL Group Ownership</p>
+          <h3>{formatPercent(result.indirectOwnershipPercent)}</h3>
+          <p>{hasInvestmentValue ? 'Based on the current inputs and assumptions.' : 'Enter an investment amount to view an indicative result.'}</p>
         </article>
-        <article className='card result-card'>
-          <h3>{result.newMoneyLookThrough.toFixed(4)}%</h3>
-          <p>Indicative indirect CODASOL ownership based on entered investment amount.</p>
-        </article>
+
+        <div className='grid three output-grid'>
+          <article className='card output-card'>
+            <span>Investment Amount</span>
+            <strong>{formatUsd(result.investmentAmount)}</strong>
+          </article>
+          <article className='card output-card'>
+            <span>Indicative ownership in CTS</span>
+            <strong>{formatPercent(result.investorOwnershipInCtsPercent)}</strong>
+          </article>
+          <article className='card output-card'>
+            <span>Indicative indirect ownership in CODASOL Group</span>
+            <strong>{formatPercent(result.indirectOwnershipPercent)}</strong>
+          </article>
+        </div>
+
+        <div className='calculator-explanation'>
+          <p>Because CTS owns a minority interest in CODASOL Pte Ltd, ownership through CTS represents indirect ownership in the CODASOL group.</p>
+          <p>Example: 1.00% ownership in CTS = {formatPercent(result.ctsOwnershipPercent * 0.01)} indirect ownership in CODASOL Group.</p>
+          <p className='legal-note'>This calculator is for indicative understanding only. Final ownership, share price, valuation, rights, allocation, and investment terms are subject to final legal and financial documentation.</p>
+        </div>
       </div>
     </section>
   )
@@ -262,7 +388,7 @@ export default function App() {
 
       <main className='container'>
         <section id='problem'>
-          <h2>The Problem</h2>
+          <h2>The Challenge We Solve</h2>
           <p>Poor industrial master data creates procurement, maintenance, inventory, compliance, operational, and AI-readiness issues. Enterprises need domain-specific data intelligence before automation and AI can deliver reliable outcomes.</p>
         </section>
 
@@ -280,8 +406,9 @@ export default function App() {
         </section>
 
         <section id='vision'>
-          <h2>CODA-AI Vision</h2>
-          <p>CODA-AI is intended to transform CODASOL domain knowledge into repeatable software-enabled intelligence for classification, enrichment, governance, deduplication, asset data quality, and MDM decision support.</p>
+          <h2>CODA-AI: Today and the Vision</h2>
+          <p>Today, CODASOL combines industrial data experience, MDM delivery knowledge, and domain understanding from asset-intensive operating environments. The vision for CODA-AI is to convert that foundation into a scalable vertical AI-MDM intelligence layer for classification, enrichment, governance, deduplication, asset data quality, and MDM decision support.</p>
+          <p>CODA-AI is designed to sit above existing enterprise systems and support them; it does not replace SAP, Oracle, IBM, Microsoft systems, or legacy platforms.</p>
           <div className='grid three'>
             <article className='card'><h3>Vertical AI-MDM</h3><p>Purpose-built for complex industrial materials, assets, suppliers, service data, and operational master data.</p></article>
             <article className='card'><h3>Repeatable Intelligence</h3><p>Codified methods can support scalable delivery, recurring revenue potential, and faster customer value creation.</p></article>
@@ -304,10 +431,7 @@ export default function App() {
           <p className='note'>This is teaser-level information only and is not an offer, commitment, or recommendation.</p>
         </section>
 
-        <section id='structure'>
-          <h2>Group Structure</h2>
-          <p>The investor pathway is presented through CTS and its indirect relationship to CODASOL Group. Final structure, ownership, allocation, documentation, and legal terms remain subject to diligence and final documentation.</p>
-        </section>
+        <GroupStructure />
 
         <OwnershipCalculator />
 
