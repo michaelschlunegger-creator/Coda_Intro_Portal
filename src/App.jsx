@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
 const whatsappHref = 'https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity.'
 const assistantEmbedHref = `${import.meta.env.BASE_URL}investor-assistant.html`
+const websiteHref = 'https://www.codasol.com'
 
 function scrollToPortalTop() {
   if (window.location.hash) {
@@ -141,11 +142,34 @@ function WhatsAppIcon() {
   )
 }
 
+function WebsiteIcon() {
+  return (
+    <svg viewBox='0 0 24 24' aria-hidden='true' focusable='false'>
+      <path d='M12 2.25a9.75 9.75 0 1 0 0 19.5 9.75 9.75 0 0 0 0-19.5Zm6.82 9h-3.13a15.64 15.64 0 0 0-1.24-6.07 8.28 8.28 0 0 1 4.37 6.07Zm-6.82-7.5c.7 0 1.78 1.23 2.18 4.13.13.91.2 1.98.21 3.12H9.61c.01-1.14.08-2.21.21-3.12C10.22 4.98 11.3 3.75 12 3.75Zm-2.45 1.43a15.64 15.64 0 0 0-1.24 6.07H5.18a8.28 8.28 0 0 1 4.37-6.07ZM3.77 12.75h4.54c.04 2.56.49 4.73 1.24 6.07a8.28 8.28 0 0 1-5.78-6.07Zm8.23 7.5c-.7 0-1.78-1.23-2.18-4.13a22.5 22.5 0 0 1-.21-3.37h4.78a22.5 22.5 0 0 1-.21 3.37c-.4 2.9-1.48 4.13-2.18 4.13Zm2.45-1.43c.75-1.34 1.2-3.51 1.24-6.07h4.54a8.28 8.28 0 0 1-5.78 6.07Z' />
+    </svg>
+  )
+}
+
 function AssistantIcon() {
   return (
     <svg viewBox='0 0 24 24' aria-hidden='true' focusable='false'>
       <path d='M12 2.75a.75.75 0 0 1 .75.75v1.2a7.32 7.32 0 0 1 6.55 6.55h1.2a.75.75 0 0 1 0 1.5h-1.2a7.32 7.32 0 0 1-6.55 6.55v1.2a.75.75 0 0 1-1.5 0v-1.2a7.32 7.32 0 0 1-6.55-6.55H3.5a.75.75 0 0 1 0-1.5h1.2a7.32 7.32 0 0 1 6.55-6.55V3.5a.75.75 0 0 1 .75-.75Zm0 3.4a5.85 5.85 0 1 0 0 11.7 5.85 5.85 0 0 0 0-11.7Zm-2.55 4.4a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Zm5.1 0a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Zm-4.28 3.55a.75.75 0 0 1 1.04.19c.15.22.4.46.69.46s.54-.24.69-.46a.75.75 0 1 1 1.23.85c-.43.63-1.11 1.11-1.92 1.11s-1.49-.48-1.92-1.11a.75.75 0 0 1 .19-1.04Z' />
     </svg>
+  )
+}
+
+function HeaderWebsiteButton() {
+  return (
+    <a
+      className='header-action-button website-header-button'
+      href={websiteHref}
+      target='_blank'
+      rel='noopener noreferrer'
+      aria-label='Visit CODASOL website'
+    >
+      <span className='header-action-icon website-header-icon' aria-hidden='true'><WebsiteIcon /></span>
+      <span className='website-header-label'>WWW</span>
+    </a>
   )
 }
 
@@ -596,6 +620,7 @@ export default function App() {
             )}
           </div>
           <div className='header-actions' aria-label='Portal contact actions'>
+            <HeaderWebsiteButton />
             <InvestorAssistantLauncher onOpen={() => setIsAssistantModalOpen(true)} isOpen={isAssistantModalOpen} />
             <HeaderWhatsAppButton />
           </div>

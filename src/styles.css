@@ -145,6 +145,30 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   fill: currentColor;
 }
 
+
+.website-header-button {
+  border-color: rgba(255, 216, 222, .24);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .055)),
+    rgba(13, 16, 26, .76);
+  color: #fff;
+}
+
+.website-header-button:hover,
+.website-header-button:focus-visible {
+  border-color: rgba(255, 216, 222, .44);
+  background:
+    linear-gradient(145deg, rgba(182, 31, 61, .24), rgba(255, 255, 255, .08)),
+    rgba(13, 16, 26, .82);
+}
+
+.website-header-icon {
+  background: rgba(255, 216, 222, .12);
+  color: #ffd8de;
+}
+
+.website-header-label { display: inline; }
+
 .assistant-launcher {
   position: relative;
   display: inline-flex;
@@ -303,7 +327,7 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 .whatsapp-header-label-compact { display: inline; }
 
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
   .hero { padding-top: .8rem; }
   .header-bar { align-items: flex-start; }
   .logo-top { max-width: min(34vw, 142px); }
