@@ -141,6 +141,22 @@ function WhatsAppIcon() {
   )
 }
 
+function HeaderWhatsAppButton() {
+  return (
+    <a
+      className='whatsapp-header-button'
+      href={whatsappHref}
+      target='_blank'
+      rel='noopener noreferrer'
+      aria-label='Chat with CODASOL on WhatsApp'
+    >
+      <span className='whatsapp-header-icon' aria-hidden='true'><WhatsAppIcon /></span>
+      <span className='whatsapp-header-label'>WhatsApp</span>
+      <span className='whatsapp-header-label-compact'>WA</span>
+    </a>
+  )
+}
+
 function WhatsAppContact() {
   useEffect(() => {
     if (document.querySelector(`script[src="${elfsightScriptSrc}"]`)) {
@@ -303,7 +319,7 @@ function OwnershipCalculator() {
 
   const result = useMemo(() => {
     const parsedInvestment = Number(investment)
-    const hasValidInvestment = investment.trim() !== '' && Number.isFinite(parsedInvestment) && parsedInvestment > 0
+    const hasValidInvestment = investment.trim() !== '' && Number.isFinite(parsedInvestment) && parsedInvestment >= 10000
     const investmentAmount = hasValidInvestment ? parsedInvestment : 0
     const ctsPreMoneyValuation = Math.max(0, toFiniteNumber(preMoney, defaultAssumptions.preMoney))
     const ctsOwnershipPercent = clamp(toFiniteNumber(ctsOwnership, defaultAssumptions.ctsOwnership), 0, 100)
@@ -330,7 +346,7 @@ function OwnershipCalculator() {
       <div className='calculator-heading'>
         <h2>Indicative Ownership Calculator</h2>
         <p className='calculation-label'>Indicative only | Non-binding | Subject to final documentation</p>
-        <p>Enter a potential USD investment amount to estimate indicative indirect ownership of the full CODASOL group through CTS. The static explanation remains visible here, and the interactive calculator opens below as an enhancement.</p>
+        <p>Enter a potential USD investment amount to estimate indicative indirect ownership of the full CODASOL group through CTS. Open the calculator below to adjust the investment amount and assumptions directly in this section.</p>
       </div>
 
       <div className='calculator-static-card'>
@@ -346,7 +362,7 @@ function OwnershipCalculator() {
           aria-expanded={isCalculatorOpen}
           onClick={() => setIsCalculatorOpen((isOpen) => !isOpen)}
         >
-          Calculate Ownership
+          Open Calculator
         </button>
       </div>
 
@@ -437,17 +453,20 @@ export default function App() {
     <div className='app'>
       <div className='bg-grid' />
       <header className='hero'>
-        <div className='logo-top'>
-          {logoLoadError ? (
-            <span className='logo-fallback'>CODA</span>
-          ) : (
-            <img
-              className='coda-logo'
-              src={`${import.meta.env.BASE_URL}coda-logo.png`}
-              alt='CODA logo'
-              onError={() => setLogoLoadError(true)}
-            />
-          )}
+        <div className='header-bar' role='navigation' aria-label='CODASOL portal header'>
+          <div className='logo-top'>
+            {logoLoadError ? (
+              <span className='logo-fallback'>CODA</span>
+            ) : (
+              <img
+                className='coda-logo'
+                src={`${import.meta.env.BASE_URL}coda-logo.png`}
+                alt='CODA logo'
+                onError={() => setLogoLoadError(true)}
+              />
+            )}
+          </div>
+          <HeaderWhatsAppButton />
         </div>
         <p className='pill'>Stage 1 Investor Introduction · Non-NDA</p>
         <h1>CODASOL Investor Introduction Portal</h1>

@@ -33,8 +33,9 @@ body {
   pointer-events: none;
 }
 
-.hero { padding: 5.2rem 1rem 2.2rem; position: relative; overflow: visible; }
-.logo-top { position: absolute; right: 1rem; top: 1rem; display: inline-flex; align-items: center; justify-content: center; max-width: min(42vw, 190px); padding: .45rem .6rem; border: 1px solid rgba(255,255,255,.18); border-radius: 18px; background: linear-gradient(145deg, rgba(255,255,255,.14), rgba(255,255,255,.055)); box-shadow: 0 14px 32px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.16); backdrop-filter: blur(18px); }
+.hero { padding: 1rem 1rem 2.2rem; position: relative; overflow: visible; }
+.header-bar { display: flex; align-items: center; justify-content: space-between; gap: .7rem; margin-bottom: 1.6rem; }
+.logo-top { display: inline-flex; align-items: center; justify-content: center; max-width: min(46vw, 190px); min-width: 0; padding: .45rem .6rem; border: 1px solid rgba(255,255,255,.18); border-radius: 18px; background: linear-gradient(145deg, rgba(255,255,255,.14), rgba(255,255,255,.055)); box-shadow: 0 14px 32px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.16); backdrop-filter: blur(18px); }
 .coda-logo { display: block; width: auto; height: auto; max-width: 100%; max-height: 34px; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0,0,0,.32)); }
 .logo-fallback { display: inline-flex; align-items: center; min-height: 34px; color: #ffd8de; font-size: .82rem; font-weight: 800; letter-spacing: .15em; }
 .pill { display: inline-block; padding: .45rem .75rem; border-radius: 999px; background: var(--accent-soft); border: 1px solid rgba(182,31,61,.35); color: #ffd8de; font-size: .8rem; font-weight: 700; letter-spacing: .02em; }
@@ -99,6 +100,63 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 .faq-item p { margin: 0; padding: 0 .9rem .9rem; }
 .sticky-cta { position: fixed; left: .8rem; right: .8rem; bottom: .8rem; text-align: center; text-decoration: none; color: #fff; padding: .9rem; border-radius: 999px; background: linear-gradient(145deg, var(--accent), var(--accent2)); box-shadow: 0 12px 24px rgba(0,0,0,.35); z-index: 5; }
 
+
+.whatsapp-header-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .42rem;
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: .48rem .7rem .48rem .52rem;
+  border: 1px solid rgba(177, 255, 210, .26);
+  border-radius: 999px;
+  background:
+    linear-gradient(145deg, rgba(37, 211, 102, .22), rgba(18, 120, 68, .16)),
+    rgba(255, 255, 255, .07);
+  color: #f7fff9;
+  text-decoration: none;
+  font-size: .86rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .26), 0 8px 22px rgba(37, 211, 102, .08), inset 0 1px 0 rgba(255, 255, 255, .18);
+  backdrop-filter: blur(18px);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.whatsapp-header-button:hover,
+.whatsapp-header-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(207, 255, 226, .46);
+  background:
+    linear-gradient(145deg, rgba(37, 211, 102, .31), rgba(18, 120, 68, .22)),
+    rgba(255, 255, 255, .09);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .32), 0 10px 26px rgba(37, 211, 102, .15), inset 0 1px 0 rgba(255, 255, 255, .24);
+}
+
+.whatsapp-header-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: rgba(37, 211, 102, .18);
+  color: #cffff0;
+  font-size: .67rem;
+  font-weight: 900;
+}
+
+.whatsapp-header-icon svg {
+  display: block;
+  width: 19px;
+  height: 19px;
+  fill: currentColor;
+}
+
+.whatsapp-header-label { display: none; }
+.whatsapp-header-label-compact { display: inline; }
+
 .whatsapp-float {
   position: fixed;
   right: 1rem;
@@ -158,7 +216,12 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 
 @media (min-width: 760px) {
   .hero { padding: 1.5rem 3rem 2.8rem; }
-  .logo-top { right: 3rem; top: 1.5rem; max-width: 240px; padding: .55rem .75rem; border-radius: 20px; }
+  .header-bar { margin-bottom: 2.2rem; }
+  .logo-top { max-width: 240px; padding: .55rem .75rem; border-radius: 20px; }
+  .whatsapp-header-button { min-height: 46px; padding: .55rem .9rem .55rem .62rem; gap: .5rem; }
+  .whatsapp-header-icon { width: 30px; height: 30px; }
+  .whatsapp-header-label { display: inline; }
+  .whatsapp-header-label-compact { display: none; }
   .coda-logo { max-height: 48px; }
   .logo-fallback { min-height: 48px; font-size: .9rem; }
   .hero-actions { display: flex; flex-wrap: wrap; }
