@@ -111,6 +111,10 @@ const defaultAssumptions = {
 const groupImageSrc = `${import.meta.env.BASE_URL}Group.png`
 
 function toFiniteNumber(value, defaultValue = 0) {
+  if (String(value).trim() === '') {
+    return defaultValue
+  }
+
   const parsed = Number(value)
   return Number.isFinite(parsed) ? parsed : defaultValue
 }
@@ -314,13 +318,13 @@ function OwnershipCalculator() {
   const [investment, setInvestment] = useState(String(defaultAssumptions.investment))
   const [preMoney, setPreMoney] = useState(String(defaultAssumptions.preMoney))
   const [ctsOwnership, setCtsOwnership] = useState(String(defaultAssumptions.ctsOwnership))
-  const [hasCalculated, setHasCalculated] = useState(true)
 
   const result = useMemo(() => {
     const parsedInvestment = Number(investment)
     const hasValidInvestment = investment.trim() !== '' && Number.isFinite(parsedInvestment) && parsedInvestment >= 10000
     const investmentAmount = hasValidInvestment ? parsedInvestment : 0
-    const ctsPreMoneyValuation = Math.max(0, toFiniteNumber(preMoney, defaultAssumptions.preMoney))
+    const parsedPreMoney = toFiniteNumber(preMoney, defaultAssumptions.preMoney)
+    const ctsPreMoneyValuation = parsedPreMoney > 0 ? parsedPreMoney : defaultAssumptions.preMoney
     const ctsOwnershipPercent = clamp(toFiniteNumber(ctsOwnership, defaultAssumptions.ctsOwnership), 0, 100)
     const denominator = ctsPreMoneyValuation + investmentAmount
     const investorOwnershipInCts = hasValidInvestment && denominator > 0 ? investmentAmount / denominator : 0
@@ -337,21 +341,15 @@ function OwnershipCalculator() {
 
   const handleInvestmentChange = (value) => {
     setInvestment(value)
-    setHasCalculated(true)
-  }
-
-  const handleCalculate = () => {
-    setHasCalculated(true)
   }
 
   const handleReset = () => {
     setInvestment(String(defaultAssumptions.investment))
     setPreMoney(String(defaultAssumptions.preMoney))
     setCtsOwnership(String(defaultAssumptions.ctsOwnership))
-    setHasCalculated(true)
   }
 
-  const visibleResult = hasCalculated && result.hasValidInvestment
+  const visibleResult = result.hasValidInvestment
   const sliderValue = result.hasValidInvestment
     ? clamp(result.investmentAmount, 10000, 5000000)
     : defaultAssumptions.investment
@@ -410,16 +408,14 @@ function OwnershipCalculator() {
             </label>
 
             <div className='calculator-actions'>
-              <button className='btn btn-primary btn-calculate' type='button' onClick={handleCalculate}>
-                Calculate Ownership
-              </button>
               <button className='btn btn-secondary' type='button' onClick={handleReset}>
                 Reset
               </button>
+              <a className='btn btn-primary' href={mailto}>Request NDA Deck</a>
             </div>
           </article>
 
-          <details className='assumptions-drawer calculator-card'>
+          <details className='assumptions-drawer calculator-card' open>
             <summary>Advanced assumptions</summary>
             <div className='assumptions-grid'>
               <label className='field-card'>
@@ -477,7 +473,6 @@ function OwnershipCalculator() {
 
           <div className='calculator-explanation'>
             <p>Because CTS owns a minority interest in CODASOL Pte Ltd, ownership through CTS represents indirect ownership in the CODASOL group.</p>
-            <a className='btn btn-primary nda-button' href={mailto}>Request NDA Deck</a>
           </div>
         </div>
       </div>

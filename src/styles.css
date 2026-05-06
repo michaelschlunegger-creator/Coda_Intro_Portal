@@ -449,14 +449,6 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   margin-top: .15rem;
 }
 
-.btn-calculate {
-  min-height: 52px;
-  padding: .85rem 1.35rem;
-  border: 1px solid rgba(255, 216, 222, .24);
-  font-size: 1rem;
-  box-shadow: 0 16px 32px rgba(127, 16, 40, .34), inset 0 1px 0 rgba(255,255,255,.18);
-}
-
 .btn:hover,
 .btn:focus-visible {
   transform: translateY(-2px);
@@ -592,10 +584,6 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 
 .calculator-explanation p {
   margin: 0;
-}
-
-.nda-button {
-  width: 100%;
 }
 
 .legal-note {
