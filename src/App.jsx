@@ -1,16 +1,34 @@
 import { useEffect, useMemo, useState } from 'react'
 
+const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
+
 const metricsData = [
-  { label: 'Years of industrial data experience', value: 15, suffix: '+' },
-  { label: 'Completed projects', value: 100, suffix: '+' },
-  { label: 'Material master records exposure', value: 100, suffix: 'M+' },
-  { label: 'Asset records exposure', value: 20, suffix: 'M+' },
-  { label: 'Supplier, Bill of Materials, service, and operational records exposure', value: 10, suffix: 'M+' }
+  { label: 'Years of industrial data experience', value: '15+' },
+  { label: 'Completed projects', value: '100+' },
+  { label: 'Material master records exposure', value: '100M+' },
+  { label: 'Asset records exposure', value: '20M+' },
+  { label: 'Supplier, Bill of Materials, service, and operational records exposure', value: '10M+' }
 ]
+
 const faqData = [
-  { q: 'Does 1% in CTS mean 1% in CODASOL Group?', a: 'No. Ownership through CTS is indirect. The calculator shows the indicative relationship based on current working assumptions.' },
-  { q: 'Are the calculator results binding?', a: 'No. The calculator is indicative only and subject to final legal and financial documentation.' }
+  {
+    q: 'What is this portal?',
+    a: 'A Stage 1 non-NDA investor introduction to CODASOL, its industrial data foundation, CODA-AI direction, indicative investment structure, and next-step process.'
+  },
+  {
+    q: 'Does 1% in CTS mean 1% in CODASOL Group?',
+    a: 'No. Ownership through CTS is indirect. Any result shown by the calculator is indicative only and subject to final legal and financial documentation.'
+  },
+  {
+    q: 'Are calculator results binding?',
+    a: 'No. Results are indicative only, non-binding, and subject to final documentation, diligence, valuation, allocation, legal review, and transaction terms.'
+  },
+  {
+    q: 'How can investors receive more information?',
+    a: 'Qualified investors can request the NDA deck using the contact link. Detailed financial, legal, technical, and commercial materials are reserved for the NDA stage.'
+  }
 ]
+
 const teamData = [
   {
     name: 'Azmat Taufique',
@@ -69,48 +87,128 @@ const teamData = [
     profileLabel: 'Profile'
   }
 ]
-const defaultAssumptions = { preMoney: 10000000, ctsOwnership: 23.46 }
 
-export default function App() {
-  const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
-  const [openFaq, setOpenFaq] = useState(0)
-  const [selectedMember, setSelectedMember] = useState(null)
-  const [mode, setMode] = useState('percent')
+const defaultAssumptions = {
+  preMoney: 10000000,
+  ctsOwnership: 23.46
+}
+
+function toFiniteNumber(value, defaultValue = 0) {
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : defaultValue
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max)
+}
+
+function ProfileAction({ person }) {
+  if (!person.profileUrl) {
+    return <span className='btn btn-disabled' aria-disabled='true'>{person.profileLabel}</span>
+  }
+
+  return (
+    <a className='btn btn-primary' href={person.profileUrl} target='_blank' rel='noopener noreferrer'>
+      {person.profileLabel}
+    </a>
+  )
+}
+
+function TeamCard({ person }) {
+  const initials = person.name
+    .split(' ')
+    .filter(Boolean)
+    .map((namePart) => namePart[0])
+    .slice(0, 2)
+    .join('')
+
+  return (
+    <article className='team-card'>
+      <div className='team-avatar' aria-hidden='true'>{initials}</div>
+      <div className='team-card-copy'>
+        <h3>{person.name}</h3>
+        <p className='team-role'>{person.role}</p>
+        <p className='team-short-bio'>{person.shortBio}</p>
+      </div>
+      <div className='team-actions'>
+        <details className='bio-details'>
+          <summary className='btn btn-secondary'>View Bio</summary>
+          <p>{person.longBio}</p>
+        </details>
+        <ProfileAction person={person} />
+      </div>
+    </article>
+  )
+}
+
+function OwnershipCalculator() {
   const [ctsPercent, setCtsPercent] = useState(1)
   const [investment, setInvestment] = useState(1000000)
-  const [assumptions, setAssumptions] = useState(defaultAssumptions)
-  const [advancedOpen, setAdvancedOpen] = useState(false)
-  const [counts, setCounts] = useState(metricsData.map(() => 0))
+  const [preMoney, setPreMoney] = useState(defaultAssumptions.preMoney)
+  const [ctsOwnership, setCtsOwnership] = useState(defaultAssumptions.ctsOwnership)
 
-  useEffect(() => {
-    if (!('IntersectionObserver' in window)) return undefined
+  const result = useMemo(() => {
+    try {
+      const safePercent = clamp(toFiniteNumber(ctsPercent), 0, 100)
+      const safeInvestment = Math.max(0, toFiniteNumber(investment))
+      const safePreMoney = Math.max(1, toFiniteNumber(preMoney, defaultAssumptions.preMoney))
+      const safeCtsOwnership = clamp(toFiniteNumber(ctsOwnership, defaultAssumptions.ctsOwnership), 0, 100)
+      const directCtsLookThrough = (safePercent / 100) * (safeCtsOwnership / 100) * 100
+      const newMoneyLookThrough = (safeInvestment / (safePreMoney + safeInvestment)) * (safeCtsOwnership / 100) * 100
 
-    const ob = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add('in-view')), { threshold: 0.14 })
-    document.querySelectorAll('.reveal').forEach((el) => ob.observe(el))
-    return () => ob.disconnect()
-  }, [])
-  useEffect(() => {
-    let raf
-    const start = performance.now()
-    const step = (t) => {
-      const p = Math.min(1, (t - start) / 1300)
-      setCounts(metricsData.map((m) => Math.round(m.value * p)))
-      if (p < 1) raf = requestAnimationFrame(step)
+      return {
+        directCtsLookThrough,
+        newMoneyLookThrough
+      }
+    } catch {
+      return {
+        directCtsLookThrough: 0,
+        newMoneyLookThrough: 0
+      }
     }
-    raf = requestAnimationFrame(step)
-    return () => cancelAnimationFrame(raf)
-  }, [])
-  useEffect(() => {
-    const onEsc = (e) => e.key === 'Escape' && setSelectedMember(null)
-    window.addEventListener('keydown', onEsc)
-    return () => window.removeEventListener('keydown', onEsc)
-  }, [])
+  }, [ctsPercent, investment, preMoney, ctsOwnership])
 
-  const indirect = useMemo(() => {
-    const ctsOwn = assumptions.ctsOwnership / 100
-    if (mode === 'percent') return ((ctsPercent / 100) * ctsOwn * 100)
-    return ((investment / (assumptions.preMoney + investment)) * ctsOwn * 100)
-  }, [mode, ctsPercent, investment, assumptions])
+  return (
+    <section id='calculator'>
+      <h2>Indicative Ownership Calculator</h2>
+      <p className='calculation-label'>Indicative only | Non-binding | Subject to final documentation</p>
+      <div className='grid two calculator-grid'>
+        <label className='field-card'>
+          <span>CTS ownership in CODASOL (%)</span>
+          <input type='number' min='0' max='100' step='0.01' value={ctsOwnership} onChange={(event) => setCtsOwnership(event.target.value)} />
+        </label>
+        <label className='field-card'>
+          <span>CTS pre-money valuation (USD)</span>
+          <input type='number' min='1' step='100000' value={preMoney} onChange={(event) => setPreMoney(event.target.value)} />
+        </label>
+        <label className='field-card'>
+          <span>Investor ownership in CTS (%)</span>
+          <input type='number' min='0' max='100' step='0.01' value={ctsPercent} onChange={(event) => setCtsPercent(event.target.value)} />
+        </label>
+        <label className='field-card'>
+          <span>Indicative new investment amount (USD)</span>
+          <input type='number' min='0' step='50000' value={investment} onChange={(event) => setInvestment(event.target.value)} />
+        </label>
+      </div>
+      <div className='grid two'>
+        <article className='card result-card'>
+          <h3>{result.directCtsLookThrough.toFixed(4)}%</h3>
+          <p>Indicative indirect CODASOL ownership based on entered CTS percentage.</p>
+        </article>
+        <article className='card result-card'>
+          <h3>{result.newMoneyLookThrough.toFixed(4)}%</h3>
+          <p>Indicative indirect CODASOL ownership based on entered investment amount.</p>
+        </article>
+      </div>
+    </section>
+  )
+}
+
+export default function App() {
+  useEffect(() => {
+    document.documentElement.classList.add('react-mounted')
+    return () => document.documentElement.classList.remove('react-mounted')
+  }, [])
 
   return (
     <div className='app'>
@@ -118,10 +216,10 @@ export default function App() {
       <header className='hero'>
         <div className='logo-top'>CODA</div>
         <p className='pill'>Stage 1 Investor Introduction · Non-NDA</p>
-        <h1>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence.</h1>
-        <p className='hero-sub'>A premium investor teaser showcasing the transition from industrial MDM project depth to platform-driven, AI-enabled recurring value.</p>
+        <h1>CODASOL Investor Introduction Portal</h1>
+        <p className='hero-sub'>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence for asset-intensive enterprises.</p>
         <div className='hero-actions'>
-          <a className='btn btn-primary' href='#funding'>View Investment Summary</a>
+          <a className='btn btn-primary' href='#investment'>View Investment Overview</a>
           <a className='btn btn-secondary' href='#team'>Meet the Team</a>
           <a className='btn btn-secondary' href='#calculator'>Ownership Calculator</a>
           <a className='btn btn-secondary' href={mailto}>Request NDA Deck</a>
@@ -129,120 +227,90 @@ export default function App() {
       </header>
 
       <main className='container'>
-        <section className='reveal'>
+        <section id='problem'>
           <h2>The Problem</h2>
-          <p>Poor industrial master data creates procurement, maintenance, inventory, compliance, operational, and AI-readiness issues.</p>
+          <p>Poor industrial master data creates procurement, maintenance, inventory, compliance, operational, and AI-readiness issues. Enterprises need domain-specific data intelligence before automation and AI can deliver reliable outcomes.</p>
         </section>
 
-        <section className='reveal'>
+        <section id='substance'>
           <h2>CODASOL Substance</h2>
           <div className='grid metrics'>
-            {metricsData.map((m, i) => (
-              <article className='card' key={m.label}>
-                <h3>{counts[i]}{m.suffix}</h3>
-                <p>{m.label}</p>
+            {metricsData.map((metric) => (
+              <article className='card' key={metric.label}>
+                <h3>{metric.value}</h3>
+                <p>{metric.label}</p>
               </article>
             ))}
           </div>
-          <p>Metrics reflect exposure to / processed records only.</p>
+          <p className='note'>Metrics reflect exposure to and processed industrial records only.</p>
         </section>
 
-        <section className='reveal' id='funding'>
-          <h2>Fundraise and Use of Funds</h2>
+        <section id='vision'>
+          <h2>CODA-AI Vision</h2>
+          <p>CODA-AI is intended to transform CODASOL domain knowledge into repeatable software-enabled intelligence for classification, enrichment, governance, deduplication, asset data quality, and MDM decision support.</p>
+          <div className='grid three'>
+            <article className='card'><h3>Vertical AI-MDM</h3><p>Purpose-built for complex industrial materials, assets, suppliers, service data, and operational master data.</p></article>
+            <article className='card'><h3>Repeatable Intelligence</h3><p>Codified methods can support scalable delivery, recurring revenue potential, and faster customer value creation.</p></article>
+            <article className='card'><h3>Data Foundation</h3><p>Cleaner industrial data supports ERP modernization, procurement optimization, maintenance planning, and future AI readiness.</p></article>
+          </div>
+        </section>
+
+        <section id='investment'>
+          <h2>Investment Overview</h2>
           <div className='grid two'>
-            <article className='card'>
+            <article className='card fund'>
               <h3>USD 3.9M</h3>
               <p>Orderly shareholder payout for selected early shareholders whose investment horizon has been reached.</p>
             </article>
-            <article className='card'>
+            <article className='card fund'>
               <h3>USD 3.9M</h3>
               <p>Growth and transformation funding, including working capital and CODA-AI acceleration.</p>
             </article>
           </div>
+          <p className='note'>This is teaser-level information only and is not an offer, commitment, or recommendation.</p>
         </section>
 
-        <section className='reveal' id='calculator'>
-          <h2>Indicative Ownership Calculator</h2>
-          <p>Indicative only | Non-binding | Subject to final legal and financial documentation</p>
-          <div className='hero-actions'>
-            <button className='btn btn-secondary' onClick={() => setMode('percent')}>I know my CTS %</button>
-            <button className='btn btn-secondary' onClick={() => setMode('amount')}>I know my investment amount</button>
-          </div>
-          {mode === 'percent'
-            ? <input type='range' min='0' max='25' step='0.01' value={ctsPercent} onChange={(e) => setCtsPercent(Number(e.target.value))} />
-            : <input type='number' value={investment} onChange={(e) => setInvestment(Number(e.target.value) || 0)} />}
-          <button className='btn btn-secondary' onClick={() => setAdvancedOpen(!advancedOpen)}>Advanced assumptions</button>
-          {advancedOpen && (
-            <div>
-              <input type='number' value={assumptions.preMoney} onChange={(e) => setAssumptions({ ...assumptions, preMoney: Number(e.target.value) || 0 })} />
-              <input type='number' value={assumptions.ctsOwnership} step='0.01' onChange={(e) => setAssumptions({ ...assumptions, ctsOwnership: Number(e.target.value) || 0 })} />
-            </div>
-          )}
-          <h3>{indirect.toFixed(4)}% indirect ownership in CODASOL Group</h3>
+        <section id='structure'>
+          <h2>Group Structure</h2>
+          <p>The investor pathway is presented through CTS and its indirect relationship to CODASOL Group. Final structure, ownership, allocation, documentation, and legal terms remain subject to diligence and final documentation.</p>
         </section>
+
+        <OwnershipCalculator />
 
         <section className='team-section' id='team'>
           <div className='team-heading'>
             <p className='pill'>Stage 1 investor teaser</p>
-            <h2>Leadership & Advisory Team</h2>
+            <h2>Meet the Team</h2>
             <p className='team-intro'>CODASOL combines industrial data expertise, governance experience, operational delivery capability, and strategic investor readiness.</p>
           </div>
           <div className='team-grid' aria-label='Leadership and advisory team members'>
-            {teamData.map((person) => {
-              const initials = person.name
-                .split(' ')
-                .filter(Boolean)
-                .map((namePart) => namePart[0])
-                .slice(0, 2)
-                .join('')
-
-              return (
-                <article className='team-card' key={person.name}>
-                  <div className='team-avatar' aria-hidden='true'>{initials}</div>
-                  <div className='team-card-copy'>
-                    <h3>{person.name}</h3>
-                    <p className='team-role'>{person.role}</p>
-                    <p className='team-short-bio'>{person.shortBio}</p>
-                  </div>
-                  <div className='team-actions'>
-                    <button className='btn btn-secondary' type='button' onClick={() => setSelectedMember(person)}>View Bio</button>
-                    {person.profileUrl
-                      ? (
-                        <a className='btn btn-primary' href={person.profileUrl} target='_blank' rel='noopener noreferrer'>
-                          {person.profileLabel}
-                        </a>
-                        )
-                      : <span className='btn btn-disabled' aria-disabled='true'>{person.profileLabel}</span>}
-                  </div>
-                </article>
-              )
-            })}
+            {teamData.map((person) => <TeamCard person={person} key={person.name} />)}
           </div>
         </section>
 
-        <section className='reveal'>
+        <section id='faq'>
           <h2>FAQ</h2>
-          {faqData.map((f, i) => (
-            <article className='faq-item' key={f.q}>
-              <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>{f.q}</button>
-              {openFaq === i && <p>{f.a}</p>}
-            </article>
+          {faqData.map((faq, index) => (
+            <details className='faq-item' key={faq.q} open={index === 0}>
+              <summary>{faq.q}</summary>
+              <p>{faq.a}</p>
+            </details>
           ))}
+        </section>
+
+        <section id='contact'>
+          <h2>Contact / Request NDA Deck</h2>
+          <p>Qualified investors may request the NDA deck and next-step materials after introductory review.</p>
+          <a className='btn btn-primary' href={mailto}>Request NDA Deck</a>
+        </section>
+
+        <section id='disclaimer'>
+          <h2>Disclaimer</h2>
+          <p>This portal is Stage 1 non-NDA investor teaser content only. It is provided for introductory discussion purposes and does not constitute an offer to sell securities, a solicitation, investment advice, or a binding commitment. All figures, ownership outputs, transaction structures, and forward-looking statements are indicative only, non-binding, and subject to diligence, final legal documentation, and investor qualification.</p>
         </section>
       </main>
 
       <a className='sticky-cta' href={mailto}>Request NDA Deck</a>
-      {selectedMember && (
-        <div className='modal-backdrop bio-modal' onClick={() => setSelectedMember(null)}>
-          <div className='modal bio-modal-panel' role='dialog' aria-modal='true' aria-labelledby='bio-modal-title' onClick={(e) => e.stopPropagation()}>
-            <button className='bio-modal-close' type='button' aria-label='Close bio modal' onClick={() => setSelectedMember(null)}>×</button>
-            <p className='pill'>Long bio</p>
-            <h3 id='bio-modal-title'>{selectedMember.name}</h3>
-            <p className='team-role'>{selectedMember.role}</p>
-            <p>{selectedMember.longBio}</p>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
