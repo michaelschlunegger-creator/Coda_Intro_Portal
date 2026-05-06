@@ -193,10 +193,60 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   max-width: 760px;
 }
 
+.calculator-static-card {
+  display: grid;
+  gap: .65rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  background: rgba(0,0,0,.16);
+}
+
+.calculator-static-card p {
+  margin: 0;
+}
+
+.calculator-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+  margin-top: 1rem;
+}
+
+.btn-calculate {
+  min-height: 52px;
+  padding: .85rem 1.35rem;
+  border: 1px solid rgba(255, 216, 222, .24);
+  font-size: 1rem;
+  box-shadow: 0 16px 32px rgba(127, 16, 40, .34), inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.calculator-panel {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: max-height .5s ease, opacity .3s ease, transform .3s ease, visibility .3s ease;
+}
+
+.calculator-panel.is-open {
+  max-height: 2200px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
 .calculator-shell {
   display: grid;
   gap: 1rem;
   margin-top: 1rem;
+  padding: clamp(.85rem, 3vw, 1.1rem);
+  border: 1px solid rgba(255, 216, 222, .16);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 18px 46px rgba(0,0,0,.24);
 }
 
 .investment-field {
@@ -302,7 +352,8 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 }
 
 @media (max-width: 520px) {
-  .structure-actions .btn {
+  .structure-actions .btn,
+  .calculator-actions .btn {
     width: 100%;
   }
 
