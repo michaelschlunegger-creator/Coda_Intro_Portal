@@ -168,7 +168,7 @@ function HeaderWebsiteButton() {
       aria-label='Visit CODASOL website'
     >
       <span className='header-action-icon website-header-icon' aria-hidden='true'><WebsiteIcon /></span>
-      <span className='website-header-label'>WWW</span>
+      <span className='website-header-label'>codasol.com</span>
     </a>
   )
 }
