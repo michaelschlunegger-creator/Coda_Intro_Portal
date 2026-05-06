@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
 const whatsappHref = 'https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity.'
 const assistantWidgetMountId = 'investor-assistant-widget'
+const assistantTestHref = '/Coda_Intro_Portal/chatbot-test.html'
 
 function scrollToPortalTop() {
   if (window.location.hash) {
@@ -272,24 +273,19 @@ function InvestorAssistantWidgetMount() {
 }
 
 function InvestorAssistantLauncher() {
-  function handleClick() {
-    activateInvestorAssistantWidget()
-    window.setTimeout(activateInvestorAssistantWidget, 350)
-    window.setTimeout(activateInvestorAssistantWidget, 1200)
-  }
-
   return (
     <div className='assistant-launcher'>
-      <button
-        type='button'
+      <a
         className='header-action-button assistant-header-button'
-        aria-controls={assistantWidgetMountId}
-        onClick={handleClick}
+        href={assistantTestHref}
+        target='_blank'
+        rel='noopener noreferrer'
+        aria-label='Open Investor Assistant test page'
       >
         <span className='header-action-icon assistant-header-icon' aria-hidden='true'><AssistantIcon /></span>
         <span className='assistant-header-label'>Investor Assistant</span>
         <span className='assistant-header-label-compact'>AI</span>
-      </button>
+      </a>
     </div>
   )
 }
@@ -746,6 +742,10 @@ export default function App() {
           <p>This portal is Stage 1 non-NDA investor teaser content only. It is provided for introductory discussion purposes and does not constitute an offer to sell securities, a solicitation, investment advice, or a binding commitment. All figures, ownership outputs, transaction structures, and forward-looking statements are indicative only, non-binding, and subject to diligence, final legal documentation, and investor qualification.</p>
         </section>
       </main>
+
+      <footer className='diagnostic-footer'>
+        <a href={assistantTestHref} target='_blank' rel='noopener noreferrer'>Test Investor Assistant</a>
+      </footer>
 
       <a className='sticky-cta' href={mailto}>Request NDA Deck</a>
       <InvestorAssistantWidgetMount />
