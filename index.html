@@ -31,15 +31,10 @@
         <section id="investment"><h2>Investment Overview</h2><div class="grid two"><article class="card fund"><h3>USD 3.9M</h3><p>Orderly shareholder payout for selected early shareholders whose investment horizon has been reached.</p></article><article class="card fund"><h3>USD 3.9M</h3><p>Growth and transformation funding, including working capital and CODA-AI acceleration.</p></article></div></section>
         <section id="structure"><h2>Group Structure</h2><ul class="list"><li>CTS is the investment vehicle.</li><li>CODASOL Pte Ltd Singapore is the group holding company.</li><li>CODA Technology LLC UAE supports UAE / Middle East.</li><li>CODA US supports the US market.</li><li>CODASOL India is the delivery and execution platform.</li></ul></section>
 
-        <section id="team"><h2>Meet the Team</h2><div class="grid team-grid">
-          <article class="team-card card"><h3>Azmat Taufique</h3><p class="role">Chairman of the Board of Directors, Coda Group</p><p>Global investment and infrastructure leader with 30+ years of experience.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-azmat">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-azmat" class="bio-extra" hidden>Azmat brings three decades of leadership in infrastructure and investment ecosystems, shaping institutional partnerships and long-horizon strategic growth initiatives.</p></article>
-          <article class="team-card card"><h3>Philip Ng</h3><p class="role">Director and Member of the Board of Directors</p><p>Singapore-based financial leader with 30+ years across audit, governance, and private equity.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-philip">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-philip" class="bio-extra" hidden>Philip contributes extensive board-level governance and finance discipline spanning audit controls and enterprise stewardship.</p></article>
-          <article class="team-card card"><h3>Naleem Bukari</h3><p class="role">Co-Founder, Managing Director, and Board Member</p><p>Technical and business leader with deep asset and master data management expertise.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-naleem">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-naleem" class="bio-extra" hidden>Naleem has been central to translating industrial operational complexity into structured data intelligence models and scalable delivery practices.</p></article>
-          <article class="team-card card"><h3>Michael J. Schlunegger</h3><p class="role">Chief Executive Officer (CEO)</p><p>Swiss business leader with 30+ years in growth, sales, and technology products.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-michael">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-michael" class="bio-extra" hidden>Michael leads commercial strategy and platform growth, converting CODASOL's industrial track record into global expansion.</p></article>
-          <article class="team-card card"><h3>Rizwan Nawab John</h3><p class="role">Co-Founder, COO, and Board Member</p><p>Operational leader with strong experience in SAP materials management and supply chain execution.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-rizwan">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-rizwan" class="bio-extra" hidden>Rizwan oversees operational execution with a focus on disciplined project implementation and data-driven transformation.</p></article>
-          <article class="team-card card"><h3>Marwa Haddar</h3><p class="role">Strategic Advisory Board</p><p>Corporate finance and restructuring advisor across Asia, the Middle East, and Africa.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-marwa">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-marwa" class="bio-extra" hidden>Marwa supports strategic advisory direction in finance and restructuring scenarios to align growth with resilient capital frameworks.</p></article>
-          <article class="team-card card"><h3>James P. Bond</h3><p class="role">Executive Advisory Council</p><p>Global finance and infrastructure strategy expert with World Bank Group leadership experience.</p><div class="team-actions"><button class="btn btn-secondary bio-toggle" data-target="bio-james">View Bio</button><a class="btn btn-primary" href="https://www.linkedin.com/in/placeholder" target="_blank" rel="noreferrer">LinkedIn</a></div><p id="bio-james" class="bio-extra" hidden>James provides macro-level infrastructure strategy insight, positioning industrial data value within evolving global investment priorities.</p></article>
-        </div></section>
+        <section id="team">
+          <h2>Meet the Team</h2>
+          <div class="grid team-grid" id="team-grid" aria-live="polite"></div>
+        </section>
 
         <section id="faq"><h2>FAQ</h2><div class="faq"><article class="faq-item"><button type="button" class="faq-toggle" aria-expanded="false">What does CODASOL do?</button><p hidden>CODASOL provides industrial data intelligence and Master Data Management solutions for asset-heavy industries.</p></article><article class="faq-item"><button type="button" class="faq-toggle" aria-expanded="false">What makes CODASOL different?</button><p hidden>CODASOL combines 15+ years of industrial project experience with deep material, asset, supplier, and maintenance data knowledge.</p></article><article class="faq-item"><button type="button" class="faq-toggle" aria-expanded="false">What is CODA-AI?</button><p hidden>CODA-AI is CODASOL's planned vertical AI-MDM intelligence layer designed to improve, govern, and enrich industrial master data.</p></article></div></section>
 
@@ -50,6 +45,123 @@
     </div>
 
     <script>
+
+      const teamData = [
+        {
+          name: 'Azmat Taufique',
+          role: 'Chairman of the Board of Directors, Coda Group',
+          shortBio: 'Global investment and infrastructure leader with 30+ years of experience.',
+          longBio: 'Azmat brings three decades of leadership in infrastructure and investment ecosystems, shaping institutional partnerships and long-horizon strategic growth initiatives.',
+          profileUrl: 'https://www.blue-monsoon-capital.com/azmat-taufique/',
+          profileLabel: 'Profile'
+        },
+        {
+          name: 'Philip Ng',
+          role: 'Director and Member of the Board of Directors',
+          shortBio: 'Singapore-based financial leader with 30+ years across audit, governance, and private equity.',
+          longBio: 'Philip contributes extensive board-level governance and finance discipline spanning audit controls and enterprise stewardship.',
+          profileUrl: '',
+          profileLabel: 'Link to be added'
+        },
+        {
+          name: 'Naleem Bukari',
+          role: 'Co-Founder, Managing Director, and Member of the Board of Directors',
+          shortBio: 'Technical and business leader with deep asset and master data management expertise.',
+          longBio: 'Naleem has been central to translating industrial operational complexity into structured data intelligence models and scalable delivery practices.',
+          profileUrl: 'https://www.linkedin.com/in/naleem-bukari-66b10323/',
+          profileLabel: 'LinkedIn'
+        },
+        {
+          name: 'Michael J. Schlunegger',
+          role: 'Chief Executive Officer (CEO)',
+          shortBio: 'Swiss business leader with 30+ years in growth, sales, and technology products.',
+          longBio: 'Michael leads commercial strategy and platform growth, converting CODASOL's industrial track record into global expansion.',
+          profileUrl: 'https://www.linkedin.com/in/michael-j-schlunegger-2b475882/',
+          profileLabel: 'LinkedIn'
+        },
+        {
+          name: 'Rizwan Nawab',
+          role: 'Co-Founder, Chief Operating Officer (COO), and Member of the Board of Directors',
+          shortBio: 'Operational leader with strong experience in SAP materials management and supply chain execution.',
+          longBio: 'Rizwan oversees operational execution with a focus on disciplined project implementation and data-driven transformation.',
+          profileUrl: 'https://www.linkedin.com/in/rizwan-nawab-aa336421/',
+          profileLabel: 'LinkedIn'
+        },
+        {
+          name: 'Marwa Haddar',
+          role: 'Strategic Advisory Board',
+          shortBio: 'Corporate finance and restructuring advisor across Asia, the Middle East, and Africa.',
+          longBio: 'Marwa supports strategic advisory direction in finance and restructuring scenarios to align growth with resilient capital frameworks.',
+          profileUrl: 'https://www.linkedin.com/in/marwa-haddar-67787a92/',
+          profileLabel: 'LinkedIn'
+        },
+        {
+          name: 'James P. Bond',
+          role: 'Executive Advisory Council',
+          shortBio: 'Global finance and infrastructure strategy expert with World Bank Group leadership experience.',
+          longBio: 'James provides macro-level infrastructure strategy insight, positioning industrial data value within evolving global investment priorities.',
+          profileUrl: 'https://www.blue-monsoon-capital.com/james-p-bond/',
+          profileLabel: 'Profile'
+        }
+      ];
+
+      const teamGrid = document.getElementById('team-grid');
+      if (teamGrid) {
+        teamData.forEach((person, index) => {
+          const article = document.createElement('article');
+          article.className = 'team-card card';
+
+          const title = document.createElement('h3');
+          title.textContent = person.name;
+          article.append(title);
+
+          const role = document.createElement('p');
+          role.className = 'role';
+          role.textContent = person.role;
+          article.append(role);
+
+          const shortBio = document.createElement('p');
+          shortBio.textContent = person.shortBio;
+          article.append(shortBio);
+
+          const actions = document.createElement('div');
+          actions.className = 'team-actions';
+
+          const bioButton = document.createElement('button');
+          bioButton.className = 'btn btn-secondary bio-toggle';
+          bioButton.type = 'button';
+          bioButton.dataset.target = `bio-${index}`;
+          bioButton.textContent = 'View Bio';
+          actions.append(bioButton);
+
+          if (person.profileUrl && person.profileUrl.startsWith('https://')) {
+            const profileLink = document.createElement('a');
+            profileLink.className = 'btn btn-primary';
+            profileLink.href = person.profileUrl;
+            profileLink.target = '_blank';
+            profileLink.rel = 'noopener noreferrer';
+            profileLink.textContent = person.profileLabel;
+            actions.append(profileLink);
+          } else {
+            const disabledProfile = document.createElement('span');
+            disabledProfile.className = 'btn btn-disabled';
+            disabledProfile.setAttribute('aria-disabled', 'true');
+            disabledProfile.textContent = person.profileLabel || 'Link to be added';
+            actions.append(disabledProfile);
+          }
+
+          article.append(actions);
+
+          const longBio = document.createElement('p');
+          longBio.id = `bio-${index}`;
+          longBio.className = 'bio-extra';
+          longBio.hidden = true;
+          longBio.textContent = person.longBio;
+          article.append(longBio);
+
+          teamGrid.append(article);
+        });
+      }
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener('click', (event) => {
           const id = anchor.getAttribute('href');
