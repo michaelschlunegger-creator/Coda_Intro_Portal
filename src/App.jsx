@@ -103,14 +103,14 @@ const teamData = [
 ]
 
 const defaultAssumptions = {
-  investment: 125000,
-  preMoney: 10000000,
-  ctsOwnership: 23.46
+  investmentAmount: 125000,
+  ctsPreMoneyValuation: 10000000,
+  ctsOwnershipPercent: 23.46
 }
 
 const groupImageSrc = `${import.meta.env.BASE_URL}Group.png`
 
-function toFiniteNumber(value, defaultValue = 0) {
+function safeNumber(value, defaultValue = 0) {
   if (String(value).trim() === '') {
     return defaultValue
   }
@@ -123,8 +123,8 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max)
 }
 
-function formatUsd(value) {
-  const safeValue = Math.max(0, toFiniteNumber(value))
+function formatUSD(value) {
+  const safeValue = Math.max(0, safeNumber(value))
   const formattedValue = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0
   }).format(safeValue)
@@ -163,7 +163,7 @@ function HeaderWhatsAppButton() {
 function WhatsAppContact() {
   useEffect(() => {
     if (document.querySelector(`script[src="${elfsightScriptSrc}"]`)) {
-      return undefined
+      return () => {}
     }
 
     const script = document.createElement('script')
@@ -262,7 +262,7 @@ function GroupStructure() {
 
   useEffect(() => {
     if (!isModalOpen) {
-      return undefined
+      return () => {}
     }
 
     const handleKeyDown = (event) => {
@@ -315,46 +315,47 @@ function GroupStructure() {
 }
 
 function OwnershipCalculator() {
-  const [investment, setInvestment] = useState(String(defaultAssumptions.investment))
-  const [preMoney, setPreMoney] = useState(String(defaultAssumptions.preMoney))
-  const [ctsOwnership, setCtsOwnership] = useState(String(defaultAssumptions.ctsOwnership))
+  const [investmentAmount, setInvestmentAmount] = useState(String(defaultAssumptions.investmentAmount))
+  const [ctsPreMoneyValuation, setCtsPreMoneyValuation] = useState(String(defaultAssumptions.ctsPreMoneyValuation))
+  const [ctsOwnershipPercent, setCtsOwnershipPercent] = useState(String(defaultAssumptions.ctsOwnershipPercent))
 
   const result = useMemo(() => {
-    const parsedInvestment = Number(investment)
-    const hasValidInvestment = investment.trim() !== '' && Number.isFinite(parsedInvestment) && parsedInvestment >= 10000
-    const investmentAmount = hasValidInvestment ? parsedInvestment : 0
-    const parsedPreMoney = toFiniteNumber(preMoney, defaultAssumptions.preMoney)
-    const ctsPreMoneyValuation = parsedPreMoney > 0 ? parsedPreMoney : defaultAssumptions.preMoney
-    const ctsOwnershipPercent = clamp(toFiniteNumber(ctsOwnership, defaultAssumptions.ctsOwnership), 0, 100)
-    const denominator = ctsPreMoneyValuation + investmentAmount
-    const investorOwnershipInCts = hasValidInvestment && denominator > 0 ? investmentAmount / denominator : 0
-    const indirectOwnership = investorOwnershipInCts * (ctsOwnershipPercent / 100)
+    const parsedInvestment = Number(investmentAmount)
+    const hasValidInvestment = investmentAmount.trim() !== '' && Number.isFinite(parsedInvestment) && parsedInvestment >= 10000
+    const safeInvestmentAmount = hasValidInvestment ? parsedInvestment : 0
+    const parsedPreMoney = safeNumber(ctsPreMoneyValuation, defaultAssumptions.ctsPreMoneyValuation)
+    const safeCtsPreMoneyValuation = parsedPreMoney > 0 ? parsedPreMoney : defaultAssumptions.ctsPreMoneyValuation
+    const safeCtsOwnershipPercent = clamp(safeNumber(ctsOwnershipPercent, defaultAssumptions.ctsOwnershipPercent), 0, 100)
+    const denominator = safeCtsPreMoneyValuation + safeInvestmentAmount
+    const investorOwnershipCTS = hasValidInvestment && denominator > 0 ? safeInvestmentAmount / denominator : 0
+    const indirectOwnershipCODASOL = investorOwnershipCTS * (safeCtsOwnershipPercent / 100)
 
     return {
       hasValidInvestment,
-      investmentAmount,
-      ctsOwnershipPercent,
-      investorOwnershipInCtsPercent: Number.isFinite(investorOwnershipInCts) ? investorOwnershipInCts * 100 : 0,
-      indirectOwnershipPercent: Number.isFinite(indirectOwnership) ? indirectOwnership * 100 : 0
+      investmentAmount: safeInvestmentAmount,
+      ctsPreMoneyValuation: safeCtsPreMoneyValuation,
+      ctsOwnershipPercent: safeCtsOwnershipPercent,
+      investorOwnershipCTSPercent: Number.isFinite(investorOwnershipCTS) ? investorOwnershipCTS * 100 : 0,
+      indirectOwnershipCODASOLPercent: Number.isFinite(indirectOwnershipCODASOL) ? indirectOwnershipCODASOL * 100 : 0
     }
-  }, [investment, preMoney, ctsOwnership])
+  }, [investmentAmount, ctsPreMoneyValuation, ctsOwnershipPercent])
 
-  const handleInvestmentChange = (value) => {
-    setInvestment(value)
+  const handleInvestmentAmountChange = (value) => {
+    setInvestmentAmount(value)
   }
 
   const handleReset = () => {
-    setInvestment(String(defaultAssumptions.investment))
-    setPreMoney(String(defaultAssumptions.preMoney))
-    setCtsOwnership(String(defaultAssumptions.ctsOwnership))
+    setInvestmentAmount(String(defaultAssumptions.investmentAmount))
+    setCtsPreMoneyValuation(String(defaultAssumptions.ctsPreMoneyValuation))
+    setCtsOwnershipPercent(String(defaultAssumptions.ctsOwnershipPercent))
   }
 
   const visibleResult = result.hasValidInvestment
   const sliderValue = result.hasValidInvestment
     ? clamp(result.investmentAmount, 10000, 5000000)
-    : defaultAssumptions.investment
+    : defaultAssumptions.investmentAmount
   const helperText = result.hasValidInvestment
-    ? `Current value: ${formatUsd(result.investmentAmount)}`
+    ? `Current value: ${formatUSD(result.investmentAmount)}`
     : 'Enter an investment amount to calculate indicative ownership.'
 
   return (
@@ -373,19 +374,19 @@ function OwnershipCalculator() {
                 <p className='calculator-card-eyebrow'>Investor input</p>
                 <h3>Investment Amount in USD</h3>
               </div>
-              <strong>{result.hasValidInvestment ? formatUsd(result.investmentAmount) : 'USD —'}</strong>
+              <strong>{result.hasValidInvestment ? formatUSD(result.investmentAmount) : 'USD —'}</strong>
             </div>
 
             <label className='field-card investment-field'>
               <span>Investment Amount in USD</span>
               <input
-                type='number'
+                type="number"
                 min='10000'
                 step='5000'
                 inputMode='decimal'
-                value={investment}
+                value={investmentAmount}
                 placeholder='125000'
-                onChange={(event) => handleInvestmentChange(event.target.value)}
+                onChange={(event) => handleInvestmentAmountChange(event.target.value)}
               />
             </label>
 
@@ -393,12 +394,12 @@ function OwnershipCalculator() {
               <span className='slider-value'>{helperText}</span>
               <input
                 className='investment-slider'
-                type='range'
+                type="range"
                 min='10000'
                 max='5000000'
                 step='5000'
                 value={sliderValue}
-                onChange={(event) => handleInvestmentChange(event.target.value)}
+                onChange={(event) => handleInvestmentAmountChange(event.target.value)}
                 aria-label='Investment amount slider'
               />
               <span className='slider-limits'>
@@ -421,24 +422,24 @@ function OwnershipCalculator() {
               <label className='field-card'>
                 <span>CTS pre-money valuation</span>
                 <input
-                  type='number'
+                  type="number"
                   min='0'
                   step='100000'
                   inputMode='decimal'
-                  value={preMoney}
-                  onChange={(event) => setPreMoney(event.target.value)}
+                  value={ctsPreMoneyValuation}
+                  onChange={(event) => setCtsPreMoneyValuation(event.target.value)}
                 />
               </label>
               <label className='field-card'>
-                <span>CTS ownership in CODASOL Pte Ltd</span>
+                <span>CTS ownership in CODASOL Pte Ltd (%)</span>
                 <input
-                  type='number'
+                  type="number"
                   min='0'
                   max='100'
                   step='0.01'
                   inputMode='decimal'
-                  value={ctsOwnership}
-                  onChange={(event) => setCtsOwnership(event.target.value)}
+                  value={ctsOwnershipPercent}
+                  onChange={(event) => setCtsOwnershipPercent(event.target.value)}
                 />
               </label>
             </div>
@@ -450,19 +451,19 @@ function OwnershipCalculator() {
             <p className='result-eyebrow'>Indicative CODASOL Group Ownership</p>
             {visibleResult ? (
               <>
-                <h3>{formatPercent(result.indirectOwnershipPercent)}</h3>
+                <h3>{formatPercent(result.indirectOwnershipCODASOLPercent)}</h3>
                 <div className='result-details'>
                   <div>
                     <span>Investment amount</span>
-                    <strong>{formatUsd(result.investmentAmount)}</strong>
+                    <strong>{formatUSD(result.investmentAmount)}</strong>
                   </div>
                   <div>
                     <span>Indicative ownership in CTS</span>
-                    <strong>{formatPercent(result.investorOwnershipInCtsPercent)}</strong>
+                    <strong>{formatPercent(result.investorOwnershipCTSPercent)}</strong>
                   </div>
                   <div>
                     <span>Indicative indirect ownership in CODASOL Group</span>
-                    <strong>{formatPercent(result.indirectOwnershipPercent)}</strong>
+                    <strong>{formatPercent(result.indirectOwnershipCODASOLPercent)}</strong>
                   </div>
                 </div>
               </>
