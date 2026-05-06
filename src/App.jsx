@@ -417,7 +417,7 @@ function OwnershipCalculator() {
           </article>
 
           <details className='assumptions-drawer calculator-card' open>
-            <summary>Advanced assumptions</summary>
+            <summary>Advanced Assumptions</summary>
             <div className='assumptions-grid'>
               <label className='field-card'>
                 <span>CTS pre-money valuation</span>

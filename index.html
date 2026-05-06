@@ -69,15 +69,69 @@
             <div class="structure-actions"><a class="btn btn-primary" href="%BASE_URL%Group.png" target="_blank" rel="noopener noreferrer">View Group Structure</a></div>
           </section>
 
-          <section id="calculator" class="calculator-section">
-            <h2>Indicative Ownership Calculator</h2>
-            <p class="calculation-label">Indicative only | Non-binding | Subject to final documentation</p>
-            <div class="calculator-static-card">
-              <p>Default assumptions: investment amount = USD 125,000; CTS pre-money valuation = USD 10,000,000; CTS ownership in CODASOL Pte Ltd = 23.46%.</p>
-              <p>Formula: investor ownership in CTS = investment amount / (CTS pre-money valuation + investment amount). Indirect ownership in CODASOL Group = investor ownership in CTS × CTS ownership in CODASOL.</p>
+          <section id="calculator" class="calculator-section" data-static-ownership-calculator>
+            <div class="calculator-heading">
+              <span class="calculator-kicker">Equity ownership estimator</span>
+              <h2>Indicative Ownership Calculator</h2>
+              <p class="calculation-label">Indicative only | Non-binding | Subject to final documentation</p>
             </div>
-            <p>Because CTS owns a minority interest in CODASOL Pte Ltd, ownership through CTS represents indirect ownership in the CODASOL group.</p>
-            <p class="legal-note">This calculator is for indicative understanding only. Final ownership, share price, valuation, rights, allocation, and investment terms are subject to final legal and financial documentation.</p>
+            <div class="calculator-shell" role="region" aria-label="Indicative ownership calculator">
+              <div class="calculator-input-column">
+                <article class="calculator-card input-card">
+                  <div class="calculator-card-header">
+                    <div>
+                      <p class="calculator-card-eyebrow">Investor input</p>
+                      <h3>Investment Amount in USD</h3>
+                    </div>
+                    <strong data-investment-display>USD 125,000</strong>
+                  </div>
+                  <label class="field-card investment-field">
+                    <span>Investment Amount in USD</span>
+                    <input id="static-investment-amount" data-investment-amount type="number" min="10000" step="5000" inputmode="decimal" value="125000" placeholder="125000">
+                  </label>
+                  <label class="slider-field">
+                    <span class="slider-value" data-slider-value>Current value: USD 125,000</span>
+                    <input class="investment-slider" data-investment-slider type="range" min="10000" max="5000000" step="5000" value="125000" aria-label="Investment amount slider">
+                    <span class="slider-limits"><small>USD 10,000</small><small>USD 5,000,000</small></span>
+                  </label>
+                  <div class="calculator-actions">
+                    <button class="btn btn-secondary" type="button" data-calculator-reset>Reset</button>
+                    <a class="btn btn-primary" href="mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request">Request NDA Deck</a>
+                  </div>
+                </article>
+                <details class="assumptions-drawer calculator-card" open>
+                  <summary>Advanced Assumptions</summary>
+                  <div class="assumptions-grid">
+                    <label class="field-card">
+                      <span>CTS pre-money valuation</span>
+                      <input data-cts-pre-money-valuation name="ctsPreMoneyValuation" type="number" min="0" step="100000" inputmode="decimal" value="10000000">
+                    </label>
+                    <label class="field-card">
+                      <span>CTS ownership in CODASOL Pte Ltd (%)</span>
+                      <input data-cts-ownership-percent name="ctsOwnershipPercent" type="number" min="0" max="100" step="0.01" inputmode="decimal" value="23.46">
+                    </label>
+                  </div>
+                </details>
+              </div>
+              <div class="calculator-result-column">
+                <article class="result-card result-card-large" aria-live="polite">
+                  <p class="result-eyebrow">Indicative CODASOL Group Ownership</p>
+                  <div data-result-content>
+                    <h3 data-indirect-ownership>0.2896%</h3>
+                    <div class="result-details">
+                      <div><span>Investment amount</span><strong data-result-investment>USD 125,000</strong></div>
+                      <div><span>Indicative ownership in CTS</span><strong data-cts-ownership-result>1.2346%</strong></div>
+                      <div><span>Indicative indirect ownership in CODASOL Group</span><strong data-indirect-ownership-result>0.2896%</strong></div>
+                    </div>
+                  </div>
+                  <p class="empty-result" data-empty-result hidden>Enter an investment amount to calculate indicative ownership.</p>
+                </article>
+                <div class="calculator-explanation">
+                  <p>Because CTS owns a minority interest in CODASOL Pte Ltd, ownership through CTS represents indirect ownership in the CODASOL group.</p>
+                </div>
+              </div>
+            </div>
+            <p class="legal-note calculator-legal-note">This calculator is for indicative understanding only. Final ownership, share price, valuation, rights, allocation, and investment terms are subject to final legal and financial documentation.</p>
           </section>
 
           <section class="team-section" id="team">
@@ -148,6 +202,81 @@
       <a class="whatsapp-float" href="https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity." target="_blank" rel="noopener noreferrer" aria-label="Chat with CODASOL on WhatsApp"><span class="whatsapp-icon" aria-hidden="true">WA</span><span class="whatsapp-label">Chat with CODASOL</span></a>
     </div>
     <div id="react-root" aria-live="polite"></div>
+    <script>
+      (() => {
+        const DEFAULTS = { investmentAmount: 125000, ctsPreMoneyValuation: 10000000, ctsOwnershipPercent: 23.46 };
+        const calculator = document.querySelector('[data-static-ownership-calculator]');
+        if (!calculator) return;
+
+        const investmentInput = calculator.querySelector('[data-investment-amount]');
+        const investmentSlider = calculator.querySelector('[data-investment-slider]');
+        const preMoneyInput = calculator.querySelector('[data-cts-pre-money-valuation]');
+        const ownershipInput = calculator.querySelector('[data-cts-ownership-percent]');
+        const resetButton = calculator.querySelector('[data-calculator-reset]');
+        const investmentDisplay = calculator.querySelector('[data-investment-display]');
+        const sliderValue = calculator.querySelector('[data-slider-value]');
+        const resultContent = calculator.querySelector('[data-result-content]');
+        const emptyResult = calculator.querySelector('[data-empty-result]');
+        const indirectOwnership = calculator.querySelector('[data-indirect-ownership]');
+        const resultInvestment = calculator.querySelector('[data-result-investment]');
+        const ctsOwnershipResult = calculator.querySelector('[data-cts-ownership-result]');
+        const indirectOwnershipResult = calculator.querySelector('[data-indirect-ownership-result]');
+
+        const safeNumber = (value, defaultValue = 0) => {
+          if (String(value).trim() === '') return defaultValue;
+          const parsed = Number(value);
+          return Number.isFinite(parsed) ? parsed : defaultValue;
+        };
+        const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+        const formatUSD = (value) => `USD ${new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.max(0, safeNumber(value)))}`;
+        const formatPercent = (value) => `${(Number.isFinite(value) ? value : 0).toFixed(4)}%`;
+
+        function updateCalculator() {
+          const parsedInvestment = Number(investmentInput.value);
+          const hasValidInvestment = investmentInput.value.trim() !== '' && Number.isFinite(parsedInvestment) && parsedInvestment >= 10000;
+          const investmentAmount = hasValidInvestment ? parsedInvestment : 0;
+          const parsedPreMoney = safeNumber(preMoneyInput.value, DEFAULTS.ctsPreMoneyValuation);
+          const ctsPreMoneyValuation = parsedPreMoney > 0 ? parsedPreMoney : DEFAULTS.ctsPreMoneyValuation;
+          const ctsOwnershipPercent = clamp(safeNumber(ownershipInput.value, DEFAULTS.ctsOwnershipPercent), 0, 100);
+          const denominator = ctsPreMoneyValuation + investmentAmount;
+          const investorOwnershipCTS = hasValidInvestment && denominator > 0 ? investmentAmount / denominator : 0;
+          const indirectOwnershipCODASOL = investorOwnershipCTS * (ctsOwnershipPercent / 100);
+          const investorOwnershipCTSPercent = Number.isFinite(investorOwnershipCTS) ? investorOwnershipCTS * 100 : 0;
+          const indirectOwnershipCODASOLPercent = Number.isFinite(indirectOwnershipCODASOL) ? indirectOwnershipCODASOL * 100 : 0;
+
+          const sliderAmount = hasValidInvestment ? clamp(investmentAmount, 10000, 5000000) : DEFAULTS.investmentAmount;
+          investmentSlider.value = String(sliderAmount);
+          investmentDisplay.textContent = hasValidInvestment ? formatUSD(investmentAmount) : 'USD —';
+          sliderValue.textContent = hasValidInvestment ? `Current value: ${formatUSD(investmentAmount)}` : 'Enter an investment amount to calculate indicative ownership.';
+          resultContent.hidden = !hasValidInvestment;
+          emptyResult.hidden = hasValidInvestment;
+
+          if (hasValidInvestment) {
+            indirectOwnership.textContent = formatPercent(indirectOwnershipCODASOLPercent);
+            resultInvestment.textContent = formatUSD(investmentAmount);
+            ctsOwnershipResult.textContent = formatPercent(investorOwnershipCTSPercent);
+            indirectOwnershipResult.textContent = formatPercent(indirectOwnershipCODASOLPercent);
+          }
+        }
+
+        investmentInput.addEventListener('input', updateCalculator);
+        investmentSlider.addEventListener('input', (event) => {
+          investmentInput.value = event.target.value;
+          updateCalculator();
+        });
+        preMoneyInput.addEventListener('input', updateCalculator);
+        ownershipInput.addEventListener('input', updateCalculator);
+        resetButton.addEventListener('click', () => {
+          investmentInput.value = String(DEFAULTS.investmentAmount);
+          investmentSlider.value = String(DEFAULTS.investmentAmount);
+          preMoneyInput.value = String(DEFAULTS.ctsPreMoneyValuation);
+          ownershipInput.value = String(DEFAULTS.ctsOwnershipPercent);
+          updateCalculator();
+        });
+
+        updateCalculator();
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
