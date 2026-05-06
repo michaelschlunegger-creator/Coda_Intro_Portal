@@ -95,6 +95,38 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 .bio-details summary::-webkit-details-marker { display: none; }
 .bio-details p { margin: .75rem 0 0; padding: .85rem; border-radius: 16px; background: rgba(0,0,0,.18); }
 
+
+.investor-assistant {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background:
+    radial-gradient(circle at top right, rgba(182, 31, 61, .18), transparent 42%),
+    linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.045));
+}
+
+.investor-assistant-copy {
+  max-width: 760px;
+}
+
+.investor-assistant-copy .pill {
+  margin: 0 0 .75rem;
+}
+
+.investor-assistant-widget {
+  position: relative;
+  min-height: 120px;
+  padding: .85rem;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, .16);
+  overflow: visible;
+}
+
+.investor-assistant-widget > div {
+  min-height: 72px;
+}
+
 .faq-item { margin-bottom: .6rem; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); overflow: visible; }
 .faq-item summary { padding: .9rem; color: #fff; cursor: pointer; font-weight: 650; }
 .faq-item p { margin: 0; padding: 0 .9rem .9rem; }
@@ -159,7 +191,7 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 
 .whatsapp-float {
   position: fixed;
-  right: 1rem;
+  left: 1rem;
   bottom: 5.35rem;
   z-index: 6;
   display: inline-flex;
@@ -231,7 +263,7 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   .team-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .team-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sticky-cta { display: none; }
-  .whatsapp-float { right: 1.25rem; bottom: 1.25rem; }
+  .whatsapp-float { left: 1.25rem; bottom: 1.25rem; }
 }
 
 @media (min-width: 1080px) {
@@ -675,7 +707,7 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 
 @media (max-width: 520px) {
   .whatsapp-float {
-    right: .85rem;
+    left: .85rem;
     bottom: 5.25rem;
     min-height: 50px;
     padding: .58rem;

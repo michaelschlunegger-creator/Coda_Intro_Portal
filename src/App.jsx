@@ -192,6 +192,21 @@ function WhatsAppContact() {
   )
 }
 
+function InvestorAssistant() {
+  return (
+    <section id='investor-assistant' className='investor-assistant' aria-labelledby='investor-assistant-heading'>
+      <div className='investor-assistant-copy'>
+        <p className='pill'>Stage 1 investor Q&amp;A</p>
+        <h2 id='investor-assistant-heading'>Ask the CODASOL Investor Assistant</h2>
+        <p>Use the investor assistant for Stage 1, non-NDA questions about the CODASOL introduction portal and next-step process.</p>
+      </div>
+      <div className='investor-assistant-widget' aria-label='Investor Assistant chat widget'>
+        <div className='elfsight-app-cb4a783d-3540-4ff8-8924-7818eaf61af7' data-elfsight-app-lazy />
+      </div>
+    </section>
+  )
+}
+
 function ProfileAction({ person }) {
   if (!person.profileUrl) {
     return <span className='btn btn-disabled' aria-disabled='true'>{person.profileLabel}</span>
@@ -628,6 +643,8 @@ export default function App() {
             </details>
           ))}
         </section>
+
+        <InvestorAssistant />
 
         <section id='contact'>
           <h2>Contact / Request NDA Deck</h2>
