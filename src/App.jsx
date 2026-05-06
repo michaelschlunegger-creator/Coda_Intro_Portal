@@ -142,23 +142,33 @@ function WhatsAppIcon() {
   )
 }
 
+function AssistantIcon() {
+  return (
+    <svg viewBox='0 0 24 24' aria-hidden='true' focusable='false'>
+      <path d='M12 2.75a.75.75 0 0 1 .75.75v1.2a7.32 7.32 0 0 1 6.55 6.55h1.2a.75.75 0 0 1 0 1.5h-1.2a7.32 7.32 0 0 1-6.55 6.55v1.2a.75.75 0 0 1-1.5 0v-1.2a7.32 7.32 0 0 1-6.55-6.55H3.5a.75.75 0 0 1 0-1.5h1.2a7.32 7.32 0 0 1 6.55-6.55V3.5a.75.75 0 0 1 .75-.75Zm0 3.4a5.85 5.85 0 1 0 0 11.7 5.85 5.85 0 0 0 0-11.7Zm-2.55 4.4a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Zm5.1 0a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Zm-4.28 3.55a.75.75 0 0 1 1.04.19c.15.22.4.46.69.46s.54-.24.69-.46a.75.75 0 1 1 1.23.85c-.43.63-1.11 1.11-1.92 1.11s-1.49-.48-1.92-1.11a.75.75 0 0 1 .19-1.04Z' />
+    </svg>
+  )
+}
+
 function HeaderWhatsAppButton() {
   return (
     <a
-      className='whatsapp-header-button'
+      className='header-action-button whatsapp-header-button'
       href={whatsappHref}
       target='_blank'
       rel='noopener noreferrer'
       aria-label='Chat with CODASOL on WhatsApp'
     >
-      <span className='whatsapp-header-icon' aria-hidden='true'><WhatsAppIcon /></span>
+      <span className='header-action-icon whatsapp-header-icon' aria-hidden='true'><WhatsAppIcon /></span>
       <span className='whatsapp-header-label'>WhatsApp</span>
       <span className='whatsapp-header-label-compact'>WA</span>
     </a>
   )
 }
 
-function WhatsAppContact() {
+function InvestorAssistantLauncher() {
+  const [isOpen, setIsOpen] = useState(false)
+
   useEffect(() => {
     if (document.querySelector(`script[src="${elfsightScriptSrc}"]`)) {
       return () => {}
@@ -167,7 +177,7 @@ function WhatsAppContact() {
     const script = document.createElement('script')
     script.src = elfsightScriptSrc
     script.async = true
-    script.dataset.codaElfsight = 'whatsapp'
+    script.dataset.codaAssistantScript = 'true'
     document.body.appendChild(script)
 
     return () => {
@@ -176,34 +186,26 @@ function WhatsAppContact() {
   }, [])
 
   return (
-    <>
-      <div className='elfsight-app-786a347e-3f3b-4406-9a1e-0356b0f88b46' />
-      <a
-        className='whatsapp-float'
-        href={whatsappHref}
-        target='_blank'
-        rel='noopener noreferrer'
-        aria-label='Chat with CODASOL on WhatsApp'
+    <div className='assistant-launcher'>
+      <button
+        type='button'
+        className='header-action-button assistant-header-button'
+        aria-expanded={isOpen}
+        aria-controls='investor-assistant-widget'
+        onClick={() => setIsOpen((open) => !open)}
       >
-        <span className='whatsapp-icon'><WhatsAppIcon /></span>
-        <span className='whatsapp-label'>Chat with CODASOL</span>
-      </a>
-    </>
-  )
-}
-
-function InvestorAssistant() {
-  return (
-    <section id='investor-assistant' className='investor-assistant' aria-labelledby='investor-assistant-heading'>
-      <div className='investor-assistant-copy'>
-        <p className='pill'>Stage 1 investor Q&amp;A</p>
-        <h2 id='investor-assistant-heading'>Ask the CODASOL Investor Assistant</h2>
-        <p>Use the investor assistant for Stage 1, non-NDA questions about the CODASOL introduction portal and next-step process.</p>
-      </div>
-      <div className='investor-assistant-widget' aria-label='Investor Assistant chat widget'>
+        <span className='header-action-icon assistant-header-icon' aria-hidden='true'><AssistantIcon /></span>
+        <span className='assistant-header-label'>Investor Assistant</span>
+        <span className='assistant-header-label-compact'>AI</span>
+      </button>
+      <div
+        id='investor-assistant-widget'
+        className={`assistant-widget-popover${isOpen ? ' is-open' : ''}`}
+        aria-hidden={!isOpen}
+      >
         <div className='elfsight-app-cb4a783d-3540-4ff8-8924-7818eaf61af7' data-elfsight-app-lazy />
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -561,7 +563,10 @@ export default function App() {
               />
             )}
           </div>
-          <HeaderWhatsAppButton />
+          <div className='header-actions' aria-label='Portal contact actions'>
+            <InvestorAssistantLauncher />
+            <HeaderWhatsAppButton />
+          </div>
         </div>
         <p className='pill'>Stage 1 Investor Introduction · Non-NDA</p>
         <h1>CODASOL Investor Introduction Portal</h1>
@@ -644,7 +649,6 @@ export default function App() {
           ))}
         </section>
 
-        <InvestorAssistant />
 
         <section id='contact'>
           <h2>Contact / Request NDA Deck</h2>
@@ -658,7 +662,6 @@ export default function App() {
         </section>
       </main>
 
-      <WhatsAppContact />
       <a className='sticky-cta' href={mailto}>Request NDA Deck</a>
     </div>
   )
