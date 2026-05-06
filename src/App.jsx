@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
 const whatsappHref = 'https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity.'
-const assistantWidgetMountId = 'investor-assistant-widget'
-const assistantTestHref = '/Coda_Intro_Portal/chatbot-test.html'
+const assistantEmbedHref = `${import.meta.env.BASE_URL}investor-assistant.html`
 
 function scrollToPortalTop() {
   if (window.location.hash) {
@@ -166,126 +165,76 @@ function HeaderWhatsAppButton() {
   )
 }
 
-function isVisibleElement(element) {
-  if (!(element instanceof HTMLElement)) {
-    return false
-  }
-
-  const style = window.getComputedStyle(element)
-  const bounds = element.getBoundingClientRect()
-
+function InvestorAssistantLauncher({ onOpen }) {
   return (
-    style.display !== 'none' &&
-    style.visibility !== 'hidden' &&
-    Number(style.opacity) !== 0 &&
-    bounds.width > 0 &&
-    bounds.height > 0
-  )
-}
-
-function hasInvestorAssistantSignal(element) {
-  const signal = [
-    element.getAttribute('aria-label'),
-    element.getAttribute('title'),
-    element.getAttribute('src'),
-    element.getAttribute('class'),
-    element.getAttribute('id')
-  ].filter(Boolean).join(' ')
-
-  return /elfsight|launcher|assistant|message|support|eapps|chat/i.test(signal)
-}
-
-function isNonAssistantContactElement(element) {
-  const signal = [
-    element.getAttribute('aria-label'),
-    element.getAttribute('title'),
-    element.getAttribute('href'),
-    element.getAttribute('class'),
-    element.textContent
-  ].filter(Boolean).join(' ')
-
-  return /whatsapp|wa\.me|mailto:|linkedin|profile/i.test(signal)
-}
-
-function findInvestorAssistantLauncherElement() {
-  if (typeof document === 'undefined') {
-    return null
-  }
-
-  const widgetMount = document.getElementById(assistantWidgetMountId)
-  const candidates = Array.from(document.querySelectorAll([
-    'iframe',
-    'button',
-    'a[href]',
-    '[role="button"]',
-    '[tabindex]',
-    '[class*="elfsight" i]',
-    '[class*="eapps" i]',
-    '[class*="launcher" i]',
-    '[class*="chat" i]',
-    '[aria-label*="chat" i]',
-    '[aria-label*="assistant" i]'
-  ].join(',')))
-
-  return candidates.find((candidate) => {
-    if (
-      candidate.closest('.assistant-launcher') ||
-      candidate === widgetMount ||
-      isNonAssistantContactElement(candidate)
-    ) {
-      return false
-    }
-
-    return hasInvestorAssistantSignal(candidate) && isVisibleElement(candidate)
-  }) || null
-}
-
-function scrollToInvestorAssistantMount() {
-  const widgetMount = document.getElementById(assistantWidgetMountId)
-
-  widgetMount?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
-  widgetMount?.focus?.({ preventScroll: true })
-}
-
-function activateInvestorAssistantWidget() {
-  if (typeof document === 'undefined') {
-    return
-  }
-
-  const launcher = findInvestorAssistantLauncherElement()
-
-  if (launcher) {
-    launcher.scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
-    launcher.focus?.({ preventScroll: true })
-    launcher.click?.()
-    return
-  }
-
-  scrollToInvestorAssistantMount()
-}
-
-function InvestorAssistantWidgetMount() {
-  return (
-    <div id={assistantWidgetMountId} className='investor-assistant-widget' tabIndex='-1'>
-      <div className='elfsight-app-cb4a783d-3540-4ff8-8924-7818eaf61af7' data-elfsight-app-lazy />
+    <div className='assistant-launcher'>
+      <button
+        className='header-action-button assistant-header-button'
+        type='button'
+        onClick={onOpen}
+        aria-haspopup='dialog'
+        aria-label='Open Investor Assistant'
+      >
+        <span className='header-action-icon assistant-header-icon' aria-hidden='true'><AssistantIcon /></span>
+        <span className='assistant-header-label'>Investor Assistant</span>
+      </button>
     </div>
   )
 }
 
-function InvestorAssistantLauncher() {
+function InvestorAssistantModal({ isOpen, onClose }) {
+  useEffect(() => {
+    if (!isOpen) {
+      return () => {}
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    document.body.classList.add('modal-open')
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.classList.remove('modal-open')
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, onClose])
+
+  if (!isOpen) {
+    return null
+  }
+
   return (
-    <div className='assistant-launcher'>
-      <a
-        className='header-action-button assistant-header-button'
-        href={assistantTestHref}
-        target='_blank'
-        rel='noopener noreferrer'
-        aria-label='Open Investor Assistant test page'
+    <div className='assistant-modal-backdrop' role='presentation' onClick={onClose}>
+      <div
+        className='assistant-modal-card'
+        role='dialog'
+        aria-modal='true'
+        aria-labelledby='investor-assistant-title'
+        aria-describedby='investor-assistant-subtitle'
+        onClick={(event) => event.stopPropagation()}
       >
-        <span className='header-action-icon assistant-header-icon' aria-hidden='true'><AssistantIcon /></span>
-        <span className='assistant-header-label'>Investor Assistant</span>
-        <span className='assistant-header-label-compact'>AI</span>
-      </a>
+        <div className='assistant-modal-header'>
+          <div>
+            <p className='assistant-modal-eyebrow'>CODASOL</p>
+            <h2 id='investor-assistant-title'>Investor Assistant</h2>
+            <p id='investor-assistant-subtitle'>Ask Stage 1, non-NDA questions about the CODASOL investor opportunity.</p>
+          </div>
+          <button className='assistant-modal-close' type='button' aria-label='Close Investor Assistant' onClick={onClose}>×</button>
+        </div>
+
+        <div className='assistant-iframe-shell'>
+          <iframe
+            className='assistant-iframe'
+            src={assistantEmbedHref}
+            title='CODASOL Investor Assistant'
+            loading='lazy'
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -612,6 +561,7 @@ function OwnershipCalculator() {
 
 export default function App() {
   const [logoLoadError, setLogoLoadError] = useState(false)
+  const [isAssistantModalOpen, setIsAssistantModalOpen] = useState(false)
 
   useEffect(() => {
     document.documentElement.classList.add('react-mounted')
@@ -645,7 +595,7 @@ export default function App() {
             )}
           </div>
           <div className='header-actions' aria-label='Portal contact actions'>
-            <InvestorAssistantLauncher />
+            <InvestorAssistantLauncher onOpen={() => setIsAssistantModalOpen(true)} />
             <HeaderWhatsAppButton />
           </div>
         </div>
@@ -743,12 +693,9 @@ export default function App() {
         </section>
       </main>
 
-      <footer className='diagnostic-footer'>
-        <a href={assistantTestHref} target='_blank' rel='noopener noreferrer'>Test Investor Assistant</a>
-      </footer>
+      <InvestorAssistantModal isOpen={isAssistantModalOpen} onClose={() => setIsAssistantModalOpen(false)} />
 
       <a className='sticky-cta' href={mailto}>Request NDA Deck</a>
-      <InvestorAssistantWidgetMount />
     </div>
   )
 }
