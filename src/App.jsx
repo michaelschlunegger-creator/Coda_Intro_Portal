@@ -165,7 +165,7 @@ function HeaderWhatsAppButton() {
   )
 }
 
-function InvestorAssistantLauncher({ onOpen }) {
+function InvestorAssistantLauncher({ onOpen, isOpen }) {
   return (
     <div className='assistant-launcher'>
       <button
@@ -173,6 +173,7 @@ function InvestorAssistantLauncher({ onOpen }) {
         type='button'
         onClick={onOpen}
         aria-haspopup='dialog'
+        aria-expanded={isOpen}
         aria-label='Open Investor Assistant'
       >
         <span className='header-action-icon assistant-header-icon' aria-hidden='true'><AssistantIcon /></span>
@@ -595,7 +596,7 @@ export default function App() {
             )}
           </div>
           <div className='header-actions' aria-label='Portal contact actions'>
-            <InvestorAssistantLauncher onOpen={() => setIsAssistantModalOpen(true)} />
+            <InvestorAssistantLauncher onOpen={() => setIsAssistantModalOpen(true)} isOpen={isAssistantModalOpen} />
             <HeaderWhatsAppButton />
           </div>
         </div>

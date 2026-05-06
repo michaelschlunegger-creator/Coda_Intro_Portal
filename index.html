@@ -12,7 +12,7 @@
       <div class="static-portal">
         <div class="bg-grid"></div>
         <header class="hero">
-          <div class="header-bar" role="navigation" aria-label="CODASOL portal header"><div class="logo-top"><img class="coda-logo" src="%BASE_URL%coda-logo.png" alt="CODA logo" /></div><div class="header-actions" aria-label="Portal contact actions"><a class="header-action-button assistant-header-button" href="/Coda_Intro_Portal/investor-assistant.html" target="_blank" rel="noopener noreferrer" aria-label="Open Investor Assistant"><span class="header-action-icon assistant-header-icon" aria-hidden="true">AI</span><span class="assistant-header-label">Investor Assistant</span></a><a class="header-action-button whatsapp-header-button" href="https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity." target="_blank" rel="noopener noreferrer" aria-label="Chat with CODASOL on WhatsApp"><span class="header-action-icon whatsapp-header-icon" aria-hidden="true">WA</span><span class="whatsapp-header-label">WhatsApp</span><span class="whatsapp-header-label-compact">WA</span></a></div></div>
+          <div class="header-bar" role="navigation" aria-label="CODASOL portal header"><div class="logo-top"><img class="coda-logo" src="%BASE_URL%coda-logo.png" alt="CODA logo" /></div><div class="header-actions" aria-label="Portal contact actions"><button class="header-action-button assistant-header-button" type="button" data-static-assistant-open aria-haspopup="dialog" aria-expanded="false" aria-controls="static-investor-assistant-modal" aria-label="Open Investor Assistant"><span class="header-action-icon assistant-header-icon" aria-hidden="true">AI</span><span class="assistant-header-label">Investor Assistant</span></button><a class="header-action-button whatsapp-header-button" href="https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity." target="_blank" rel="noopener noreferrer" aria-label="Chat with CODASOL on WhatsApp"><span class="header-action-icon whatsapp-header-icon" aria-hidden="true">WA</span><span class="whatsapp-header-label">WhatsApp</span><span class="whatsapp-header-label-compact">WA</span></a></div></div>
           <p class="pill">Stage 1 Investor Introduction · Non-NDA</p>
           <h1>CODASOL Investor Introduction Portal</h1>
           <p class="hero-sub">CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence for asset-intensive enterprises.</p>
@@ -196,11 +196,54 @@
             <p>This portal is Stage 1 non-NDA investor teaser content only. It is provided for introductory discussion purposes and does not constitute an offer to sell securities, a solicitation, investment advice, or a binding commitment. All figures, ownership outputs, transaction structures, and forward-looking statements are indicative only, non-binding, and subject to diligence, final legal documentation, and investor qualification.</p>
           </section>
         </main>
+        <div class="assistant-modal-backdrop" id="static-investor-assistant-modal" role="presentation" data-static-assistant-modal hidden>
+          <div class="assistant-modal-card" role="dialog" aria-modal="true" aria-labelledby="static-investor-assistant-title" aria-describedby="static-investor-assistant-subtitle" data-static-assistant-card>
+            <div class="assistant-modal-header">
+              <div>
+                <p class="assistant-modal-eyebrow">CODASOL</p>
+                <h2 id="static-investor-assistant-title">Investor Assistant</h2>
+                <p id="static-investor-assistant-subtitle">Ask Stage 1, non-NDA questions about the CODASOL investor opportunity.</p>
+              </div>
+              <button class="assistant-modal-close" type="button" aria-label="Close Investor Assistant" data-static-assistant-close>×</button>
+            </div>
+            <div class="assistant-iframe-shell">
+              <iframe class="assistant-iframe" src="%BASE_URL%investor-assistant.html" title="CODASOL Investor Assistant" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div id="react-root" aria-live="polite"></div>
     <script>
       (() => {
+        const assistantOpenButton = document.querySelector('[data-static-assistant-open]');
+        const assistantModal = document.querySelector('[data-static-assistant-modal]');
+        const assistantCard = document.querySelector('[data-static-assistant-card]');
+        const assistantCloseButton = document.querySelector('[data-static-assistant-close]');
+
+        function closeAssistantModal() {
+          if (!assistantModal || !assistantOpenButton) return;
+          assistantModal.hidden = true;
+          assistantOpenButton.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('modal-open');
+        }
+
+        function openAssistantModal() {
+          if (!assistantModal || !assistantOpenButton) return;
+          assistantModal.hidden = false;
+          assistantOpenButton.setAttribute('aria-expanded', 'true');
+          document.body.classList.add('modal-open');
+          assistantCloseButton?.focus();
+        }
+
+        assistantOpenButton?.addEventListener('click', openAssistantModal);
+        assistantCloseButton?.addEventListener('click', closeAssistantModal);
+        assistantModal?.addEventListener('click', closeAssistantModal);
+        assistantCard?.addEventListener('click', (event) => event.stopPropagation());
+        window.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') closeAssistantModal();
+        });
+
         const MIN_TOTAL_INVESTMENT_USD = 10000;
         const MAX_TOTAL_RAISE_USD = 7800000;
         const DEFAULT_TOTAL_INVESTMENT_USD = 125000;
