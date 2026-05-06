@@ -262,7 +262,7 @@ function InvestorAssistantWidgetMount() {
   }, [])
 
   return (
-    <div id={assistantWidgetMountId} className='investor-assistant-widget' tabIndex='-1'>
+    <div id={assistantWidgetMountId} className='investor-assistant-widget' aria-hidden='true' tabIndex='-1'>
       <div className={assistantWidgetClassName} data-elfsight-app-lazy />
     </div>
   )
@@ -285,6 +285,7 @@ function InvestorAssistantLauncher() {
         type='button'
         className='header-action-button assistant-header-button'
         aria-pressed={wasRequested}
+        aria-expanded={wasRequested}
         aria-controls={assistantWidgetMountId}
         onClick={handleClick}
       >
