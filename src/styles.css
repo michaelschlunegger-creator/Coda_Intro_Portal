@@ -176,22 +176,10 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 .assistant-header-label-compact { display: inline; }
 
 .investor-assistant-widget {
-  position: fixed;
-  right: 1rem;
-  bottom: 5rem;
-  z-index: 20;
-  min-width: 48px;
-  min-height: 48px;
+  position: relative;
+  z-index: 50;
+  min-height: 1px;
   overflow: visible;
-  pointer-events: auto;
-  background: transparent;
-}
-
-.investor-assistant-widget > div {
-  min-width: 48px;
-  min-height: 48px;
-  overflow: visible;
-  pointer-events: auto;
 }
 
 .whatsapp-header-button {
@@ -684,7 +672,6 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   .header-actions { gap: .35rem; }
   .header-action-button { min-height: 40px; padding: .42rem .52rem .42rem .42rem; }
   .header-action-icon { width: 26px; height: 26px; }
-  .investor-assistant-widget { right: .65rem; bottom: 4.8rem; }
 
   .structure-actions .btn,
   .calculator-actions .btn {

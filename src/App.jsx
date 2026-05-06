@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 
 const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
 const whatsappHref = 'https://wa.me/971542045869?text=Hello%20CODASOL%20team%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20investor%20opportunity.'
-const elfsightScriptSrc = 'https://elfsightcdn.com/platform.js'
-const assistantWidgetClassName = 'elfsight-app-cb4a783d-3540-4ff8-8924-7818eaf61af7'
 const assistantWidgetMountId = 'investor-assistant-widget'
 
 function scrollToPortalTop() {
@@ -167,28 +165,6 @@ function HeaderWhatsAppButton() {
   )
 }
 
-function ensureInvestorAssistantScript() {
-  if (typeof document === 'undefined') {
-    return
-  }
-
-  const scripts = Array.from(document.querySelectorAll(`script[src="${elfsightScriptSrc}"]`))
-  const [primaryScript, ...duplicateScripts] = scripts
-
-  duplicateScripts.forEach((script) => script.remove())
-
-  if (primaryScript) {
-    primaryScript.async = true
-    return
-  }
-
-  const script = document.createElement('script')
-  script.src = elfsightScriptSrc
-  script.async = true
-  script.dataset.codaAssistantScript = 'true'
-  document.body.appendChild(script)
-}
-
 function isVisibleElement(element) {
   if (!(element instanceof HTMLElement)) {
     return false
@@ -212,11 +188,10 @@ function hasInvestorAssistantSignal(element) {
     element.getAttribute('title'),
     element.getAttribute('src'),
     element.getAttribute('class'),
-    element.getAttribute('id'),
-    element.textContent
+    element.getAttribute('id')
   ].filter(Boolean).join(' ')
 
-  return /elfsight|launcher|assistant|message|support|eapps/i.test(signal)
+  return /elfsight|launcher|assistant|message|support|eapps|chat/i.test(signal)
 }
 
 function isNonAssistantContactElement(element) {
@@ -232,13 +207,19 @@ function isNonAssistantContactElement(element) {
 }
 
 function findInvestorAssistantLauncherElement() {
+  if (typeof document === 'undefined') {
+    return null
+  }
+
   const widgetMount = document.getElementById(assistantWidgetMountId)
   const candidates = Array.from(document.querySelectorAll([
+    'iframe',
     'button',
     'a[href]',
     '[role="button"]',
-    'iframe',
+    '[tabindex]',
     '[class*="elfsight" i]',
+    '[class*="eapps" i]',
     '[class*="launcher" i]',
     '[class*="chat" i]',
     '[aria-label*="chat" i]',
@@ -249,53 +230,50 @@ function findInvestorAssistantLauncherElement() {
     if (
       candidate.closest('.assistant-launcher') ||
       candidate === widgetMount ||
-      candidate.classList?.contains(assistantWidgetClassName) ||
       isNonAssistantContactElement(candidate)
     ) {
       return false
     }
 
     return hasInvestorAssistantSignal(candidate) && isVisibleElement(candidate)
-  })
+  }) || null
+}
+
+function scrollToInvestorAssistantMount() {
+  const widgetMount = document.getElementById(assistantWidgetMountId)
+
+  widgetMount?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+  widgetMount?.focus?.({ preventScroll: true })
 }
 
 function activateInvestorAssistantWidget() {
-  ensureInvestorAssistantScript()
-
-  const widgetMount = document.getElementById(assistantWidgetMountId)
-  widgetMount?.dispatchEvent(new CustomEvent('coda:investor-assistant-requested', { bubbles: true }))
-  window.dispatchEvent(new Event('resize'))
+  if (typeof document === 'undefined') {
+    return
+  }
 
   const launcher = findInvestorAssistantLauncherElement()
+
   if (launcher) {
-    launcher.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    launcher.scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
     launcher.focus?.({ preventScroll: true })
     launcher.click?.()
     return
   }
 
-  widgetMount?.focus?.({ preventScroll: true })
+  scrollToInvestorAssistantMount()
 }
 
 function InvestorAssistantWidgetMount() {
-  useEffect(() => {
-    ensureInvestorAssistantScript()
-  }, [])
-
   return (
     <div id={assistantWidgetMountId} className='investor-assistant-widget' tabIndex='-1'>
-      <div className={assistantWidgetClassName} data-elfsight-app-lazy />
+      <div className='elfsight-app-cb4a783d-3540-4ff8-8924-7818eaf61af7' data-elfsight-app-lazy />
     </div>
   )
 }
 
 function InvestorAssistantLauncher() {
-  const [wasRequested, setWasRequested] = useState(false)
-
   function handleClick() {
-    setWasRequested(true)
     activateInvestorAssistantWidget()
-
     window.setTimeout(activateInvestorAssistantWidget, 350)
     window.setTimeout(activateInvestorAssistantWidget, 1200)
   }
@@ -305,8 +283,6 @@ function InvestorAssistantLauncher() {
       <button
         type='button'
         className='header-action-button assistant-header-button'
-        aria-pressed={wasRequested}
-        aria-expanded={wasRequested}
         aria-controls={assistantWidgetMountId}
         onClick={handleClick}
       >
@@ -633,7 +609,7 @@ function OwnershipCalculator() {
         </div>
       </div>
 
-      <p className='legal-note calculator-legal-note'>This calculator is for indicative understanding only. Final ownership, share price, valuation, rights, allocation, and investment terms are subject to final legal and financial documentation.</p>
+      <p className='legal-note calculator-legal-note'>This calculator is for indicative understanding only. Final ownership, valuation, rights, allocation, and investment terms are subject to final legal and financial documentation.</p>
     </section>
   )
 }
