@@ -12,13 +12,62 @@ const faqData = [
   { q: 'Are the calculator results binding?', a: 'No. The calculator is indicative only and subject to final legal and financial documentation.' }
 ]
 const teamData = [
-  { name: 'Azmat Taufique', role: 'Chairman of the Board of Directors, Coda Group', shortBio: 'Global investment and infrastructure leader with 30+ years of experience across private equity, fund management, infrastructure, and cross-border investments.', longBio: 'Azmat Taufique brings senior-level investment, governance, and cross-border transaction experience to CODA.', link: 'https://www.blue-monsoon-capital.com/azmat-taufique/', label: 'Profile' },
-  { name: 'Philip Ng', role: 'Director and Member of the Board of Directors', shortBio: 'Singapore-based financial leader with 30+ years of experience across audit, finance, governance, and private equity.', longBio: 'Philip Ng supports CODA with deep financial, governance, and corporate oversight experience.', link: '', label: 'Link to be added' },
-  { name: 'Naleem Bukari', role: 'Co-Founder, Managing Director, and Member of the Board of Directors', shortBio: 'Technical and business leader with deep expertise in asset management, material management, ISO 55001, inventory optimization, and master data management.', longBio: 'Naleem Bukari is one of the driving forces behind CODA’s industrial data and asset management foundation.', link: 'https://www.linkedin.com/in/naleem-bukari-66b10323/', label: 'LinkedIn' },
-  { name: 'Michael J. Schlunegger', role: 'Chief Executive Officer (CEO)', shortBio: 'Swiss business leader with 30+ years of experience in business development, sales, and technology products across multiple regions.', longBio: 'Michael J. Schlunegger brings international business development, sales leadership, and strategic growth experience.', link: 'https://www.linkedin.com/in/michael-j-schlunegger-2b475882/', label: 'LinkedIn' },
-  { name: 'Rizwan Nawab', role: 'Co-Founder, Chief Operating Officer (COO), and Member of the Board of Directors', shortBio: 'Operational leader with strong experience in SAP materials management, procurement, vendor development, supply chain management, and project implementation.', longBio: 'Rizwan Nawab supports CODA with strong operational and delivery execution discipline.', link: 'https://www.linkedin.com/in/rizwan-nawab-aa336421/', label: 'LinkedIn' },
-  { name: 'Marwa Haddar', role: 'Strategic Advisory Board', shortBio: 'Corporate finance and restructuring advisor with experience across Asia, the Middle East, Africa, and infrastructure-related mandates.', longBio: 'Marwa Haddar supports CODA with corporate finance and strategic advisory experience.', link: 'https://www.linkedin.com/in/marwa-haddar-67787a92/', label: 'LinkedIn' },
-  { name: 'James P. Bond', role: 'Executive Advisory Council', shortBio: 'Global finance and infrastructure strategy expert with World Bank Group leadership experience and advisory roles across emerging markets.', longBio: 'James P. Bond brings global finance and infrastructure strategy experience.', link: 'https://www.blue-monsoon-capital.com/james-p-bond/', label: 'Profile' }
+  {
+    name: 'Azmat Taufique',
+    role: 'Chairman of the Board of Directors, Coda Group',
+    shortBio: 'Global investment and infrastructure leader with 30+ years of experience across private equity, fund management, infrastructure, and cross-border investments.',
+    longBio: 'Azmat Taufique brings senior-level investment, governance, and cross-border transaction experience to CODA.',
+    profileUrl: 'https://www.blue-monsoon-capital.com/azmat-taufique/',
+    profileLabel: 'Profile'
+  },
+  {
+    name: 'Philip Ng',
+    role: 'Director and Member of the Board of Directors',
+    shortBio: 'Singapore-based financial leader with 30+ years of experience across audit, finance, governance, and private equity.',
+    longBio: 'Philip Ng supports CODA with deep financial, governance, and corporate oversight experience.',
+    profileUrl: '',
+    profileLabel: 'Link to be added'
+  },
+  {
+    name: 'Naleem Bukari',
+    role: 'Co-Founder, Managing Director, and Member of the Board of Directors',
+    shortBio: 'Technical and business leader with deep expertise in asset management, material management, ISO 55001, inventory optimization, and master data management.',
+    longBio: 'Naleem Bukari is one of the driving forces behind CODA’s industrial data and asset management foundation.',
+    profileUrl: 'https://www.linkedin.com/in/naleem-bukari-66b10323/',
+    profileLabel: 'LinkedIn'
+  },
+  {
+    name: 'Michael J. Schlunegger',
+    role: 'Chief Executive Officer (CEO)',
+    shortBio: 'Swiss business leader with 30+ years of experience in business development, sales, and technology products across multiple regions.',
+    longBio: 'Michael J. Schlunegger brings international business development, sales leadership, and strategic growth experience.',
+    profileUrl: 'https://www.linkedin.com/in/michael-j-schlunegger-2b475882/',
+    profileLabel: 'LinkedIn'
+  },
+  {
+    name: 'Rizwan Nawab',
+    role: 'Co-Founder, Chief Operating Officer (COO), and Member of the Board of Directors',
+    shortBio: 'Operational leader with strong experience in SAP materials management, procurement, vendor development, supply chain management, and project implementation.',
+    longBio: 'Rizwan Nawab supports CODA with strong operational and delivery execution discipline.',
+    profileUrl: 'https://www.linkedin.com/in/rizwan-nawab-aa336421/',
+    profileLabel: 'LinkedIn'
+  },
+  {
+    name: 'Marwa Haddar',
+    role: 'Strategic Advisory Board',
+    shortBio: 'Corporate finance and restructuring advisor with experience across Asia, the Middle East, Africa, and infrastructure-related mandates.',
+    longBio: 'Marwa Haddar supports CODA with corporate finance and strategic advisory experience.',
+    profileUrl: 'https://www.linkedin.com/in/marwa-haddar-67787a92/',
+    profileLabel: 'LinkedIn'
+  },
+  {
+    name: 'James P. Bond',
+    role: 'Executive Advisory Council',
+    shortBio: 'Global finance and infrastructure strategy expert with World Bank Group leadership experience and advisory roles across emerging markets.',
+    longBio: 'James P. Bond brings global finance and infrastructure strategy experience.',
+    profileUrl: 'https://www.blue-monsoon-capital.com/james-p-bond/',
+    profileLabel: 'Profile'
+  }
 ]
 const defaultAssumptions = { preMoney: 10000000, ctsOwnership: 23.46 }
 
@@ -66,7 +115,7 @@ export default function App() {
   <section className='reveal'><h2>CODASOL Substance</h2><div className='grid metrics'>{metricsData.map((m,i)=><article className='card' key={m.label}><h3>{counts[i]}{m.suffix}</h3><p>{m.label}</p></article>)}</div><p>Metrics reflect exposure to / processed records only.</p></section>
   <section className='reveal' id='funding'><h2>Fundraise and Use of Funds</h2><div className='grid two'><article className='card'><h3>USD 3.9M</h3><p>Orderly shareholder payout for selected early shareholders whose investment horizon has been reached.</p></article><article className='card'><h3>USD 3.9M</h3><p>Growth and transformation funding, including working capital and CODA-AI acceleration.</p></article></div></section>
   <section className='reveal' id='calculator'><h2>Indicative Ownership Calculator</h2><p>Indicative only | Non-binding | Subject to final legal and financial documentation</p><div className='hero-actions'><button className='btn btn-secondary' onClick={()=>setMode('percent')}>I know my CTS %</button><button className='btn btn-secondary' onClick={()=>setMode('amount')}>I know my investment amount</button></div>{mode==='percent'?<input type='range' min='0' max='25' step='0.01' value={ctsPercent} onChange={(e)=>setCtsPercent(Number(e.target.value))}/>:<input type='number' value={investment} onChange={(e)=>setInvestment(Number(e.target.value)||0)}/>}<button className='btn btn-secondary' onClick={()=>setAdvancedOpen(!advancedOpen)}>Advanced assumptions</button>{advancedOpen&&<div><input type='number' value={assumptions.preMoney} onChange={(e)=>setAssumptions({...assumptions,preMoney:Number(e.target.value)||0})}/><input type='number' value={assumptions.ctsOwnership} step='0.01' onChange={(e)=>setAssumptions({...assumptions,ctsOwnership:Number(e.target.value)||0})}/></div>}<h3>{indirect.toFixed(4)}% indirect ownership in CODASOL Group</h3></section>
-  <section className='reveal' id='team'><h2>Leadership & Advisory Team</h2><div className='grid three'>{teamData.map((p)=><article className='card' key={p.name}><div className='avatar'>{p.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div><h3>{p.name}</h3><p>{p.role}</p><p>{p.shortBio}</p><div className='hero-actions'><button className='btn btn-secondary' onClick={()=>setSelectedMember(p)}>View Bio</button>{p.link ? <a className='btn btn-primary' href={p.link} target='_blank' rel='noopener noreferrer'>{p.label}</a> : <span className='btn btn-disabled' aria-disabled='true'>{p.label}</span>}</div></article>)}</div></section>
+  <section className='reveal' id='team'><h2>Leadership & Advisory Team</h2><div className='grid three'>{teamData.map((p)=><article className='card' key={p.name}><div className='avatar'>{p.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div><h3>{p.name}</h3><p>{p.role}</p><p>{p.shortBio}</p><div className='hero-actions'><button className='btn btn-secondary' onClick={()=>setSelectedMember(p)}>View Bio</button>{p.profileUrl?.startsWith('https://') ? <a className='btn btn-primary' href={p.profileUrl} target='_blank' rel='noopener noreferrer'>{p.profileLabel}</a> : <span className='btn btn-disabled' aria-disabled='true'>{p.profileLabel || 'Link to be added'}</span>}</div></article>)}</div></section>
   <section className='reveal'><h2>FAQ</h2>{faqData.map((f,i)=><article className='faq-item' key={f.q}><button onClick={()=>setOpenFaq(openFaq===i?-1:i)}>{f.q}</button>{openFaq===i&&<p>{f.a}</p>}</article>)}</section>
 </main><a className='sticky-cta' href={mailto}>Request NDA Deck</a>{selectedMember&&<div className='modal-backdrop' onClick={()=>setSelectedMember(null)}><div className='modal' onClick={(e)=>e.stopPropagation()}><button onClick={()=>setSelectedMember(null)}>X</button><h3>{selectedMember.name}</h3><p>{selectedMember.longBio}</p></div></div>}</div>
 }
