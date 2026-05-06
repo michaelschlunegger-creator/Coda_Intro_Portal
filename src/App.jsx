@@ -2,6 +2,18 @@ import { useEffect, useMemo, useState } from 'react'
 
 const mailto = 'mailto:investor@codasol.com?subject=CODASOL%20Investor%20Deck%20Request'
 
+
+function scrollToPortalTop() {
+  if (window.location.hash) {
+    return
+  }
+
+  const previousScrollBehavior = document.documentElement.style.scrollBehavior
+  document.documentElement.style.scrollBehavior = 'auto'
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  document.documentElement.style.scrollBehavior = previousScrollBehavior
+}
+
 const metricsData = [
   { label: 'Years of industrial data experience', value: '15+' },
   { label: 'Completed projects', value: '100+' },
@@ -209,7 +221,16 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.classList.add('react-mounted')
-    return () => document.documentElement.classList.remove('react-mounted')
+
+    const animationFrameId = window.requestAnimationFrame(() => {
+      scrollToPortalTop()
+      window.setTimeout(scrollToPortalTop, 0)
+    })
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId)
+      document.documentElement.classList.remove('react-mounted')
+    }
   }, [])
 
   return (
