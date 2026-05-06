@@ -53,14 +53,6 @@ const teamData = [
     profileLabel: 'Profile'
   },
   {
-    name: 'Philip Ng',
-    role: 'Director and Member of the Board of Directors',
-    shortBio: 'Singapore-based financial leader with 30+ years of experience across audit, finance, governance, and private equity.',
-    longBio: 'Philip Ng supports CODA with deep financial, governance, and corporate oversight experience. His background across audit, finance, and private equity strengthens the group’s investor readiness, reporting discipline, and corporate governance foundation.',
-    profileUrl: '',
-    profileLabel: 'Link to be added'
-  },
-  {
     name: 'Naleem Bukari',
     role: 'Co-Founder, Managing Director, and Member of the Board of Directors',
     shortBio: 'Technical and business leader with deep expertise in asset management, material management, ISO 55001, inventory optimization, and master data management.',
