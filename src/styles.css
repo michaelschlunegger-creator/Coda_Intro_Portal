@@ -76,11 +76,17 @@ a { color: inherit; }
   flex-wrap: wrap;
   gap: .55rem;
   align-items: center;
+  justify-content: center;
 }
 .knowledge-hero-btn {
   min-height: 40px;
   padding: .55rem .85rem;
   font-size: .9rem;
+}
+.section-subtitle {
+  color: rgba(255,255,255,.72);
+  margin-top: -.4rem;
+  margin-bottom: 1.2rem;
 }
 .hero-version-marker {
   color: rgba(255,255,255,.45);
