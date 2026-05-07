@@ -1179,9 +1179,14 @@ export default function App() {
           <a className='btn btn-secondary' href='#team'>Meet the Team</a>
           <a className='btn btn-secondary' href='#calculator'>ROI Calculator</a>
           <a className='btn btn-secondary' href={mailto}>Request NDA Deck</a>
+          <span className='hero-knowledge-label'>Explore CODASOL</span>
+          <button className='btn btn-secondary knowledge-hero-btn' type='button' onClick={() => handleOpenTopic('about')}>About CODA</button>
+          <button className='btn btn-secondary knowledge-hero-btn' type='button' onClick={() => handleOpenTopic('challenge')}>Challenge</button>
+          <button className='btn btn-secondary knowledge-hero-btn' type='button' onClick={() => handleOpenTopic('industries')}>Industries</button>
+          <button className='btn btn-secondary knowledge-hero-btn' type='button' onClick={() => handleOpenTopic('customers')}>Customers</button>
+          <button className='btn btn-secondary knowledge-hero-btn' type='button' onClick={() => handleOpenTopic('partners')}>Partners</button>
+          <button className='btn btn-secondary knowledge-hero-btn' type='button' onClick={() => handleOpenTopic('future')}>CODA-AI</button>
         </div>
-        <ExploreCoda onOpenTopic={handleOpenTopic} />
-        <CodaAiDeepDiveCards onOpenTopic={handleOpenTopic} />
       </header>
 
       <main className='container'>
