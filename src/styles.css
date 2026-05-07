@@ -140,6 +140,51 @@ a { color: inherit; }
   opacity: 1;
   visibility: visible;
 }
+
+.hero .hero-deep-dive-section {
+  width: min(1120px, 100%);
+  margin: .75rem auto 0;
+  padding: .85rem;
+  border-radius: 22px;
+}
+
+.hero .hero-deep-dive-section .deep-dive-heading {
+  margin-bottom: .7rem;
+}
+
+.hero .hero-deep-dive-section .pill {
+  margin: 0 0 .45rem;
+  padding: .35rem .62rem;
+  font-size: .72rem;
+}
+
+.hero .hero-deep-dive-section h2 {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+}
+
+.hero .hero-deep-dive-card {
+  gap: .55rem;
+  min-height: 0;
+  padding: .85rem;
+  border-radius: 18px;
+}
+
+.hero .hero-deep-dive-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.hero .hero-deep-dive-card p {
+  font-size: .88rem;
+  line-height: 1.45;
+}
+
+.hero .hero-deep-dive-card .btn {
+  min-height: 38px;
+  padding: .5rem .75rem;
+  font-size: .84rem;
+}
 .note, .calculation-label { font-size: .92rem; }
 .calculation-label { color: #ffd8de; font-weight: 700; }
 .field-card { display: grid; gap: .55rem; padding: 1rem; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(255,255,255,.06); color: #e8ebf7; }

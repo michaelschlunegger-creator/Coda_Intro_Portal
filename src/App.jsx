@@ -592,17 +592,24 @@ function ExploreCoda({ onOpenTopic }) {
 
 function CodaAiDeepDiveCards({ onOpenTopic }) {
   return (
-    <section className='deep-dive-section' aria-labelledby='deep-dive-title'>
+    <section className='deep-dive-section hero-deep-dive-section' aria-labelledby='deep-dive-title'>
       <div className='deep-dive-heading'>
         <p className='pill'>CODA-AI deep dives</p>
         <h2 id='deep-dive-title'>Compact Stage 1 themes</h2>
       </div>
       <div className='grid three deep-dive-grid'>
         {deepDiveCards.map((card) => (
-          <article className='card deep-dive-card' key={card.title}>
+          <article className='card deep-dive-card hero-deep-dive-card' key={card.title}>
             <h3>{card.title}</h3>
             <p>{card.text}</p>
-            <button className='btn btn-secondary' type='button' onClick={() => onOpenTopic(card.topicId)}>Learn More</button>
+            <button
+              className='btn btn-secondary'
+              type='button'
+              onClick={() => onOpenTopic(card.topicId)}
+              aria-label={`Learn more about ${card.title}`}
+            >
+              Learn More
+            </button>
           </article>
         ))}
       </div>
@@ -1119,11 +1126,11 @@ function InvestmentReturnCalculator() {
 export default function App() {
   const [logoLoadError, setLogoLoadError] = useState(false)
   const [isAssistantModalOpen, setIsAssistantModalOpen] = useState(false)
-  const [activeTopicId, setActiveTopicId] = useState(null)
-  const activeTopic = activeTopicId ? investorTopics[activeTopicId] : null
+  const [activeInvestorTopic, setActiveInvestorTopic] = useState(null)
+  const selectedInvestorTopic = activeInvestorTopic ? investorTopics[activeInvestorTopic] : null
 
   const handleOpenTopic = (topicId) => {
-    setActiveTopicId(topicId)
+    setActiveInvestorTopic(topicId)
   }
 
 
@@ -1174,6 +1181,7 @@ export default function App() {
           <a className='btn btn-secondary' href={mailto}>Request NDA Deck</a>
         </div>
         <ExploreCoda onOpenTopic={handleOpenTopic} />
+        <CodaAiDeepDiveCards onOpenTopic={handleOpenTopic} />
       </header>
 
       <main className='container'>
@@ -1260,7 +1268,7 @@ export default function App() {
       </main>
 
       <InvestorAssistantModal isOpen={isAssistantModalOpen} onClose={() => setIsAssistantModalOpen(false)} />
-      <InvestorTopicModal topic={activeTopic} onClose={() => setActiveTopicId(null)} />
+      <InvestorTopicModal topic={selectedInvestorTopic} onClose={() => setActiveInvestorTopic(null)} />
 
       <a className='sticky-cta' href={mailto}>Request NDA Deck</a>
     </div>
