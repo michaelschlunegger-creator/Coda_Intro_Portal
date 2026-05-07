@@ -132,16 +132,21 @@ function clamp(value, min, max) {
 }
 
 function formatUSD(value) {
-  const safeValue = safeNumber(value)
-  const formattedValue = new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
     maximumFractionDigits: 0
-  }).format(Math.abs(safeValue))
-  return safeValue < 0 ? `USD (${formattedValue})` : `USD ${formattedValue}`
+  }).format(Number(value) || 0).replace('$', 'USD ')
 }
 
 function formatPercent(value, digits = 4) {
   const safeValue = Number.isFinite(value) ? value : 0
   return `${safeValue.toFixed(digits)}%`
+}
+
+function formatSplitPercent(value) {
+  const safeValue = Number.isFinite(value) ? value : 0
+  return `${Number.isInteger(safeValue) ? safeValue.toFixed(0) : safeValue.toFixed(2)}%`
 }
 
 function formatMultiple(value) {
@@ -535,7 +540,7 @@ function InvestmentReturnCalculator() {
                 placeholder='125000'
                 onChange={(event) => handleTotalInvestmentAmountChange(event.target.value)}
               />
-              <small>Minimum USD 10,000. Current total raise scenario is capped at USD 7.8M.</small>
+              <small>Minimum {formatUSD(MIN_TOTAL_INVESTMENT_USD)}. Current total raise scenario is capped at {formatUSD(MAX_TOTAL_RAISE_USD)}.</small>
             </label>
 
             <label className='slider-field'>
@@ -551,8 +556,8 @@ function InvestmentReturnCalculator() {
                 aria-label='Total investment amount slider'
               />
               <span className='slider-limits'>
-                <small>USD 10,000</small>
-                <small>USD 7,800,000</small>
+                <small>{formatUSD(MIN_TOTAL_INVESTMENT_USD)}</small>
+                <small>{formatUSD(MAX_TOTAL_RAISE_USD)}</small>
               </span>
             </label>
 
@@ -585,19 +590,19 @@ function InvestmentReturnCalculator() {
               <div className='allocation-split-bar' aria-hidden='true'>
                 <span style={{ width: `${result.actualEquityPercent}%` }} />
               </div>
-              <p>Debt allocation is automatically derived as {formatPercent(result.selectedDebtPercent, 0)} of the selected ticket before any equity cap adjustment.</p>
+              <p>Debt allocation is automatically derived as {formatSplitPercent(result.selectedDebtPercent)} of the selected ticket before any equity cap adjustment.</p>
             </div>
 
             <div className='split-summary' aria-live='polite'>
               <div>
-                <span>Equity: {formatPercent(result.actualEquityPercent, 0)} | {visibleResult ? formatUSD(result.equityAmount) : 'USD —'}</span>
+                <span>Equity: {formatSplitPercent(result.actualEquityPercent)} | {visibleResult ? formatUSD(result.equityAmount) : 'USD —'}</span>
                 <strong>{visibleResult ? formatUSD(result.equityAmount) : 'USD —'}</strong>
-                <small>{formatPercent(result.actualEquityPercent, 2)} of ticket</small>
+                <small>{formatSplitPercent(result.actualEquityPercent)} of ticket</small>
               </div>
               <div>
-                <span>Debt: {formatPercent(result.actualDebtPercent, 0)} | {visibleResult ? formatUSD(result.debtAmount) : 'USD —'}</span>
+                <span>Debt: {formatSplitPercent(result.actualDebtPercent)} | {visibleResult ? formatUSD(result.debtAmount) : 'USD —'}</span>
                 <strong>{visibleResult ? formatUSD(result.debtAmount) : 'USD —'}</strong>
-                <small>{formatPercent(result.actualDebtPercent, 2)} of ticket</small>
+                <small>{formatSplitPercent(result.actualDebtPercent)} of ticket</small>
               </div>
             </div>
 
@@ -650,6 +655,7 @@ function InvestmentReturnCalculator() {
                 value={futureGroupValuation}
                 onChange={(event) => handleFutureGroupValuationChange(event.target.value)}
               />
+              <strong className='formatted-current-value'>Current future valuation: {formatUSD(result.futureGroupValuation)}</strong>
               <input
                 className='investment-slider'
                 type='range'
@@ -660,14 +666,14 @@ function InvestmentReturnCalculator() {
                 onChange={(event) => handleFutureGroupValuationChange(event.target.value)}
                 aria-label='Future CODASOL Group valuation slider'
               />
-              <small>Starting reference valuation: USD 39M in 2025.</small>
+              <small>Starting reference valuation: {formatUSD(CURRENT_GROUP_VALUATION_USD)} in 2025.</small>
             </label>
 
             <div className='calculator-warnings' aria-live='polite'>
               {!visibleResult ? <p className='calculator-note'>Enter a total investment amount to calculate the scenario.</p> : null}
-              {result.isCappedAtMaximum ? <p className='calculator-note'>Maximum total raise assumption is USD 7,800,000.</p> : null}
-              {result.isEquityCapped ? <p className='calculator-note'>Maximum equity allocation is USD 3.9M under the current raise structure.</p> : null}
-              {result.isDebtAboveRaiseAssumption ? <p className='calculator-note'>Debt allocation exceeds the current USD 3.9M debt raise assumption.</p> : null}
+              {result.isCappedAtMaximum ? <p className='calculator-note'>Maximum total raise assumption is {formatUSD(MAX_TOTAL_RAISE_USD)}.</p> : null}
+              {result.isEquityCapped ? <p className='calculator-note'>Maximum equity allocation is {formatUSD(MAX_EQUITY_RAISE_USD)} under the current raise structure.</p> : null}
+              {result.isDebtAboveRaiseAssumption ? <p className='calculator-note'>Debt allocation exceeds the current {formatUSD(MAX_DEBT_RAISE_USD)} debt raise assumption.</p> : null}
               {result.isFutureValuationBelowReference ? <p className='calculator-note'>Future valuation is below the 2025 reference valuation assumption.</p> : null}
             </div>
 
@@ -732,12 +738,12 @@ function InvestmentReturnCalculator() {
                   <div>
                     <span>Equity Portion</span>
                     <strong>{formatUSD(result.equityAmount)}</strong>
-                    <small>{formatPercent(result.actualEquityPercent, 2)} of ticket</small>
+                    <small>{formatSplitPercent(result.actualEquityPercent)} of ticket</small>
                   </div>
                   <div>
                     <span>Debt Portion</span>
                     <strong>{formatUSD(result.debtAmount)}</strong>
-                    <small>{formatPercent(result.actualDebtPercent, 2)} of ticket</small>
+                    <small>{formatSplitPercent(result.actualDebtPercent)} of ticket</small>
                   </div>
                   <div>
                     <span>Indicative CTS Ownership</span>
@@ -870,11 +876,11 @@ export default function App() {
           <h2>Investment Overview</h2>
           <div className='grid two'>
             <article className='card fund'>
-              <h3>USD 3.9M</h3>
+              <h3>USD 3,900,000</h3>
               <p>Orderly shareholder payout for selected early shareholders whose investment horizon has been reached.</p>
             </article>
             <article className='card fund'>
-              <h3>USD 3.9M</h3>
+              <h3>USD 3,900,000</h3>
               <p>Growth and transformation funding, including working capital and CODA-AI acceleration.</p>
             </article>
           </div>
