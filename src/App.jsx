@@ -1275,7 +1275,6 @@ export default function App() {
             <HeaderWhatsAppButton />
           </div>
         </div>
-        <p className='pill'>Stage 1 Investor Introduction · Non-NDA</p>
         <h1>CODASOL Investor Introduction Portal</h1>
         <p className='hero-sub'>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence for asset-intensive enterprises.</p>
         <div className='hero-actions'>
@@ -1283,18 +1282,6 @@ export default function App() {
           <a className='btn btn-secondary' href='#team'>Meet the Team</a>
           <a className='btn btn-secondary' href='#calculator'>ROI Calculator</a>
           <a className='btn btn-secondary' href={mailto}>Request NDA Deck</a>
-          <div className="hero-knowledge-block">
-            <div className="hero-knowledge-label">Explore CODASOL</div>
-            <div className="hero-knowledge-buttons">
-              <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('about')}>About CODA</button>
-              <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('challenge')}>Challenge</button>
-              <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('industries')}>Industries</button>
-              <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('customers')}>Customers</button>
-              <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('partners')}>Partners</button>
-              <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('future')}>CODA-AI</button>
-            </div>
-            <div className="hero-version-marker">Investor Portal UI v48</div>
-          </div>
         </div>
       </header>
 
@@ -1355,6 +1342,18 @@ export default function App() {
           </div>
           <div className='team-grid' aria-label='Leadership and advisory team members'>
             {teamData.map((person) => <TeamCard person={person} key={person.name} />)}
+          </div>
+        </section>
+
+        <section className="knowledge-section" aria-label="Explore CODASOL knowledge topics">
+          <div className="knowledge-section-label">Explore CODASOL</div>
+          <div className="knowledge-section-buttons">
+            <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('about')}>About CODA</button>
+            <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('challenge')}>Challenge</button>
+            <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('industries')}>Industries</button>
+            <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('customers')}>Customers</button>
+            <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('partners')}>Partners</button>
+            <button className="btn btn-secondary knowledge-hero-btn" type="button" onClick={() => handleOpenTopic('future')}>CODA-AI</button>
           </div>
         </section>
 
