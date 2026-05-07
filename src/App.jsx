@@ -43,7 +43,6 @@ const customerReferences = [
 const industrySegments = [
   'Oil & Gas',
   'LNG',
-  'Liquefied Natural Gas (LNG)',
   'Power',
   'Utilities',
   'Mining',
@@ -52,8 +51,18 @@ const industrySegments = [
   'Ports',
   'Infrastructure',
   'Pharma / Chemical',
-  'Automotive',
-  'Data-intensive industrial operators'
+  'Automotive'
+]
+
+const ecosystemReferences = [
+  'EY',
+  'PwC',
+  'SAP',
+  'Oracle',
+  'IBM',
+  'Snowflake',
+  'Databricks',
+  'Microsoft Fabric'
 ]
 
 const investorTopics = {
@@ -91,7 +100,7 @@ const investorTopics = {
     ]
   },
   challenge: {
-    label: 'Challenge We Solve',
+    label: 'Challenge',
     eyebrow: 'Industrial data pain point',
     title: 'Challenge We Solve',
     intro: 'Asset-heavy companies depend on accurate master data for materials, spare parts, assets, suppliers, services, procurement, maintenance, finance, compliance, and operations. Poor data creates cost, inefficiency, risk, and weak AI readiness.',
@@ -106,7 +115,7 @@ const investorTopics = {
           'master data governance',
           'duplicate and near-duplicate detection',
           'classification and enrichment',
-          'supplier and manufacturer normalization',
+          'supplier normalization',
           'inventory and procurement efficiency',
           'asset and maintenance data quality',
           'ERP and AI readiness'
@@ -115,14 +124,14 @@ const investorTopics = {
     ]
   },
   industries: {
-    label: 'Industries We Serve',
+    label: 'Industries',
     eyebrow: 'Asset-heavy verticals',
     title: 'Industries We Serve',
     intro: 'CODA focuses on asset-heavy and data-heavy industries where poor master data has a direct operational, financial, procurement, maintenance, compliance, and AI-readiness impact. Core industries include Oil & Gas, LNG, Power, Utilities, Mining, Manufacturing, Process Industries, Ports, Infrastructure, Pharma / Chemical, and Automotive.',
     chips: industrySegments
   },
   customers: {
-    label: 'Customers & Credibility',
+    label: 'Customers',
     eyebrow: 'High-level references',
     title: 'Customers & Credibility',
     intro: 'CODA has delivered work across global industrial and asset-heavy environments. The investor teaser references trusted global leaders and shows customer examples such as Michelin, BP, QatarEnergy, AD Ports Group, Shell, Saudi Aramco, Saint-Gobain, Oman LNG, Atlantic, ADNOC, Chevron, and NMDC Group.',
@@ -130,10 +139,11 @@ const investorTopics = {
     disclaimer: 'Names are shown for high-level reference only. Detailed customer, contract, project, and commercial information is shared only under the appropriate investor stage.'
   },
   partners: {
-    label: 'Partners & Ecosystem',
+    label: 'Partners',
     eyebrow: 'Ecosystem direction',
     title: 'Partners & Ecosystem',
-    intro: 'EY, PwC, SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric are shown as high-level ecosystem references and system landscape context.',
+    intro: 'Designed to overlay and integrate with customer environments using systems such as SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric. Do not imply formal partnership status unless confirmed.',
+    chips: ecosystemReferences,
     sections: [
       {
         heading: 'Commercial and advisory ecosystem',
@@ -150,7 +160,7 @@ const investorTopics = {
     ]
   },
   future: {
-    label: 'CODA-AI Future',
+    label: 'CODA-AI',
     eyebrow: 'AI-MDM value jump',
     title: 'CODA-AI Future',
     intro: 'CODA-AI is intended to convert CODA’s 15+ years of industrial data knowledge into scalable Artificial Intelligence Master Data Management products. It is designed to sit above existing customer systems as a vertical AI-MDM intelligence layer, not replace them.',
@@ -170,7 +180,7 @@ const investorTopics = {
       },
       {
         heading: 'Why this is a game changer',
-        body: 'Most data tools are generic. CODA-AI is intended to become verticalized by industry and segmented by use case. That means a Liquefied Natural Gas customer, a mining customer, a utility, or a port operator could use a CODA-AI interface that speaks the language of that industry.',
+        body: 'Most data tools are generic. CODA-AI is intended to become verticalized by industry and segmented by use case. This means an LNG customer, mining customer, utility, or port operator can use a CODA-AI interface that speaks the language of that industry.',
         bullets: [
           'LNG interface overlaying SAP or related operational systems',
           'Mining interface overlaying Oracle, IBM, SAP, or other enterprise systems',
@@ -187,7 +197,7 @@ const investorTopics = {
           'recommended corrections',
           'monitoring new ERP entries',
           'governance alerts',
-          'supplier and manufacturer normalization',
+          'supplier normalization',
           'value engineering support',
           'continuous data quality improvement'
         ]
@@ -486,7 +496,7 @@ function TopicContent({ topic }) {
       {topic.intro ? <p className='topic-intro'>{topic.intro}</p> : null}
 
       {topic.chips ? (
-        <div className='topic-chip-grid' aria-label='Industries CODA serves'>
+        <div className='topic-chip-grid' aria-label={`${topic.title} highlights`}>
           {topic.chips.map((chip) => <span className='topic-chip' key={chip}>{chip}</span>)}
         </div>
       ) : null}
@@ -563,41 +573,18 @@ function InvestorTopicModal({ topic, onClose }) {
 
 function ExploreCoda({ onOpenTopic }) {
   return (
-    <section className='explore-coda-card' aria-labelledby='explore-coda-title'>
-      <div className='explore-coda-heading'>
-        <p className='pill'>Stage 1 investor teaser</p>
-        <h2 id='explore-coda-title'>Explore CODASOL</h2>
-        <p>Quick access to CODASOL’s company substance, industry focus, ecosystem direction, customer credibility, and CODA-AI future.</p>
-      </div>
-
-      <div className='explore-button-grid' aria-label='CODASOL investor content topics'>
+    <section className='hero-explore-row' aria-labelledby='explore-coda-title'>
+      <p className='hero-explore-label' id='explore-coda-title'>Explore CODASOL</p>
+      <div className='hero-explore-buttons' aria-label='Explore CODASOL investor knowledge topics'>
         {exploreTopicOrder.map((topicId) => {
           const topic = investorTopics[topicId]
 
           return (
-            <button className='explore-topic-card' type='button' key={topicId} onClick={() => onOpenTopic(topicId)}>
-              <span className='explore-topic-eyebrow'>{topic.eyebrow}</span>
-              <span className='explore-topic-title'>{topic.label}</span>
-              <span className='explore-topic-action'>Open readable content</span>
+            <button className='hero-explore-button' type='button' key={topicId} onClick={() => onOpenTopic(topicId)}>
+              {topic.label}
             </button>
           )
         })}
-      </div>
-
-      <div className='deep-dive-inline' aria-labelledby='deep-dive-title'>
-        <div className='deep-dive-heading'>
-          <p className='pill'>CODA-AI deep dives</p>
-          <h3 id='deep-dive-title'>Visible investor deep dives</h3>
-        </div>
-        <div className='grid three deep-dive-grid'>
-          {deepDiveCards.map((card) => (
-            <article className='card deep-dive-card' key={card.title}>
-              <h3>{card.title}</h3>
-              <p>{card.text}</p>
-              <button className='btn btn-secondary' type='button' onClick={() => onOpenTopic(card.topicId)}>Learn More</button>
-            </article>
-          ))}
-        </div>
       </div>
     </section>
   )
