@@ -42,12 +42,13 @@ const customerReferences = [
 
 const industrySegments = [
   'Oil & Gas',
+  'LNG',
   'Liquefied Natural Gas (LNG)',
   'Power',
   'Utilities',
   'Mining',
   'Manufacturing',
-  'Process industries',
+  'Process Industries',
   'Ports',
   'Infrastructure',
   'Pharma / Chemical',
@@ -60,7 +61,7 @@ const investorTopics = {
     label: 'About CODA',
     eyebrow: 'Company foundation',
     title: 'About CODA',
-    intro: 'CODASOL is an industrial data intelligence, Enterprise Master Data Management (MDM), software, and Managed DataOps company for asset-heavy industries.',
+    intro: 'CODASOL is an industrial data intelligence, Enterprise Master Data Management (MDM), software, and Managed DataOps company for asset-heavy industries. CODASOL combines software, implementation services, managed data operations, industrial domain knowledge, and Artificial Intelligence Master Data Management direction.',
     sections: [
       {
         heading: 'CODASOL combines',
@@ -90,10 +91,10 @@ const investorTopics = {
     ]
   },
   challenge: {
-    label: 'The Challenge CODA Solves',
+    label: 'Challenge We Solve',
     eyebrow: 'Industrial data pain point',
-    title: 'The Challenge CODA Solves',
-    intro: 'Asset-heavy companies depend on accurate master data for materials, spare parts, assets, suppliers, services, equipment structures, procurement, maintenance, finance, compliance, and operations.',
+    title: 'Challenge We Solve',
+    intro: 'Asset-heavy companies depend on accurate master data for materials, spare parts, assets, suppliers, services, procurement, maintenance, finance, compliance, and operations. Poor data creates cost, inefficiency, risk, and weak AI readiness.',
     sections: [
       {
         body: 'When this data is incomplete, duplicated, wrongly classified, or inconsistent across Enterprise Resource Planning (ERP) and operational systems, companies lose efficiency, control, margin, and AI readiness.'
@@ -117,7 +118,7 @@ const investorTopics = {
     label: 'Industries We Serve',
     eyebrow: 'Asset-heavy verticals',
     title: 'Industries We Serve',
-    intro: 'CODA focuses on asset-heavy and data-heavy industries where poor master data has a direct operational, financial, procurement, maintenance, compliance, and AI-readiness impact.',
+    intro: 'CODA focuses on asset-heavy and data-heavy industries where poor master data has a direct operational, financial, procurement, maintenance, compliance, and AI-readiness impact. Core industries include Oil & Gas, LNG, Power, Utilities, Mining, Manufacturing, Process Industries, Ports, Infrastructure, Pharma / Chemical, and Automotive.',
     chips: industrySegments
   },
   customers: {
@@ -126,13 +127,13 @@ const investorTopics = {
     title: 'Customers & Credibility',
     intro: 'CODA has delivered work across global industrial and asset-heavy environments. The investor teaser references trusted global leaders and shows customer examples such as Michelin, BP, QatarEnergy, AD Ports Group, Shell, Saudi Aramco, Saint-Gobain, Oman LNG, Atlantic, ADNOC, Chevron, and NMDC Group.',
     badges: customerReferences,
-    disclaimer: 'Logos and names are shown for high-level reference only. Detailed customer, contract, project, and commercial information is shared only under the appropriate investor stage and documentation process.'
+    disclaimer: 'Names are shown for high-level reference only. Detailed customer, contract, project, and commercial information is shared only under the appropriate investor stage.'
   },
   partners: {
     label: 'Partners & Ecosystem',
     eyebrow: 'Ecosystem direction',
     title: 'Partners & Ecosystem',
-    intro: 'CODA’s ecosystem strategy has two layers:',
+    intro: 'EY, PwC, SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric are shown as high-level ecosystem references and system landscape context.',
     sections: [
       {
         heading: 'Commercial and advisory ecosystem',
@@ -144,7 +145,7 @@ const investorTopics = {
       },
       {
         heading: 'Integration direction',
-        body: 'CODA-AI is designed to overlay and integrate with customer environments using systems such as SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric. These names describe platform ecosystem direction, system landscape, and integration direction, not formal partnership status unless confirmed.'
+        body: 'Designed to overlay and integrate with customer environments using systems such as SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric. Do not imply formal partnership status unless confirmed.'
       }
     ]
   },
@@ -152,7 +153,7 @@ const investorTopics = {
     label: 'CODA-AI Future',
     eyebrow: 'AI-MDM value jump',
     title: 'CODA-AI Future',
-    intro: 'CODA-AI is the next value jump. It is intended to convert CODA’s 15+ years of industrial data knowledge into scalable Artificial Intelligence Master Data Management products.',
+    intro: 'CODA-AI is intended to convert CODA’s 15+ years of industrial data knowledge into scalable Artificial Intelligence Master Data Management products. It is designed to sit above existing customer systems as a vertical AI-MDM intelligence layer, not replace them.',
     sections: [
       {
         body: 'CODA-AI is not designed to replace SAP, Oracle, IBM, or other customer software systems. It is designed to sit above and connect to them as a vertical AI-MDM intelligence layer.'
@@ -566,7 +567,7 @@ function ExploreCoda({ onOpenTopic }) {
       <div className='explore-coda-heading'>
         <p className='pill'>Stage 1 investor teaser</p>
         <h2 id='explore-coda-title'>Explore CODASOL</h2>
-        <p>Learn more about CODASOL’s company substance, market focus, ecosystem direction, customer credibility, and CODA-AI future.</p>
+        <p>Quick access to CODASOL’s company substance, industry focus, ecosystem direction, customer credibility, and CODA-AI future.</p>
       </div>
 
       <div className='explore-button-grid' aria-label='CODASOL investor content topics'>
@@ -1185,10 +1186,10 @@ export default function App() {
           <a className='btn btn-secondary' href='#calculator'>ROI Calculator</a>
           <a className='btn btn-secondary' href={mailto}>Request NDA Deck</a>
         </div>
+        <ExploreCoda onOpenTopic={handleOpenTopic} />
       </header>
 
       <main className='container'>
-        <ExploreCoda onOpenTopic={handleOpenTopic} />
         <section id='problem'>
           <h2>The Challenge We Solve</h2>
           <p>Poor industrial master data creates procurement, maintenance, inventory, compliance, operational, and AI-readiness issues. Enterprises need domain-specific data intelligence before automation and AI can deliver reliable outcomes.</p>
