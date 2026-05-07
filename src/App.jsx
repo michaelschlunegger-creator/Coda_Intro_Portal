@@ -99,7 +99,7 @@ const investorTopics = {
         body: 'When this data is incomplete, duplicated, wrongly classified, or inconsistent across Enterprise Resource Planning (ERP) and operational systems, companies lose efficiency, control, margin, and AI readiness.'
       },
       {
-        heading: 'CODA helps customers improve',
+        heading: 'CODA helps improve',
         bullets: [
           'data quality',
           'master data governance',
@@ -124,7 +124,7 @@ const investorTopics = {
     label: 'Customers & Credibility',
     eyebrow: 'High-level references',
     title: 'Customers & Credibility',
-    intro: 'CODA has delivered work across global industrial and asset-heavy environments. The existing teaser references trusted global leaders and shows customer logos such as Michelin, BP, QatarEnergy, AD Ports Group, Shell, Saudi Aramco, Saint-Gobain, Oman LNG, Atlantic, ADNOC, Chevron, and NMDC Group.',
+    intro: 'CODA has delivered work across global industrial and asset-heavy environments. The investor teaser references trusted global leaders and shows customer examples such as Michelin, BP, QatarEnergy, AD Ports Group, Shell, Saudi Aramco, Saint-Gobain, Oman LNG, Atlantic, ADNOC, Chevron, and NMDC Group.',
     badges: customerReferences,
     disclaimer: 'Logos and names are shown for high-level reference only. Detailed customer, contract, project, and commercial information is shared only under the appropriate investor stage and documentation process.'
   },
@@ -132,7 +132,7 @@ const investorTopics = {
     label: 'Partners & Ecosystem',
     eyebrow: 'Ecosystem direction',
     title: 'Partners & Ecosystem',
-    intro: 'CODA’s ecosystem strategy has two layers. Commercial and advisory relationships may be evaluated separately from technology landscapes and platform integration direction.',
+    intro: 'CODA’s ecosystem strategy has two layers:',
     sections: [
       {
         heading: 'Commercial and advisory ecosystem',
@@ -144,7 +144,7 @@ const investorTopics = {
       },
       {
         heading: 'Integration direction',
-        body: 'Designed to overlay and integrate with customer environments using systems such as SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric. These names describe system landscapes, platform ecosystems, and integration directions, not formal partnership status unless legally confirmed.'
+        body: 'CODA-AI is designed to overlay and integrate with customer environments using systems such as SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric. These names describe platform ecosystem direction, system landscape, and integration direction, not formal partnership status unless confirmed.'
       }
     ]
   },
@@ -564,16 +564,39 @@ function ExploreCoda({ onOpenTopic }) {
   return (
     <section className='explore-coda-card' aria-labelledby='explore-coda-title'>
       <div className='explore-coda-heading'>
-        <p className='pill'>Explore CODA</p>
-        <h2 id='explore-coda-title'>Stage 1 company context</h2>
-        <p>Investor-friendly snapshots are available on demand, so the introduction stays focused while deeper company context remains one tap away.</p>
+        <p className='pill'>Stage 1 investor teaser</p>
+        <h2 id='explore-coda-title'>Explore CODASOL</h2>
+        <p>Learn more about CODASOL’s company substance, market focus, ecosystem direction, customer credibility, and CODA-AI future.</p>
       </div>
-      <div className='explore-button-grid'>
-        {exploreTopicOrder.map((topicId) => (
-          <button className='btn btn-secondary explore-topic-button' type='button' key={topicId} onClick={() => onOpenTopic(topicId)}>
-            {investorTopics[topicId].label}
-          </button>
-        ))}
+
+      <div className='explore-button-grid' aria-label='CODASOL investor content topics'>
+        {exploreTopicOrder.map((topicId) => {
+          const topic = investorTopics[topicId]
+
+          return (
+            <button className='explore-topic-card' type='button' key={topicId} onClick={() => onOpenTopic(topicId)}>
+              <span className='explore-topic-eyebrow'>{topic.eyebrow}</span>
+              <span className='explore-topic-title'>{topic.label}</span>
+              <span className='explore-topic-action'>Open readable content</span>
+            </button>
+          )
+        })}
+      </div>
+
+      <div className='deep-dive-inline' aria-labelledby='deep-dive-title'>
+        <div className='deep-dive-heading'>
+          <p className='pill'>CODA-AI deep dives</p>
+          <h3 id='deep-dive-title'>Visible investor deep dives</h3>
+        </div>
+        <div className='grid three deep-dive-grid'>
+          {deepDiveCards.map((card) => (
+            <article className='card deep-dive-card' key={card.title}>
+              <h3>{card.title}</h3>
+              <p>{card.text}</p>
+              <button className='btn btn-secondary' type='button' onClick={() => onOpenTopic(card.topicId)}>Learn More</button>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -1194,8 +1217,6 @@ export default function App() {
             <article className='card'><h3>Data Foundation</h3><p>Cleaner industrial data supports ERP modernization, procurement optimization, maintenance planning, and future AI readiness.</p></article>
           </div>
         </section>
-
-        <CodaAiDeepDiveCards onOpenTopic={handleOpenTopic} />
 
         <section id='investment'>
           <h2>Investment Overview</h2>
