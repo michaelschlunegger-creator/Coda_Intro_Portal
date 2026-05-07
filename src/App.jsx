@@ -99,7 +99,7 @@ const MIN_TOTAL_INVESTMENT_USD = 10000
 const MAX_TOTAL_RAISE_USD = 7800000
 const MAX_EQUITY_RAISE_USD = 3900000
 const MAX_DEBT_RAISE_USD = 3900000
-const DEFAULT_TOTAL_INVESTMENT_USD = 125000
+const DEFAULT_TOTAL_INVESTMENT_USD = 1000000
 const INVESTMENT_STEP_USD = 5000
 const DEFAULT_EQUITY_ALLOCATION_PERCENT = 50
 const DEFAULT_DEBT_INTEREST_RATE_PERCENT = 10
@@ -401,7 +401,7 @@ function GroupStructure() {
 
 function InvestmentReturnCalculator() {
   const [totalInvestmentAmount, setTotalInvestmentAmount] = useState(String(DEFAULT_TOTAL_INVESTMENT_USD))
-  const [equityAllocationPercent, setEquityAllocationPercent] = useState(DEFAULT_EQUITY_ALLOCATION_PERCENT)
+  const [equitySplitPercent, setEquitySplitPercent] = useState(DEFAULT_EQUITY_ALLOCATION_PERCENT)
   const [annualDebtInterestRate, setAnnualDebtInterestRate] = useState(DEFAULT_DEBT_INTEREST_RATE_PERCENT)
   const [investmentPeriodYears, setInvestmentPeriodYears] = useState(DEFAULT_INVESTMENT_PERIOD_YEARS)
   const [futureGroupValuation, setFutureGroupValuation] = useState(String(DEFAULT_FUTURE_GROUP_VALUATION_USD))
@@ -411,7 +411,7 @@ function InvestmentReturnCalculator() {
     const parsedInvestment = Number(trimmedInvestment)
     const hasValidInvestment = trimmedInvestment !== '' && Number.isFinite(parsedInvestment) && parsedInvestment >= MIN_TOTAL_INVESTMENT_USD
     const totalInvestment = hasValidInvestment ? clamp(parsedInvestment, MIN_TOTAL_INVESTMENT_USD, MAX_TOTAL_RAISE_USD) : 0
-    const selectedEquityPercent = clamp(safeNumber(equityAllocationPercent, DEFAULT_EQUITY_ALLOCATION_PERCENT), 0, 100)
+    const selectedEquityPercent = clamp(safeNumber(equitySplitPercent, DEFAULT_EQUITY_ALLOCATION_PERCENT), 0, 100)
     const requestedEquityAmount = totalInvestment * (selectedEquityPercent / 100)
     const equityAmount = Math.min(requestedEquityAmount, MAX_EQUITY_RAISE_USD)
     const debtAmount = Math.max(0, totalInvestment - equityAmount)
@@ -461,17 +461,11 @@ function InvestmentReturnCalculator() {
       returnMultiple,
       annualizedReturnPercent: Number.isFinite(annualizedReturn) ? annualizedReturn * 100 : 0
     }
-  }, [annualDebtInterestRate, equityAllocationPercent, futureGroupValuation, investmentPeriodYears, totalInvestmentAmount])
+  }, [annualDebtInterestRate, equitySplitPercent, futureGroupValuation, investmentPeriodYears, totalInvestmentAmount])
 
   const handleTotalInvestmentAmountChange = (value) => {
     if (String(value).trim() === '') {
       setTotalInvestmentAmount('')
-      return
-    }
-
-    const parsedValue = Number(value)
-    if (Number.isFinite(parsedValue) && parsedValue > MAX_TOTAL_RAISE_USD) {
-      setTotalInvestmentAmount(String(MAX_TOTAL_RAISE_USD))
       return
     }
 
@@ -495,7 +489,7 @@ function InvestmentReturnCalculator() {
 
   const handleReset = () => {
     setTotalInvestmentAmount(String(DEFAULT_TOTAL_INVESTMENT_USD))
-    setEquityAllocationPercent(DEFAULT_EQUITY_ALLOCATION_PERCENT)
+    setEquitySplitPercent(DEFAULT_EQUITY_ALLOCATION_PERCENT)
     setAnnualDebtInterestRate(DEFAULT_DEBT_INTEREST_RATE_PERCENT)
     setInvestmentPeriodYears(DEFAULT_INVESTMENT_PERIOD_YEARS)
     setFutureGroupValuation(String(DEFAULT_FUTURE_GROUP_VALUATION_USD))
@@ -514,8 +508,8 @@ function InvestmentReturnCalculator() {
     <section id='calculator' className='calculator-section'>
       <div className='calculator-heading'>
         <span className='calculator-kicker'>Equity / Debt / ROI simulator</span>
-        <h2>Interactive Investor Return Simulator</h2>
-        <p className='calculation-label'>Indicative only | Non-binding | Stage 1 non-NDA scenario modelling</p>
+        <h2>Indicative ROI & Ownership Calculator</h2>
+        <p className='calculation-label'>Indicative only | Non-binding | Subject to final documentation</p>
       </div>
 
       <div className='calculator-shell' role='region' aria-label='Indicative equity debt ROI simulator'>
@@ -530,7 +524,7 @@ function InvestmentReturnCalculator() {
             </div>
 
             <label className='field-card investment-field'>
-              <span>Total Investment Amount in USD</span>
+              <span>Total Investment Ticket Amount in USD</span>
               <input
                 type='number'
                 min={MIN_TOTAL_INVESTMENT_USD}
@@ -564,16 +558,16 @@ function InvestmentReturnCalculator() {
 
             <div className='allocation-control'>
               <div className='allocation-control-header'>
-                <span>Equity Allocation Percentage</span>
+                <span>Equity / Debt Split</span>
                 <label>
                   <input
                     type='number'
                     min='0'
                     max='100'
                     step='1'
-                    value={equityAllocationPercent}
-                    onChange={(event) => setEquityAllocationPercent(clamp(safeNumber(event.target.value, 0), 0, 100))}
-                    aria-label='Equity allocation percentage input'
+                    value={equitySplitPercent}
+                    onChange={(event) => setEquitySplitPercent(clamp(safeNumber(event.target.value, 0), 0, 100))}
+                    aria-label='Equity split percentage input'
                   />
                   <span>%</span>
                 </label>
@@ -584,9 +578,9 @@ function InvestmentReturnCalculator() {
                 min='0'
                 max='100'
                 step='1'
-                value={equityAllocationPercent}
-                onChange={(event) => setEquityAllocationPercent(Number(event.target.value))}
-                aria-label='Equity allocation percentage slider'
+                value={equitySplitPercent}
+                onChange={(event) => setEquitySplitPercent(Number(event.target.value))}
+                aria-label='Equity debt split slider'
               />
               <div className='allocation-split-bar' aria-hidden='true'>
                 <span style={{ width: `${result.actualEquityPercent}%` }} />
@@ -596,12 +590,12 @@ function InvestmentReturnCalculator() {
 
             <div className='split-summary' aria-live='polite'>
               <div>
-                <span>Equity portion</span>
+                <span>Equity: {formatPercent(result.actualEquityPercent, 0)} | {visibleResult ? formatUSD(result.equityAmount) : 'USD —'}</span>
                 <strong>{visibleResult ? formatUSD(result.equityAmount) : 'USD —'}</strong>
                 <small>{formatPercent(result.actualEquityPercent, 2)} of ticket</small>
               </div>
               <div>
-                <span>Debt portion</span>
+                <span>Debt: {formatPercent(result.actualDebtPercent, 0)} | {visibleResult ? formatUSD(result.debtAmount) : 'USD —'}</span>
                 <strong>{visibleResult ? formatUSD(result.debtAmount) : 'USD —'}</strong>
                 <small>{formatPercent(result.actualDebtPercent, 2)} of ticket</small>
               </div>
@@ -837,7 +831,7 @@ export default function App() {
         <div className='hero-actions'>
           <a className='btn btn-primary' href='#investment'>View Investment Overview</a>
           <a className='btn btn-secondary' href='#team'>Meet the Team</a>
-          <a className='btn btn-secondary' href='#calculator'>Ownership Calculator</a>
+          <a className='btn btn-secondary' href='#calculator'>ROI Calculator</a>
           <a className='btn btn-secondary' href={mailto}>Request NDA Deck</a>
         </div>
       </header>
