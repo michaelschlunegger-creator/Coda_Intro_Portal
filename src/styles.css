@@ -58,6 +58,14 @@ a { color: inherit; }
 .btn-secondary { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.2); color: #fff; }
 .btn-disabled { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); color: rgba(246,247,251,.58); cursor: not-allowed; }
 .hero-actions { display: grid; gap: .6rem; margin: 1rem 0; }
+
+.hero .explore-coda-card {
+  width: min(1120px, 100%);
+  margin: 1.15rem auto 0;
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
 .note, .calculation-label { font-size: .92rem; }
 .calculation-label { color: #ffd8de; font-weight: 700; }
 .field-card { display: grid; gap: .55rem; padding: 1rem; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(255,255,255,.06); color: #e8ebf7; }
