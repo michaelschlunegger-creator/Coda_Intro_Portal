@@ -24,6 +24,200 @@ const metricsData = [
   { label: 'Supplier, Bill of Materials, service, and operational records exposure', value: '10M+' }
 ]
 
+
+const customerReferences = [
+  'Michelin',
+  'BP',
+  'QatarEnergy',
+  'AD Ports Group',
+  'Shell',
+  'Saudi Aramco',
+  'Saint-Gobain',
+  'Oman LNG',
+  'Atlantic',
+  'ADNOC',
+  'Chevron',
+  'NMDC Group'
+]
+
+const industrySegments = [
+  'Oil & Gas',
+  'Liquefied Natural Gas (LNG)',
+  'Power',
+  'Utilities',
+  'Mining',
+  'Manufacturing',
+  'Process industries',
+  'Ports',
+  'Infrastructure',
+  'Pharma / Chemical',
+  'Automotive',
+  'Data-intensive industrial operators'
+]
+
+const investorTopics = {
+  about: {
+    label: 'About CODA',
+    eyebrow: 'Company foundation',
+    title: 'About CODA',
+    intro: 'CODASOL is an industrial data intelligence, Enterprise Master Data Management (MDM), software, and Managed DataOps company for asset-heavy industries.',
+    sections: [
+      {
+        heading: 'CODASOL combines',
+        bullets: [
+          'software and platform capability',
+          'implementation services',
+          'managed data operations',
+          'industrial domain knowledge',
+          'Artificial Intelligence Master Data Management (AI-MDM) direction'
+        ]
+      },
+      {
+        heading: 'Industrial knowledge advantage',
+        body: 'CODA’s strength is not only software. The real value is more than 15 years of industrial data experience, real project delivery, industrial terminology, golden-record logic, supplier normalization, asset context, and practical customer delivery knowledge.'
+      },
+      {
+        heading: 'Key points',
+        bullets: [
+          '15+ years of industrial data and asset management experience',
+          '100+ completed customer projects',
+          'exposure to 100M+ material records',
+          'exposure to 20M+ asset records',
+          'exposure to 10M+ supplier, Bill of Materials, service, and operational records',
+          'multi-vertical experience across asset-heavy industries and regions'
+        ]
+      }
+    ]
+  },
+  challenge: {
+    label: 'The Challenge CODA Solves',
+    eyebrow: 'Industrial data pain point',
+    title: 'The Challenge CODA Solves',
+    intro: 'Asset-heavy companies depend on accurate master data for materials, spare parts, assets, suppliers, services, equipment structures, procurement, maintenance, finance, compliance, and operations.',
+    sections: [
+      {
+        body: 'When this data is incomplete, duplicated, wrongly classified, or inconsistent across Enterprise Resource Planning (ERP) and operational systems, companies lose efficiency, control, margin, and AI readiness.'
+      },
+      {
+        heading: 'CODA helps customers improve',
+        bullets: [
+          'data quality',
+          'master data governance',
+          'duplicate and near-duplicate detection',
+          'classification and enrichment',
+          'supplier and manufacturer normalization',
+          'inventory and procurement efficiency',
+          'asset and maintenance data quality',
+          'ERP and AI readiness'
+        ]
+      }
+    ]
+  },
+  industries: {
+    label: 'Industries We Serve',
+    eyebrow: 'Asset-heavy verticals',
+    title: 'Industries We Serve',
+    intro: 'CODA focuses on asset-heavy and data-heavy industries where poor master data has a direct operational, financial, procurement, maintenance, compliance, and AI-readiness impact.',
+    chips: industrySegments
+  },
+  customers: {
+    label: 'Customers & Credibility',
+    eyebrow: 'High-level references',
+    title: 'Customers & Credibility',
+    intro: 'CODA has delivered work across global industrial and asset-heavy environments. The existing teaser references trusted global leaders and shows customer logos such as Michelin, BP, QatarEnergy, AD Ports Group, Shell, Saudi Aramco, Saint-Gobain, Oman LNG, Atlantic, ADNOC, Chevron, and NMDC Group.',
+    badges: customerReferences,
+    disclaimer: 'Logos and names are shown for high-level reference only. Detailed customer, contract, project, and commercial information is shared only under the appropriate investor stage and documentation process.'
+  },
+  partners: {
+    label: 'Partners & Ecosystem',
+    eyebrow: 'Ecosystem direction',
+    title: 'Partners & Ecosystem',
+    intro: 'CODA’s ecosystem strategy has two layers. Commercial and advisory relationships may be evaluated separately from technology landscapes and platform integration direction.',
+    sections: [
+      {
+        heading: 'Commercial and advisory ecosystem',
+        bullets: ['EY', 'PwC', 'selected consulting and transformation partners']
+      },
+      {
+        heading: 'Technology and platform ecosystem direction',
+        bullets: ['SAP', 'Oracle', 'IBM', 'Snowflake', 'Databricks', 'Microsoft Fabric']
+      },
+      {
+        heading: 'Integration direction',
+        body: 'Designed to overlay and integrate with customer environments using systems such as SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric. These names describe system landscapes, platform ecosystems, and integration directions, not formal partnership status unless legally confirmed.'
+      }
+    ]
+  },
+  future: {
+    label: 'CODA-AI Future',
+    eyebrow: 'AI-MDM value jump',
+    title: 'CODA-AI Future',
+    intro: 'CODA-AI is the next value jump. It is intended to convert CODA’s 15+ years of industrial data knowledge into scalable Artificial Intelligence Master Data Management products.',
+    sections: [
+      {
+        body: 'CODA-AI is not designed to replace SAP, Oracle, IBM, or other customer software systems. It is designed to sit above and connect to them as a vertical AI-MDM intelligence layer.'
+      },
+      {
+        heading: 'The idea',
+        bullets: [
+          'Keep customer systems in place.',
+          'Add CODA-AI as a vertical intelligence layer.',
+          'Understand industry-specific material descriptions, supplier logic, asset structures, maintenance context, and governance rules.',
+          'Help customers clean, enrich, govern, and use their data better.',
+          'Enable recurring software and data intelligence revenue.'
+        ]
+      },
+      {
+        heading: 'Why this is a game changer',
+        body: 'Most data tools are generic. CODA-AI is intended to become verticalized by industry and segmented by use case. That means a Liquefied Natural Gas customer, a mining customer, a utility, or a port operator could use a CODA-AI interface that speaks the language of that industry.',
+        bullets: [
+          'LNG interface overlaying SAP or related operational systems',
+          'Mining interface overlaying Oracle, IBM, SAP, or other enterprise systems',
+          'Utilities interface connecting ERP, maintenance, procurement, and operational databases',
+          'Industrial data intelligence layer using Snowflake, Databricks, or Microsoft Fabric environments where relevant'
+        ]
+      },
+      {
+        heading: 'Agentic AI direction',
+        body: 'CODA-AI can move beyond answering questions. Agentic AI can support controlled data tasks such as:',
+        bullets: [
+          'cataloguer support',
+          'risky record flagging',
+          'recommended corrections',
+          'monitoring new ERP entries',
+          'governance alerts',
+          'supplier and manufacturer normalization',
+          'value engineering support',
+          'continuous data quality improvement'
+        ]
+      },
+      {
+        body: 'This moves master data from a static back-office function into an active intelligence layer that supports better decisions across the industrial value chain.'
+      }
+    ]
+  }
+}
+
+const exploreTopicOrder = ['about', 'challenge', 'industries', 'customers', 'partners', 'future']
+
+const deepDiveCards = [
+  {
+    title: 'Vertical AI-MDM Interfaces',
+    text: 'Industry-specific CODA-AI modules designed to overlay existing customer systems.',
+    topicId: 'future'
+  },
+  {
+    title: 'Data Intelligence Moat',
+    text: 'Built from real industrial projects, terminology, golden-record logic, supplier structures, and asset context.',
+    topicId: 'about'
+  },
+  {
+    title: 'From Services to Recurring Revenue',
+    text: 'CODA-AI can support the shift from project-based services to scalable software, AI, and data intelligence revenue.',
+    topicId: 'future'
+  }
+]
+
 const faqData = [
   {
     q: 'What is this portal?',
@@ -281,6 +475,127 @@ function InvestorAssistantModal({ isOpen, onClose }) {
         </div>
       </div>
     </div>
+  )
+}
+
+
+function TopicContent({ topic }) {
+  return (
+    <div className='topic-content'>
+      {topic.intro ? <p className='topic-intro'>{topic.intro}</p> : null}
+
+      {topic.chips ? (
+        <div className='topic-chip-grid' aria-label='Industries CODA serves'>
+          {topic.chips.map((chip) => <span className='topic-chip' key={chip}>{chip}</span>)}
+        </div>
+      ) : null}
+
+      {topic.badges ? (
+        <div className='topic-badge-grid' aria-label='Customer references'>
+          {topic.badges.map((badge) => <span className='topic-badge' key={badge}>{badge}</span>)}
+        </div>
+      ) : null}
+
+      {topic.sections?.map((section, index) => (
+        <section className='topic-section' key={`${topic.title}-${index}`}>
+          {section.heading ? <h3>{section.heading}</h3> : null}
+          {section.body ? <p>{section.body}</p> : null}
+          {section.bullets ? (
+            <ul>
+              {section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}
+            </ul>
+          ) : null}
+        </section>
+      ))}
+
+      {topic.disclaimer ? <p className='topic-disclaimer'>{topic.disclaimer}</p> : null}
+    </div>
+  )
+}
+
+function InvestorTopicModal({ topic, onClose }) {
+  useEffect(() => {
+    if (!topic) {
+      return () => {}
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    document.body.classList.add('modal-open')
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.classList.remove('modal-open')
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [topic, onClose])
+
+  if (!topic) {
+    return null
+  }
+
+  return (
+    <div className='info-modal-backdrop' role='presentation' onClick={onClose}>
+      <div
+        className='info-modal-card'
+        role='dialog'
+        aria-modal='true'
+        aria-labelledby='investor-topic-title'
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className='info-modal-header'>
+          <div>
+            <p className='info-modal-eyebrow'>{topic.eyebrow}</p>
+            <h2 id='investor-topic-title'>{topic.title}</h2>
+          </div>
+          <button className='info-modal-close' type='button' aria-label={`Close ${topic.title}`} onClick={onClose}>×</button>
+        </div>
+        <TopicContent topic={topic} />
+      </div>
+    </div>
+  )
+}
+
+function ExploreCoda({ onOpenTopic }) {
+  return (
+    <section className='explore-coda-card' aria-labelledby='explore-coda-title'>
+      <div className='explore-coda-heading'>
+        <p className='pill'>Explore CODA</p>
+        <h2 id='explore-coda-title'>Stage 1 company context</h2>
+        <p>Investor-friendly snapshots are available on demand, so the introduction stays focused while deeper company context remains one tap away.</p>
+      </div>
+      <div className='explore-button-grid'>
+        {exploreTopicOrder.map((topicId) => (
+          <button className='btn btn-secondary explore-topic-button' type='button' key={topicId} onClick={() => onOpenTopic(topicId)}>
+            {investorTopics[topicId].label}
+          </button>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function CodaAiDeepDiveCards({ onOpenTopic }) {
+  return (
+    <section className='deep-dive-section' aria-labelledby='deep-dive-title'>
+      <div className='deep-dive-heading'>
+        <p className='pill'>CODA-AI deep dives</p>
+        <h2 id='deep-dive-title'>Compact Stage 1 themes</h2>
+      </div>
+      <div className='grid three deep-dive-grid'>
+        {deepDiveCards.map((card) => (
+          <article className='card deep-dive-card' key={card.title}>
+            <h3>{card.title}</h3>
+            <p>{card.text}</p>
+            <button className='btn btn-secondary' type='button' onClick={() => onOpenTopic(card.topicId)}>Learn More</button>
+          </article>
+        ))}
+      </div>
+    </section>
   )
 }
 
@@ -793,6 +1108,13 @@ function InvestmentReturnCalculator() {
 export default function App() {
   const [logoLoadError, setLogoLoadError] = useState(false)
   const [isAssistantModalOpen, setIsAssistantModalOpen] = useState(false)
+  const [activeTopicId, setActiveTopicId] = useState(null)
+  const activeTopic = activeTopicId ? investorTopics[activeTopicId] : null
+
+  const handleOpenTopic = (topicId) => {
+    setActiveTopicId(topicId)
+  }
+
 
   useEffect(() => {
     document.documentElement.classList.add('react-mounted')
@@ -843,6 +1165,7 @@ export default function App() {
       </header>
 
       <main className='container'>
+        <ExploreCoda onOpenTopic={handleOpenTopic} />
         <section id='problem'>
           <h2>The Challenge We Solve</h2>
           <p>Poor industrial master data creates procurement, maintenance, inventory, compliance, operational, and AI-readiness issues. Enterprises need domain-specific data intelligence before automation and AI can deliver reliable outcomes.</p>
@@ -871,6 +1194,8 @@ export default function App() {
             <article className='card'><h3>Data Foundation</h3><p>Cleaner industrial data supports ERP modernization, procurement optimization, maintenance planning, and future AI readiness.</p></article>
           </div>
         </section>
+
+        <CodaAiDeepDiveCards onOpenTopic={handleOpenTopic} />
 
         <section id='investment'>
           <h2>Investment Overview</h2>
@@ -926,6 +1251,7 @@ export default function App() {
       </main>
 
       <InvestorAssistantModal isOpen={isAssistantModalOpen} onClose={() => setIsAssistantModalOpen(false)} />
+      <InvestorTopicModal topic={activeTopic} onClose={() => setActiveTopicId(null)} />
 
       <a className='sticky-cta' href={mailto}>Request NDA Deck</a>
     </div>
