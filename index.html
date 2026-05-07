@@ -25,12 +25,12 @@
           <div class="hero-knowledge-block">
             <div class="hero-knowledge-label">Explore CODASOL</div>
             <div class="hero-knowledge-buttons">
-              <a class="btn btn-secondary knowledge-hero-btn" href="#faq">About CODA</a>
-              <a class="btn btn-secondary knowledge-hero-btn" href="#faq">Challenge</a>
-              <a class="btn btn-secondary knowledge-hero-btn" href="#faq">Industries</a>
-              <a class="btn btn-secondary knowledge-hero-btn" href="#faq">Customers</a>
-              <a class="btn btn-secondary knowledge-hero-btn" href="#faq">Partners</a>
-              <a class="btn btn-secondary knowledge-hero-btn" href="#faq">CODA-AI</a>
+              <button class="btn knowledge-hero-btn" type="button" data-knowledge-open="about">About CODA</button>
+              <button class="btn knowledge-hero-btn" type="button" data-knowledge-open="challenge">Challenge</button>
+              <button class="btn knowledge-hero-btn" type="button" data-knowledge-open="industries">Industries</button>
+              <button class="btn knowledge-hero-btn" type="button" data-knowledge-open="customers">Customers</button>
+              <button class="btn knowledge-hero-btn" type="button" data-knowledge-open="partners">Partners</button>
+              <button class="btn knowledge-hero-btn" type="button" data-knowledge-open="coda-ai">CODA-AI</button>
             </div>
           </div>
         </header>
@@ -324,6 +324,14 @@
             <p>This portal is Stage 1 non-NDA investor teaser content only. It is provided for introductory discussion purposes and does not constitute an offer to sell securities, a solicitation, investment advice, or a binding commitment. All figures, ownership outputs, transaction structures, and forward-looking statements are indicative only, non-binding, and subject to diligence, final legal documentation, and investor qualification.</p>
           </section>
         </main>
+        <div class="knowledge-modal-backdrop" data-knowledge-modal hidden>
+          <div class="knowledge-modal-card" role="dialog" aria-modal="true" aria-labelledby="knowledge-modal-title" data-knowledge-card>
+            <button class="knowledge-back-button" type="button" data-knowledge-close>← Back to main menu</button>
+            <p class="knowledge-modal-eyebrow" data-knowledge-eyebrow></p>
+            <h2 id="knowledge-modal-title" data-knowledge-title></h2>
+            <div class="knowledge-modal-body" data-knowledge-body></div>
+          </div>
+        </div>
         <div class="assistant-modal-backdrop" id="static-investor-assistant-modal" role="presentation" data-static-assistant-modal hidden>
           <div class="assistant-modal-card" role="dialog" aria-modal="true" aria-labelledby="static-investor-assistant-title" aria-describedby="static-investor-assistant-subtitle" data-static-assistant-card>
             <div class="assistant-modal-header">
@@ -370,6 +378,179 @@
         assistantCard?.addEventListener('click', (event) => event.stopPropagation());
         window.addEventListener('keydown', (event) => {
           if (event.key === 'Escape') closeAssistantModal();
+        });
+
+        const knowledgeContent = {
+          about: {
+            eyebrow: 'Company foundation',
+            title: 'About CODA',
+            body: `<p>CODASOL is an industrial data intelligence, Enterprise Master Data Management (MDM), software, and Managed DataOps company for asset-heavy industries.</p>
+              <p>CODASOL combines:</p>
+              <ul>
+                <li>software and platform capability</li>
+                <li>implementation services</li>
+                <li>managed data operations</li>
+                <li>industrial domain knowledge</li>
+                <li>Artificial Intelligence Master Data Management (AI-MDM) direction</li>
+              </ul>
+              <p>CODA’s strength is not only software. The real value is more than 15 years of industrial data experience, real project delivery, industrial terminology, golden-record logic, supplier normalization, asset context, and practical customer delivery knowledge.</p>
+              <p>Key substance:</p>
+              <ul>
+                <li>15+ years of industrial data and asset management experience</li>
+                <li>100+ completed customer projects</li>
+                <li>exposure to 100M+ material records</li>
+                <li>exposure to 20M+ asset records</li>
+                <li>exposure to 10M+ supplier, Bill of Materials, service, and operational records</li>
+              </ul>`
+          },
+          challenge: {
+            eyebrow: 'Industrial data pain point',
+            title: 'The Challenge CODA Solves',
+            body: `<p>Asset-heavy companies depend on accurate master data for materials, spare parts, assets, suppliers, services, equipment structures, procurement, maintenance, finance, compliance, and operations.</p>
+              <p>When this data is incomplete, duplicated, wrongly classified, or inconsistent across Enterprise Resource Planning (ERP) and operational systems, companies lose efficiency, control, margin, and AI readiness.</p>
+              <p>CODA helps improve:</p>
+              <ul>
+                <li>data quality</li>
+                <li>master data governance</li>
+                <li>duplicate and near-duplicate detection</li>
+                <li>classification and enrichment</li>
+                <li>supplier and manufacturer normalization</li>
+                <li>inventory and procurement efficiency</li>
+                <li>asset and maintenance data quality</li>
+                <li>ERP and AI readiness</li>
+              </ul>`
+          },
+          industries: {
+            eyebrow: 'Asset-heavy verticals',
+            title: 'Industries CODA Serves',
+            body: `<p>CODA focuses on asset-heavy and data-heavy industries where poor master data has a direct operational, financial, procurement, maintenance, compliance, and AI-readiness impact.</p>
+              <p>Industries include:</p>
+              <ul>
+                <li>Oil &amp; Gas</li>
+                <li>Liquefied Natural Gas (LNG)</li>
+                <li>Power</li>
+                <li>Utilities</li>
+                <li>Mining</li>
+                <li>Manufacturing</li>
+                <li>Process industries</li>
+                <li>Ports</li>
+                <li>Infrastructure</li>
+                <li>Pharma / Chemical</li>
+                <li>Automotive</li>
+                <li>Data-intensive industrial operators</li>
+              </ul>`
+          },
+          customers: {
+            eyebrow: 'High-level credibility',
+            title: 'Customers & Credibility',
+            body: `<p>CODA has delivered work across global industrial and asset-heavy environments.</p>
+              <p>High-level customer references include:</p>
+              <ul>
+                <li>Michelin</li>
+                <li>BP</li>
+                <li>QatarEnergy</li>
+                <li>AD Ports Group</li>
+                <li>Shell</li>
+                <li>Saudi Aramco</li>
+                <li>Saint-Gobain</li>
+                <li>Oman LNG</li>
+                <li>Atlantic</li>
+                <li>ADNOC</li>
+                <li>Chevron</li>
+                <li>NMDC Group</li>
+              </ul>
+              <p>Disclaimer:</p>
+              <p>Names are shown for high-level reference only. Detailed customer, contract, project, and commercial information is shared only under the appropriate investor stage and documentation process.</p>`
+          },
+          partners: {
+            eyebrow: 'Ecosystem direction',
+            title: 'Partners & Ecosystem',
+            body: `<p>CODA’s ecosystem strategy has two layers.</p>
+              <p>Commercial and advisory ecosystem:</p>
+              <ul>
+                <li>EY</li>
+                <li>PwC</li>
+                <li>selected consulting and transformation partners</li>
+              </ul>
+              <p>Technology and platform ecosystem direction:</p>
+              <ul>
+                <li>SAP</li>
+                <li>Oracle</li>
+                <li>IBM</li>
+                <li>Snowflake</li>
+                <li>Databricks</li>
+                <li>Microsoft Fabric</li>
+              </ul>
+              <p>Important wording:</p>
+              <p>CODA-AI is designed to overlay and integrate with customer environments using systems such as SAP, Oracle, IBM, Snowflake, Databricks, and Microsoft Fabric.</p>
+              <p>Do not imply formal partnership status unless confirmed.</p>`
+          },
+          'coda-ai': {
+            eyebrow: 'AI-MDM value jump',
+            title: 'CODA-AI Future',
+            body: `<p>CODA-AI is intended to convert CODA’s 15+ years of industrial data knowledge into scalable Artificial Intelligence Master Data Management products.</p>
+              <p>CODA-AI is not designed to replace SAP, Oracle, IBM, or other customer software systems. It is designed to sit above and connect to them as a vertical AI-MDM intelligence layer.</p>
+              <p>Why this is a game changer:</p>
+              <p>Most data tools are generic. CODA-AI is intended to become verticalized by industry and segmented by use case. This means a Liquefied Natural Gas customer, a mining customer, a utility, or a port operator could use a CODA-AI interface that speaks the language of that industry.</p>
+              <p>Examples:</p>
+              <ul>
+                <li>LNG interface overlaying SAP or related operational systems</li>
+                <li>Mining interface overlaying Oracle, IBM, SAP, or other enterprise systems</li>
+                <li>Utilities interface connecting ERP, maintenance, procurement, and operational databases</li>
+                <li>Industrial data intelligence layer using Snowflake, Databricks, or Microsoft Fabric environments where relevant</li>
+              </ul>
+              <p>Agentic AI direction:</p>
+              <p>CODA-AI can move beyond answering questions. Agentic AI can support controlled data tasks such as:</p>
+              <ul>
+                <li>cataloguer support</li>
+                <li>risky record flagging</li>
+                <li>recommended corrections</li>
+                <li>monitoring new ERP entries</li>
+                <li>governance alerts</li>
+                <li>supplier and manufacturer normalization</li>
+                <li>value engineering support</li>
+                <li>continuous data quality improvement</li>
+              </ul>
+              <p>Final message:</p>
+              <p>This moves master data from a static back-office function into an active intelligence layer that supports better decisions across the industrial value chain.</p>`
+          }
+        };
+
+        const knowledgeModal = document.querySelector('[data-knowledge-modal]');
+        const knowledgeCard = document.querySelector('[data-knowledge-card]');
+        const knowledgeCloseButton = document.querySelector('[data-knowledge-close]');
+        const knowledgeEyebrow = document.querySelector('[data-knowledge-eyebrow]');
+        const knowledgeTitle = document.querySelector('[data-knowledge-title]');
+        const knowledgeBody = document.querySelector('[data-knowledge-body]');
+        let lastKnowledgeTrigger = null;
+
+        function closeKnowledgeModal() {
+          if (!knowledgeModal) return;
+          knowledgeModal.hidden = true;
+          document.body.classList.remove('modal-open');
+          lastKnowledgeTrigger?.focus();
+        }
+
+        function openKnowledgeModal(topicId, trigger) {
+          const content = knowledgeContent[topicId];
+          if (!knowledgeModal || !content) return;
+          lastKnowledgeTrigger = trigger;
+          knowledgeEyebrow.textContent = content.eyebrow;
+          knowledgeTitle.textContent = content.title;
+          knowledgeBody.innerHTML = content.body;
+          knowledgeModal.hidden = false;
+          document.body.classList.add('modal-open');
+          knowledgeCloseButton?.focus();
+        }
+
+        document.querySelectorAll('[data-knowledge-open]').forEach((button) => {
+          button.addEventListener('click', () => openKnowledgeModal(button.dataset.knowledgeOpen, button));
+        });
+        knowledgeCloseButton?.addEventListener('click', closeKnowledgeModal);
+        knowledgeModal?.addEventListener('click', closeKnowledgeModal);
+        knowledgeCard?.addEventListener('click', (event) => event.stopPropagation());
+        window.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') closeKnowledgeModal();
         });
 
         const CURRENT_GROUP_VALUATION_USD = 39000000;
