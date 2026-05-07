@@ -94,14 +94,24 @@ const teamData = [
   }
 ]
 
+const CURRENT_GROUP_VALUATION_USD = 39000000
 const MIN_TOTAL_INVESTMENT_USD = 10000
 const MAX_TOTAL_RAISE_USD = 7800000
+const MAX_EQUITY_RAISE_USD = 3900000
+const MAX_DEBT_RAISE_USD = 3900000
 const DEFAULT_TOTAL_INVESTMENT_USD = 125000
 const INVESTMENT_STEP_USD = 5000
-const EQUITY_RATIO = 0.50
-const DEBT_RATIO = 0.50
-const MAX_EQUITY_RAISE_USD = MAX_TOTAL_RAISE_USD * EQUITY_RATIO
-const MAX_DEBT_RAISE_USD = MAX_TOTAL_RAISE_USD * DEBT_RATIO
+const DEFAULT_EQUITY_ALLOCATION_PERCENT = 50
+const DEFAULT_DEBT_INTEREST_RATE_PERCENT = 10
+const MIN_DEBT_INTEREST_RATE_PERCENT = 8
+const MAX_DEBT_INTEREST_RATE_PERCENT = 12
+const DEBT_INTEREST_STEP_PERCENT = 0.25
+const DEFAULT_INVESTMENT_PERIOD_YEARS = 5
+const MIN_INVESTMENT_PERIOD_YEARS = 1
+const MAX_INVESTMENT_PERIOD_YEARS = 7
+const DEFAULT_FUTURE_GROUP_VALUATION_USD = 500000000
+const MAX_FUTURE_GROUP_VALUATION_USD = 1000000000
+const FUTURE_VALUATION_STEP_USD = 1000000
 const FULL_CTS_OWNERSHIP = 0.3968
 const CTS_GROUP_OWNERSHIP = 0.2346
 const CTS_PRE_MONEY_VALUATION = MAX_EQUITY_RAISE_USD * (1 - FULL_CTS_OWNERSHIP) / FULL_CTS_OWNERSHIP
@@ -122,16 +132,21 @@ function clamp(value, min, max) {
 }
 
 function formatUSD(value) {
-  const safeValue = Math.max(0, safeNumber(value))
+  const safeValue = safeNumber(value)
   const formattedValue = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0
-  }).format(safeValue)
-  return `USD ${formattedValue}`
+  }).format(Math.abs(safeValue))
+  return safeValue < 0 ? `USD (${formattedValue})` : `USD ${formattedValue}`
 }
 
 function formatPercent(value, digits = 4) {
   const safeValue = Number.isFinite(value) ? value : 0
   return `${safeValue.toFixed(digits)}%`
+}
+
+function formatMultiple(value) {
+  const safeValue = Number.isFinite(value) && value >= 0 ? value : 0
+  return `${safeValue.toFixed(2)}x`
 }
 
 function WhatsAppIcon() {
@@ -384,39 +399,77 @@ function GroupStructure() {
   )
 }
 
-function OwnershipCalculator() {
+function InvestmentReturnCalculator() {
   const [totalInvestmentAmount, setTotalInvestmentAmount] = useState(String(DEFAULT_TOTAL_INVESTMENT_USD))
+  const [equityAllocationPercent, setEquityAllocationPercent] = useState(DEFAULT_EQUITY_ALLOCATION_PERCENT)
+  const [annualDebtInterestRate, setAnnualDebtInterestRate] = useState(DEFAULT_DEBT_INTEREST_RATE_PERCENT)
+  const [investmentPeriodYears, setInvestmentPeriodYears] = useState(DEFAULT_INVESTMENT_PERIOD_YEARS)
+  const [futureGroupValuation, setFutureGroupValuation] = useState(String(DEFAULT_FUTURE_GROUP_VALUATION_USD))
 
   const result = useMemo(() => {
-    const trimmedInvestment = totalInvestmentAmount.trim()
+    const trimmedInvestment = String(totalInvestmentAmount).trim()
     const parsedInvestment = Number(trimmedInvestment)
     const hasValidInvestment = trimmedInvestment !== '' && Number.isFinite(parsedInvestment) && parsedInvestment >= MIN_TOTAL_INVESTMENT_USD
-    const cappedTotalInvestmentAmount = hasValidInvestment ? clamp(parsedInvestment, MIN_TOTAL_INVESTMENT_USD, MAX_TOTAL_RAISE_USD) : 0
-    const equityAmount = cappedTotalInvestmentAmount * EQUITY_RATIO
-    const debtAmount = cappedTotalInvestmentAmount * DEBT_RATIO
-    const ctsOwnership = hasValidInvestment ? equityAmount / (CTS_PRE_MONEY_VALUATION + equityAmount) : 0
+    const totalInvestment = hasValidInvestment ? clamp(parsedInvestment, MIN_TOTAL_INVESTMENT_USD, MAX_TOTAL_RAISE_USD) : 0
+    const selectedEquityPercent = clamp(safeNumber(equityAllocationPercent, DEFAULT_EQUITY_ALLOCATION_PERCENT), 0, 100)
+    const requestedEquityAmount = totalInvestment * (selectedEquityPercent / 100)
+    const equityAmount = Math.min(requestedEquityAmount, MAX_EQUITY_RAISE_USD)
+    const debtAmount = Math.max(0, totalInvestment - equityAmount)
+    const actualEquityPercent = totalInvestment > 0 ? (equityAmount / totalInvestment) * 100 : 0
+    const actualDebtPercent = totalInvestment > 0 ? (debtAmount / totalInvestment) * 100 : 0
+    const futureValuationInput = safeNumber(futureGroupValuation, CURRENT_GROUP_VALUATION_USD)
+    const safeFutureGroupValuation = Math.max(0, futureValuationInput)
+    const safePeriodYears = clamp(safeNumber(investmentPeriodYears, DEFAULT_INVESTMENT_PERIOD_YEARS), MIN_INVESTMENT_PERIOD_YEARS, MAX_INVESTMENT_PERIOD_YEARS)
+    const safeInterestRatePercent = clamp(safeNumber(annualDebtInterestRate, DEFAULT_DEBT_INTEREST_RATE_PERCENT), MIN_DEBT_INTEREST_RATE_PERCENT, MAX_DEBT_INTEREST_RATE_PERCENT)
+    const annualInterestRate = safeInterestRatePercent / 100
+    const ctsOwnership = equityAmount > 0 ? equityAmount / (CTS_PRE_MONEY_VALUATION + equityAmount) : 0
     const indirectGroupOwnership = ctsOwnership * CTS_GROUP_OWNERSHIP
+    const futureEquityValue = indirectGroupOwnership * safeFutureGroupValuation
+    const debtInterestReturn = debtAmount * annualInterestRate * safePeriodYears
+    const debtTotalReturn = debtAmount + debtInterestReturn
+    const totalProjectedReturn = futureEquityValue + debtTotalReturn
+    const totalGain = totalProjectedReturn - totalInvestment
+    const returnMultiple = totalInvestment > 0 ? totalProjectedReturn / totalInvestment : 0
+    const annualizedReturn = totalInvestment > 0 && safePeriodYears > 0 && totalProjectedReturn >= 0
+      ? Math.pow(returnMultiple, 1 / safePeriodYears) - 1
+      : 0
 
     return {
       hasValidInvestment,
       isCappedAtMaximum: hasValidInvestment && parsedInvestment > MAX_TOTAL_RAISE_USD,
-      totalInvestmentAmount: cappedTotalInvestmentAmount,
+      isEquityCapped: hasValidInvestment && requestedEquityAmount > MAX_EQUITY_RAISE_USD,
+      isDebtAboveRaiseAssumption: hasValidInvestment && debtAmount > MAX_DEBT_RAISE_USD,
+      isFutureValuationBelowReference: Number.isFinite(futureValuationInput) && futureValuationInput < CURRENT_GROUP_VALUATION_USD,
+      totalInvestmentAmount: totalInvestment,
       equityAmount,
       debtAmount,
+      selectedEquityPercent,
+      selectedDebtPercent: 100 - selectedEquityPercent,
+      actualEquityPercent,
+      actualDebtPercent,
+      annualDebtInterestRatePercent: safeInterestRatePercent,
+      investmentPeriodYears: safePeriodYears,
+      futureGroupValuation: safeFutureGroupValuation,
       ctsPreMoneyValuation: CTS_PRE_MONEY_VALUATION,
       ctsOwnershipPercent: Number.isFinite(ctsOwnership) ? ctsOwnership * 100 : 0,
-      indirectGroupOwnershipPercent: Number.isFinite(indirectGroupOwnership) ? indirectGroupOwnership * 100 : 0
+      indirectGroupOwnershipPercent: Number.isFinite(indirectGroupOwnership) ? indirectGroupOwnership * 100 : 0,
+      futureEquityValue,
+      debtInterestReturn,
+      debtTotalReturn,
+      totalProjectedReturn,
+      totalGain,
+      returnMultiple,
+      annualizedReturnPercent: Number.isFinite(annualizedReturn) ? annualizedReturn * 100 : 0
     }
-  }, [totalInvestmentAmount])
+  }, [annualDebtInterestRate, equityAllocationPercent, futureGroupValuation, investmentPeriodYears, totalInvestmentAmount])
 
   const handleTotalInvestmentAmountChange = (value) => {
-    if (value.trim() === '') {
+    if (String(value).trim() === '') {
       setTotalInvestmentAmount('')
       return
     }
 
     const parsedValue = Number(value)
-
     if (Number.isFinite(parsedValue) && parsedValue > MAX_TOTAL_RAISE_USD) {
       setTotalInvestmentAmount(String(MAX_TOTAL_RAISE_USD))
       return
@@ -425,41 +478,61 @@ function OwnershipCalculator() {
     setTotalInvestmentAmount(value)
   }
 
+  const handleFutureGroupValuationChange = (value) => {
+    if (String(value).trim() === '') {
+      setFutureGroupValuation('')
+      return
+    }
+
+    const parsedValue = Number(value)
+    if (Number.isFinite(parsedValue) && parsedValue > MAX_FUTURE_GROUP_VALUATION_USD) {
+      setFutureGroupValuation(String(MAX_FUTURE_GROUP_VALUATION_USD))
+      return
+    }
+
+    setFutureGroupValuation(value)
+  }
+
   const handleReset = () => {
     setTotalInvestmentAmount(String(DEFAULT_TOTAL_INVESTMENT_USD))
+    setEquityAllocationPercent(DEFAULT_EQUITY_ALLOCATION_PERCENT)
+    setAnnualDebtInterestRate(DEFAULT_DEBT_INTEREST_RATE_PERCENT)
+    setInvestmentPeriodYears(DEFAULT_INVESTMENT_PERIOD_YEARS)
+    setFutureGroupValuation(String(DEFAULT_FUTURE_GROUP_VALUATION_USD))
   }
 
   const visibleResult = result.hasValidInvestment
-  const sliderValue = result.hasValidInvestment
+  const totalSliderValue = result.hasValidInvestment
     ? clamp(result.totalInvestmentAmount, MIN_TOTAL_INVESTMENT_USD, MAX_TOTAL_RAISE_USD)
     : DEFAULT_TOTAL_INVESTMENT_USD
-  const helperText = result.hasValidInvestment
+  const futureValuationSliderValue = clamp(safeNumber(futureGroupValuation, DEFAULT_FUTURE_GROUP_VALUATION_USD), CURRENT_GROUP_VALUATION_USD, MAX_FUTURE_GROUP_VALUATION_USD)
+  const totalHelperText = result.hasValidInvestment
     ? `Current total ticket: ${formatUSD(result.totalInvestmentAmount)}`
-    : 'Enter a total investment amount to calculate indicative ownership.'
+    : 'Enter a total investment amount to calculate the scenario.'
 
   return (
     <section id='calculator' className='calculator-section'>
       <div className='calculator-heading'>
-        <span className='calculator-kicker'>Equity ownership estimator</span>
-        <h2>Indicative Ownership Calculator</h2>
-        <p className='calculation-label'>Indicative only | Non-binding | Subject to final documentation</p>
+        <span className='calculator-kicker'>Equity / Debt / ROI simulator</span>
+        <h2>Interactive Investor Return Simulator</h2>
+        <p className='calculation-label'>Indicative only | Non-binding | Stage 1 non-NDA scenario modelling</p>
       </div>
 
-      <div className='calculator-shell' role='region' aria-label='Indicative ownership calculator'>
+      <div className='calculator-shell' role='region' aria-label='Indicative equity debt ROI simulator'>
         <div className='calculator-input-column'>
           <article className='calculator-card input-card'>
             <div className='calculator-card-header'>
               <div>
-                <p className='calculator-card-eyebrow'>Investor input</p>
-                <h3>Total Investment Ticket Amount in USD</h3>
+                <p className='calculator-card-eyebrow'>Scenario inputs</p>
+                <h3>Build the investment ticket</h3>
               </div>
-              <strong>{result.hasValidInvestment ? formatUSD(result.totalInvestmentAmount) : 'USD —'}</strong>
+              <strong>{visibleResult ? formatUSD(result.totalInvestmentAmount) : 'USD —'}</strong>
             </div>
 
             <label className='field-card investment-field'>
-              <span>Total Investment Ticket Amount in USD</span>
+              <span>Total Investment Amount in USD</span>
               <input
-                type="number"
+                type='number'
                 min={MIN_TOTAL_INVESTMENT_USD}
                 max={MAX_TOTAL_RAISE_USD}
                 step={INVESTMENT_STEP_USD}
@@ -468,30 +541,20 @@ function OwnershipCalculator() {
                 placeholder='125000'
                 onChange={(event) => handleTotalInvestmentAmountChange(event.target.value)}
               />
+              <small>Minimum USD 10,000. Current total raise scenario is capped at USD 7.8M.</small>
             </label>
 
-            <div className='split-summary' aria-live='polite'>
-              <div>
-                <span>Equity portion</span>
-                <strong>{visibleResult ? formatUSD(result.equityAmount) : 'USD —'}</strong>
-              </div>
-              <div>
-                <span>Debt portion</span>
-                <strong>{visibleResult ? formatUSD(result.debtAmount) : 'USD —'}</strong>
-              </div>
-            </div>
-
             <label className='slider-field'>
-              <span className='slider-value'>{helperText}</span>
+              <span className='slider-value'>{totalHelperText}</span>
               <input
                 className='investment-slider'
-                type="range"
+                type='range'
                 min={MIN_TOTAL_INVESTMENT_USD}
                 max={MAX_TOTAL_RAISE_USD}
                 step={INVESTMENT_STEP_USD}
-                value={sliderValue}
+                value={totalSliderValue}
                 onChange={(event) => handleTotalInvestmentAmountChange(event.target.value)}
-                aria-label='Total investment ticket amount slider'
+                aria-label='Total investment amount slider'
               />
               <span className='slider-limits'>
                 <small>USD 10,000</small>
@@ -499,14 +562,123 @@ function OwnershipCalculator() {
               </span>
             </label>
 
-            {result.isCappedAtMaximum ? (
-              <p className='calculator-note'>Maximum total raise assumption is USD 7,800,000.</p>
-            ) : null}
+            <div className='allocation-control'>
+              <div className='allocation-control-header'>
+                <span>Equity Allocation Percentage</span>
+                <label>
+                  <input
+                    type='number'
+                    min='0'
+                    max='100'
+                    step='1'
+                    value={equityAllocationPercent}
+                    onChange={(event) => setEquityAllocationPercent(clamp(safeNumber(event.target.value, 0), 0, 100))}
+                    aria-label='Equity allocation percentage input'
+                  />
+                  <span>%</span>
+                </label>
+              </div>
+              <input
+                className='investment-slider allocation-slider'
+                type='range'
+                min='0'
+                max='100'
+                step='1'
+                value={equityAllocationPercent}
+                onChange={(event) => setEquityAllocationPercent(Number(event.target.value))}
+                aria-label='Equity allocation percentage slider'
+              />
+              <div className='allocation-split-bar' aria-hidden='true'>
+                <span style={{ width: `${result.actualEquityPercent}%` }} />
+              </div>
+              <p>Debt allocation is automatically derived as {formatPercent(result.selectedDebtPercent, 0)} of the selected ticket before any equity cap adjustment.</p>
+            </div>
+
+            <div className='split-summary' aria-live='polite'>
+              <div>
+                <span>Equity portion</span>
+                <strong>{visibleResult ? formatUSD(result.equityAmount) : 'USD —'}</strong>
+                <small>{formatPercent(result.actualEquityPercent, 2)} of ticket</small>
+              </div>
+              <div>
+                <span>Debt portion</span>
+                <strong>{visibleResult ? formatUSD(result.debtAmount) : 'USD —'}</strong>
+                <small>{formatPercent(result.actualDebtPercent, 2)} of ticket</small>
+              </div>
+            </div>
+
+            <label className='field-card compact-input-field'>
+              <span>Annual Interest Rate on Debt Portion</span>
+              <input
+                type='number'
+                min={MIN_DEBT_INTEREST_RATE_PERCENT}
+                max={MAX_DEBT_INTEREST_RATE_PERCENT}
+                step={DEBT_INTEREST_STEP_PERCENT}
+                value={annualDebtInterestRate}
+                onChange={(event) => setAnnualDebtInterestRate(clamp(safeNumber(event.target.value, DEFAULT_DEBT_INTEREST_RATE_PERCENT), MIN_DEBT_INTEREST_RATE_PERCENT, MAX_DEBT_INTEREST_RATE_PERCENT))}
+              />
+              <input
+                className='investment-slider'
+                type='range'
+                min={MIN_DEBT_INTEREST_RATE_PERCENT}
+                max={MAX_DEBT_INTEREST_RATE_PERCENT}
+                step={DEBT_INTEREST_STEP_PERCENT}
+                value={annualDebtInterestRate}
+                onChange={(event) => setAnnualDebtInterestRate(Number(event.target.value))}
+                aria-label='Annual interest rate on debt portion slider'
+              />
+              <small>Simple interest modelled at {formatPercent(result.annualDebtInterestRatePercent, 2)} annually.</small>
+            </label>
+
+            <label className='field-card compact-input-field'>
+              <span>Investment Period</span>
+              <input
+                type='range'
+                min={MIN_INVESTMENT_PERIOD_YEARS}
+                max={MAX_INVESTMENT_PERIOD_YEARS}
+                step='1'
+                value={investmentPeriodYears}
+                onChange={(event) => setInvestmentPeriodYears(Number(event.target.value))}
+                aria-label='Investment period slider'
+                className='investment-slider'
+              />
+              <strong>{result.investmentPeriodYears} years</strong>
+            </label>
+
+            <label className='field-card compact-input-field'>
+              <span>Future CODASOL Group Valuation</span>
+              <input
+                type='number'
+                min={CURRENT_GROUP_VALUATION_USD}
+                max={MAX_FUTURE_GROUP_VALUATION_USD}
+                step={FUTURE_VALUATION_STEP_USD}
+                inputMode='decimal'
+                value={futureGroupValuation}
+                onChange={(event) => handleFutureGroupValuationChange(event.target.value)}
+              />
+              <input
+                className='investment-slider'
+                type='range'
+                min={CURRENT_GROUP_VALUATION_USD}
+                max={MAX_FUTURE_GROUP_VALUATION_USD}
+                step={FUTURE_VALUATION_STEP_USD}
+                value={futureValuationSliderValue}
+                onChange={(event) => handleFutureGroupValuationChange(event.target.value)}
+                aria-label='Future CODASOL Group valuation slider'
+              />
+              <small>Starting reference valuation: USD 39M in 2025.</small>
+            </label>
+
+            <div className='calculator-warnings' aria-live='polite'>
+              {!visibleResult ? <p className='calculator-note'>Enter a total investment amount to calculate the scenario.</p> : null}
+              {result.isCappedAtMaximum ? <p className='calculator-note'>Maximum total raise assumption is USD 7,800,000.</p> : null}
+              {result.isEquityCapped ? <p className='calculator-note'>Maximum equity allocation is USD 3.9M under the current raise structure.</p> : null}
+              {result.isDebtAboveRaiseAssumption ? <p className='calculator-note'>Debt allocation exceeds the current USD 3.9M debt raise assumption.</p> : null}
+              {result.isFutureValuationBelowReference ? <p className='calculator-note'>Future valuation is below the 2025 reference valuation assumption.</p> : null}
+            </div>
 
             <div className='calculator-actions'>
-              <button className='btn btn-secondary' type='button' onClick={handleReset}>
-                Reset to default value USD 125,000
-              </button>
+              <button className='btn btn-secondary' type='button' onClick={handleReset}>Reset scenario</button>
               <a className='btn btn-primary' href={mailto}>Request NDA Deck</a>
             </div>
           </article>
@@ -514,6 +686,10 @@ function OwnershipCalculator() {
           <div className='assumptions-drawer calculator-card fixed-assumptions'>
             <div className='fixed-assumptions-header'>Fixed assumptions</div>
             <div className='assumptions-grid'>
+              <div className='assumption-item'>
+                <span>2025 group reference valuation</span>
+                <strong>{formatUSD(CURRENT_GROUP_VALUATION_USD)}</strong>
+              </div>
               <div className='assumption-item'>
                 <span>Maximum total raise</span>
                 <strong>{formatUSD(MAX_TOTAL_RAISE_USD)}</strong>
@@ -527,6 +703,10 @@ function OwnershipCalculator() {
                 <strong>{formatUSD(MAX_DEBT_RAISE_USD)}</strong>
               </div>
               <div className='assumption-item'>
+                <span>Derived CTS pre-money valuation</span>
+                <strong>{formatUSD(result.ctsPreMoneyValuation)}</strong>
+              </div>
+              <div className='assumption-item'>
                 <span>CTS ownership in CODASOL Group</span>
                 <strong>{formatPercent(CTS_GROUP_OWNERSHIP * 100, 2)}</strong>
               </div>
@@ -535,51 +715,77 @@ function OwnershipCalculator() {
         </div>
 
         <div className='calculator-result-column'>
-          <article className='result-card result-card-large' aria-live='polite'>
-            <p className='result-eyebrow'>Indicative CODASOL Group Ownership</p>
+          <article className='result-card result-card-large roi-result-panel' aria-live='polite'>
+            <p className='result-eyebrow'>Total Projected Return</p>
             {visibleResult ? (
               <>
-                <h3>{formatPercent(result.indirectGroupOwnershipPercent)}</h3>
-                <div className='result-details'>
+                <h3>{formatUSD(result.totalProjectedReturn)}</h3>
+                <div className='roi-hero-metrics'>
                   <div>
-                    <span>Total investment amount</span>
+                    <span>Return multiple</span>
+                    <strong>{formatMultiple(result.returnMultiple)}</strong>
+                  </div>
+                  <div>
+                    <span>Indicative annualized return</span>
+                    <strong>{formatPercent(result.annualizedReturnPercent, 2)}</strong>
+                  </div>
+                </div>
+                <div className='result-details roi-result-details'>
+                  <div>
+                    <span>Total Investment</span>
                     <strong>{formatUSD(result.totalInvestmentAmount)}</strong>
                   </div>
                   <div>
-                    <span>Equity amount used for ownership calculation</span>
+                    <span>Equity Portion</span>
                     <strong>{formatUSD(result.equityAmount)}</strong>
+                    <small>{formatPercent(result.actualEquityPercent, 2)} of ticket</small>
                   </div>
                   <div>
-                    <span>Debt amount, no ownership impact</span>
+                    <span>Debt Portion</span>
                     <strong>{formatUSD(result.debtAmount)}</strong>
+                    <small>{formatPercent(result.actualDebtPercent, 2)} of ticket</small>
                   </div>
                   <div>
-                    <span>Derived CTS pre-money valuation</span>
-                    <strong>{formatUSD(result.ctsPreMoneyValuation)}</strong>
-                  </div>
-                  <div>
-                    <span>Indicative ownership in CTS</span>
+                    <span>Indicative CTS Ownership</span>
                     <strong>{formatPercent(result.ctsOwnershipPercent)}</strong>
                   </div>
                   <div>
-                    <span>Indicative indirect ownership in CODASOL Group</span>
+                    <span>Indicative CODASOL Group Ownership</span>
                     <strong>{formatPercent(result.indirectGroupOwnershipPercent)}</strong>
+                  </div>
+                  <div>
+                    <span>Future Equity Value</span>
+                    <strong>{formatUSD(result.futureEquityValue)}</strong>
+                  </div>
+                  <div className='debt-return-card'>
+                    <span>Debt Return</span>
+                    <strong>{formatUSD(result.debtTotalReturn)}</strong>
+                    <small>Principal: {formatUSD(result.debtAmount)}</small>
+                    <small>Interest: {formatUSD(result.debtInterestReturn)}</small>
+                    <small>Total debt return: {formatUSD(result.debtTotalReturn)}</small>
+                  </div>
+                  <div>
+                    <span>Total Gain</span>
+                    <strong>{formatUSD(result.totalGain)}</strong>
                   </div>
                 </div>
               </>
             ) : (
-              <p className='empty-result'>Enter a total investment amount to calculate indicative ownership.</p>
+              <p className='empty-result'>Enter a total investment amount to calculate the scenario.</p>
             )}
           </article>
 
           <div className='calculator-explanation'>
-            <p>Ownership is calculated only on the equity portion of the investment. The investment ticket is assumed to be split 50% equity and 50% debt. The debt component does not create ownership. All values are indicative, non-binding, and subject to final legal documentation.</p>
-            <p>Because CTS owns a minority interest in CODASOL Group, ownership through CTS represents indirect ownership in the CODASOL group.</p>
+            <p>Ownership is calculated only on the equity portion of the investment. The debt portion is modelled separately and does not create ownership.</p>
+            <p>Future equity value responds to the future CODASOL Group valuation input, while the debt return responds to the selected simple-interest rate and period.</p>
           </div>
         </div>
       </div>
 
-      <p className='legal-note calculator-legal-note'>This calculator is for indicative understanding only. Final ownership, valuation, rights, allocation, and investment terms are subject to final legal and financial documentation.</p>
+      <div className='legal-note calculator-legal-note'>
+        <p>This calculator is for indicative scenario modelling only. Ownership is calculated only on the equity portion of the investment. The debt portion does not create ownership and is modelled using simple interest. Final ownership, valuation, interest rate, repayment terms, investor rights, allocation, and legal structure are subject to final documentation and approval.</p>
+        <p>Future valuation inputs are illustrative and do not represent a guarantee, forecast, or commitment.</p>
+      </div>
     </section>
   )
 }
@@ -683,7 +889,7 @@ export default function App() {
 
         <GroupStructure />
 
-        <OwnershipCalculator />
+        <InvestmentReturnCalculator />
 
         <section className='team-section' id='team'>
           <div className='team-heading'>
