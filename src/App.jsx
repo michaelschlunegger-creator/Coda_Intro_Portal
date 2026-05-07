@@ -231,20 +231,124 @@ const deepDiveCards = [
 
 const faqData = [
   {
-    q: 'What is this portal?',
-    a: 'A Stage 1 non-NDA investor introduction to CODASOL, its industrial data foundation, CODA-AI direction, indicative investment structure, and next-step process.'
+    q: 'Why is CODA-AI not just another chatbot?',
+    answer: 'CODA-AI uses a chatbot interface, but the real product is the industrial decision layer behind it. A normal chatbot mainly searches and summarizes information. CODA-AI is designed to support governed industrial decisions using operational logic, maintenance context, supplier intelligence, duplicate rules, and risk awareness.',
+    example: 'A chatbot may say: “These two materials look similar.” CODA-AI may say: “Do not merge them yet because one material is linked to critical pumps, approved supplier contracts, and six years of maintenance history. Wrong merging could create operational downtime risk.”',
+    key: 'The key difference is that the chatbot is only the communication interface. The real value is the industrial brain behind it.'
   },
   {
-    q: 'Does 1% in CTS mean 1% in CODASOL Group?',
-    a: 'No. Ownership through CTS is indirect. Any result shown by the calculator is indicative only and subject to final legal and financial documentation.'
+    q: 'Why can’t companies simply connect ChatGPT to SAP?',
+    answer: 'Connecting a chatbot to SAP is technically easy today. The difficult part is understanding what is operationally safe, financially correct, maintenance-approved, and engineering-compliant.',
+    example: 'A generic chatbot may say: “These valves are similar.” CODA-AI may say: “These valves should not be standardized because one is approved for corrosive offshore environments and the other is not.”',
+    key: 'The challenge is not reading ERP data. The challenge is understanding operational consequences across maintenance, procurement, engineering, and safety.'
   },
   {
-    q: 'Are calculator results binding?',
-    a: 'No. Results are indicative only, non-binding, and subject to final documentation, diligence, valuation, allocation, legal review, and transaction terms.'
+    q: 'Why is CODA difficult to copy?',
+    answer: 'The software itself is not the moat. The moat is the industrial experience behind the software. CODA has accumulated operational learning over more than 15 years and 100+ industrial projects.',
+    example: 'Imagine two chefs. One has internet recipes. The other has cooked professionally for 15 years and already knows what works, what fails, and why customers return. Both can cook, but only one has operational experience.',
+    key: 'CODA has already seen duplicate inventory, failed standardization projects, supplier inconsistencies, ERP chaos, and maintenance issues in real industrial environments.'
   },
   {
-    q: 'How can investors receive more information?',
-    a: 'Qualified investors can request the NDA deck using the contact link. Detailed financial, legal, technical, and commercial materials are reserved for the NDA stage.'
+    q: 'What is industrial intelligence?',
+    answer: 'Industrial intelligence means understanding operational consequences, not only technical descriptions. Generic AI understands words. Industrial intelligence understands what happens operationally if a decision is made.',
+    example: 'Google knows: “This is a bearing.” CODA-AI should know: “This bearing is used in a critical pump and the wrong replacement could stop production.”',
+    key: 'The value is not recognizing a part number. The value is understanding maintenance impact, asset criticality, procurement implications, and operational risk.'
+  },
+  {
+    q: 'Why is verticalization important?',
+    answer: 'Every industry has different operational logic, maintenance behavior, suppliers, terminology, and engineering rules. A generic AI model cannot deeply understand every industry equally well.',
+    example: 'A hospital AI cannot suddenly run a refinery safely because the workflows, safety logic, and operational risks are completely different.',
+    key: 'CODA-AI aims to build industry-specific intelligence for sectors such as oil & gas, LNG, utilities, mining, manufacturing, and ports.'
+  },
+  {
+    q: 'Why is CODA better than a generic AI startup?',
+    answer: 'Most AI startups start with technology and then search for problems to solve. CODA started with real industrial operational problems long before AI became mainstream.',
+    example: 'CODA solved industrial master data problems for years before turning that experience into AI.',
+    key: 'This creates a stronger foundation because the company already understands customer pain points, ERP environments, maintenance workflows, and procurement complexity.'
+  },
+  {
+    q: 'What is the CODA-AI industrial layer?',
+    answer: 'It is a smart operational layer sitting above ERP and operational systems such as SAP, Oracle, IBM, Snowflake, and Databricks.',
+    example: 'Instead of only storing data, the layer helps answer: “Can this material be safely standardized?” or “Which duplicate creates operational risk?”',
+    key: 'The layer connects ERP data, supplier logic, inventory, asset structures, maintenance history, and governance workflows into one intelligence layer.'
+  },
+  {
+    q: 'Why does AI-MDM matter now?',
+    answer: 'AI is only as good as the data underneath it. Poor industrial data creates unreliable AI decisions.',
+    example: 'If a refinery has five names for the same valve, AI-driven procurement and maintenance recommendations become unreliable.',
+    key: 'CODA-AI improves the industrial data foundation first before higher-level automation and AI-driven operational decisions are deployed.'
+  },
+  {
+    q: 'Why can CODA scale beyond services?',
+    answer: 'CODA is converting repeated industrial work into reusable software and AI logic. That allows the company to move from manpower-based execution toward scalable recurring revenue.',
+    example: 'Today engineers manually solve duplicate problems repeatedly. CODA-AI learns those patterns once and reuses them.',
+    key: 'The same duplicate logic, classification logic, supplier normalization, and governance workflows can then be deployed across many customers.'
+  },
+  {
+    q: 'Why should investors care now?',
+    answer: 'The market is moving from AI chat toward AI operational decision-making. Industrial companies now want AI that improves operations, not only productivity.',
+    example: 'The first AI wave focused on chat and productivity. The next wave focuses on maintenance, procurement, operations, and industrial intelligence.',
+    key: 'CODA-AI is positioning itself inside that next wave.'
+  },
+  {
+    q: 'Strategic Investor Question 11',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 12',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 13',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 14',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 15',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 16',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 17',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 18',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 19',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
+  },
+  {
+    q: 'Strategic Investor Question 20',
+    answer: 'CODA-AI combines industrial domain knowledge, ERP integration logic, operational context, and AI-driven governance into one industrial intelligence layer. The goal is not only better data, but safer and smarter industrial operations.',
+    example: 'Example: Instead of simply identifying duplicate materials, CODA-AI evaluates maintenance impact, supplier approval, inventory implications, and operational risk before recommending actions.',
+    key: 'This creates operational value that generic AI tools or standalone chatbots usually cannot provide.'
   }
 ]
 
@@ -1255,11 +1359,18 @@ export default function App() {
         </section>
 
         <section id='faq'>
-          <h2>FAQ</h2>
-          {faqData.map((faq, index) => (
-            <details className='faq-item' key={faq.q} open={index === 0}>
+          <h2>Investor Q&A</h2>
+          <p className='faq-subtitle'>CODA-AI – Deep Dive Investor Killer Q&A</p>
+          {faqData.map((faq) => (
+            <details className='faq-item' key={faq.q}>
               <summary>{faq.q}</summary>
-              <p>{faq.a}</p>
+              <div className='faq-answer'>
+                <h3>Killer Answer</h3>
+                <p>{faq.answer}</p>
+                <h3>Easy Example</h3>
+                <p>{faq.example}</p>
+                {faq.key ? <p>{faq.key}</p> : null}
+              </div>
             </details>
           ))}
         </section>
