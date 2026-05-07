@@ -1037,23 +1037,72 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   gap: .65rem;
 }
 
-.explore-topic-button {
+.explore-topic-card {
+  display: grid;
+  gap: .45rem;
+  width: 100%;
   min-width: 0;
-  justify-content: flex-start;
-  padding-inline: .95rem;
-  border-color: rgba(255, 216, 222, .2);
+  min-height: 150px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 216, 222, .2);
+  border-radius: 22px;
   background:
-    linear-gradient(145deg, rgba(182, 31, 61, .14), rgba(255, 255, 255, .055)),
-    rgba(8, 10, 17, .52);
+    radial-gradient(circle at 0% 0%, rgba(182, 31, 61, .22), transparent 56%),
+    linear-gradient(145deg, rgba(255, 255, 255, .105), rgba(255, 255, 255, .045)),
+    rgba(8, 10, 17, .72);
+  color: #fff;
   text-align: left;
+  cursor: pointer;
+  opacity: 1;
+  visibility: visible;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .22);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
-.explore-topic-button::after,
+.explore-topic-card:hover,
+.explore-topic-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(255, 216, 222, .42);
+  box-shadow: 0 24px 58px rgba(0, 0, 0, .32), 0 12px 32px rgba(127, 16, 40, .18);
+  outline: none;
+}
+
+.explore-topic-eyebrow {
+  color: #ffd8de;
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.explore-topic-title {
+  color: #fff;
+  font-size: clamp(1.05rem, 3vw, 1.22rem);
+  font-weight: 850;
+  line-height: 1.18;
+}
+
+.explore-topic-action {
+  align-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  color: #ffe6ea;
+  font-size: .88rem;
+  font-weight: 750;
+}
+
+.explore-topic-action::after,
 .deep-dive-card .btn::after {
   content: '↗';
-  margin-left: auto;
   color: #ffd8de;
   font-weight: 850;
+}
+
+.deep-dive-inline {
+  margin-top: clamp(1rem, 3vw, 1.5rem);
+  padding-top: clamp(1rem, 3vw, 1.5rem);
+  border-top: 1px solid rgba(255, 255, 255, .12);
 }
 
 .deep-dive-grid {
