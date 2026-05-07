@@ -58,8 +58,34 @@ a { color: inherit; }
 .btn-secondary { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.2); color: #fff; }
 .btn-disabled { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); color: rgba(246,247,251,.58); cursor: not-allowed; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: 1rem 0; }
-.hero-knowledge-label { flex-basis: 100%; margin-top: .45rem; color: #ffd8de; font-size: .78rem; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
-.knowledge-hero-btn { font-size: .9rem; padding: .65rem 1rem; }
+.hero-knowledge-block {
+  width: 100%;
+  margin-top: 1rem;
+  display: grid;
+  gap: .65rem;
+}
+.hero-knowledge-label {
+  color: #ffd8de;
+  font-size: .78rem;
+  font-weight: 850;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.hero-knowledge-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  align-items: center;
+}
+.knowledge-hero-btn {
+  min-height: 40px;
+  padding: .55rem .85rem;
+  font-size: .9rem;
+}
+.hero-version-marker {
+  color: rgba(255,255,255,.45);
+  font-size: .75rem;
+}
 
 
 .hero-explore-row {
@@ -1112,6 +1138,11 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 }
 
 @media (max-width: 640px) {
+  .hero-knowledge-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .calculator-card-header,
   .allocation-control-header {
     align-items: stretch;
