@@ -386,6 +386,12 @@ const teamData = [
     profileLabel: 'LinkedIn'
   },
   {
+    name: 'Murali Venkataraman',
+    role: 'Regional Director APAC',
+    shortBio: 'Global supply chain operations leader with 35+ years in oil and gas across strategic transformation, major capital projects, and international delivery.',
+    longBio: 'Murali Venkataraman is a highly experienced global supply chain operations leader with 35+ years in the oil and gas industry, spanning frontline roles, senior management, and consulting leadership. He has a strong track record in strategic development and transformation initiatives that support long-term growth and sustainability. Murali has extensive experience in major capital projects, including work with Shell in Oman, Singapore, and India, and has operated across Asia, Europe, the Middle East, and the Americas.'
+  },
+  {
     name: 'Marwa Haddar',
     role: 'Strategic Advisory Board',
     shortBio: 'Corporate finance and restructuring advisor with experience across Asia, the Middle East, Africa, and infrastructure-related mandates.',
@@ -723,7 +729,7 @@ function CodaAiDeepDiveCards({ onOpenTopic }) {
 
 function ProfileAction({ person }) {
   if (!person.profileUrl) {
-    return <span className='btn btn-disabled' aria-disabled='true'>{person.profileLabel}</span>
+    return null
   }
 
   return (
