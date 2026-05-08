@@ -36,8 +36,8 @@ body {
 .hero { padding: 1rem 1rem 2.2rem; position: relative; overflow: visible; }
 .header-bar { display: flex; align-items: center; justify-content: space-between; gap: .7rem; margin-bottom: 1.6rem; }
 .header-actions { position: relative; display: inline-flex; align-items: center; justify-content: flex-end; gap: .48rem; flex: 0 0 auto; }
-.logo-top { display: inline-flex; align-items: center; justify-content: center; max-width: min(46vw, 190px); min-width: 0; padding: .45rem .6rem; border: 1px solid rgba(255,255,255,.18); border-radius: 18px; background: linear-gradient(145deg, rgba(255,255,255,.14), rgba(255,255,255,.055)); box-shadow: 0 14px 32px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.16); backdrop-filter: blur(18px); }
-.coda-logo { display: block; width: auto; height: auto; max-width: 100%; max-height: 34px; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0,0,0,.32)); }
+.logo-top { display: inline-flex; align-items: center; justify-content: center; width: auto; max-width: min(46vw, 420px); min-width: 0; padding: .45rem .6rem; border: 1px solid rgba(255,255,255,.18); border-radius: 18px; background: linear-gradient(145deg, rgba(255,255,255,.14), rgba(255,255,255,.055)); box-shadow: 0 14px 32px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.16); backdrop-filter: blur(18px); }
+.coda-logo { display: block; width: min(420px, 100%); height: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0,0,0,.32)); }
 .logo-fallback { display: inline-flex; align-items: center; min-height: 34px; color: #ffd8de; font-size: .82rem; font-weight: 800; letter-spacing: .15em; }
 .pill { display: inline-block; padding: .45rem .75rem; border-radius: 999px; background: var(--accent-soft); border: 1px solid rgba(182,31,61,.35); color: #ffd8de; font-size: .8rem; font-weight: 700; letter-spacing: .02em; }
 h1 { font-size: clamp(2rem, 8vw, 4rem); line-height: 1.04; max-width: 18ch; margin: .8rem 0; }
@@ -548,7 +548,7 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 @media (max-width: 640px) {
   .hero { padding-top: .8rem; }
   .header-bar { align-items: flex-start; }
-  .logo-top { max-width: min(34vw, 142px); }
+  .logo-top { max-width: 280px; }
   .header-actions { flex-direction: column; align-items: flex-end; gap: .42rem; }
   .header-action-button { min-height: 40px; padding: .45rem .62rem .45rem .5rem; font-size: .78rem; }
   .header-action-icon { width: 26px; height: 26px; }
@@ -565,13 +565,13 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 @media (min-width: 760px) {
   .hero { padding: 1.5rem 3rem 2.8rem; }
   .header-bar { margin-bottom: 2.2rem; }
-  .logo-top { max-width: 240px; padding: .55rem .75rem; border-radius: 20px; }
+  .logo-top { max-width: 420px; padding: .55rem .75rem; border-radius: 20px; }
   .header-actions { gap: .6rem; }
   .header-action-button { min-height: 46px; padding: .55rem .9rem .55rem .62rem; gap: .5rem; }
   .header-action-icon { width: 30px; height: 30px; }
   .whatsapp-header-label { display: inline; }
   .whatsapp-header-label-compact { display: none; }
-  .coda-logo { max-height: 48px; }
+  .coda-logo { width: 100%; height: auto; }
   .logo-fallback { min-height: 48px; font-size: .9rem; }
   .grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }

@@ -1269,7 +1269,7 @@ export default function App() {
             ) : (
               <img
                 className='coda-logo'
-                src={`${import.meta.env.BASE_URL}coda-logo.png`}
+                src={`${import.meta.env.BASE_URL}banner.png`}
                 alt='CODA logo'
                 onError={() => setLogoLoadError(true)}
               />
