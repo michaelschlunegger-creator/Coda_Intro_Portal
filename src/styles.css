@@ -36,9 +36,35 @@ body {
 .hero { padding: 1rem 1rem 2.2rem; position: relative; overflow: visible; }
 .header-bar { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; margin-bottom: 1.6rem; }
 .header-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: .75rem; flex: 0 1 auto; min-width: 0; }
-.logo-top { display: block; width: min(620px, 48vw); max-width: 620px; min-width: 0; border: none; background: transparent; box-shadow: none; padding: 0; }
+.logo-top {
+  display: block;
+  width: min(760px, 52vw);
+  max-width: 760px;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+.logo-top::before,
+.logo-top::after {
+  display: none;
+  content: none;
+}
 .coda-logo,
-.hero-banner { width: 100%; height: auto; display: block; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0,0,0,.32)); }
+.hero-banner {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
 .logo-fallback { display: inline-flex; align-items: center; min-height: 34px; color: #ffd8de; font-size: .82rem; font-weight: 800; letter-spacing: .15em; }
 .pill { display: inline-block; padding: .45rem .75rem; border-radius: 999px; background: var(--accent-soft); border: 1px solid rgba(182,31,61,.35); color: #ffd8de; font-size: .8rem; font-weight: 700; letter-spacing: .02em; }
 h1 { font-size: clamp(2rem, 8vw, 4rem); line-height: 1.04; max-width: 18ch; margin: .8rem 0; }
@@ -558,12 +584,19 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   .logo-top {
     width: 100%;
     max-width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .coda-logo,
   .hero-banner {
     width: 100%;
     height: auto;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .header-actions {
