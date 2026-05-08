@@ -1268,9 +1268,9 @@ export default function App() {
               <span className='logo-fallback'>CODA</span>
             ) : (
               <img
-                className='coda-logo'
-                src={`${import.meta.env.BASE_URL}banner.png`}
-                alt='CODA logo'
+                className='coda-logo hero-banner'
+                src='/Coda_Intro_Portal/Banner.png'
+                alt='CODASOL Investment Opportunity Banner'
                 onError={() => setLogoLoadError(true)}
               />
             )}
