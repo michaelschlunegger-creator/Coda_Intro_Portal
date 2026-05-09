@@ -682,6 +682,21 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
   .assistant-iframe { height: 70vh; min-height: 420px; max-height: calc(100vh - 164px); border-radius: 16px; }
 }
 
+
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 2.4rem;
+  }
+
+  .header-bar {
+    margin-top: 0.8rem;
+  }
+
+  .logo-top {
+    margin-top: 0.6rem;
+  }
+}
+
 @media (max-width: 420px) {
   .hero { padding-left: .85rem; padding-right: .85rem; }
   .hero-actions .btn { flex-basis: 100%; }
