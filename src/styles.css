@@ -1718,3 +1718,46 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
     padding: .85rem;
   }
 }
+
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 0 !important;
+  }
+
+  .header-bar {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 0.35rem !important;
+    gap: 0.15rem !important;
+  }
+
+  .logo-top {
+    width: 116vw !important;
+    max-width: 116vw !important;
+    margin-left: -8vw !important;
+    margin-top: -0.4rem !important;
+    margin-bottom: -0.35rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .coda-logo,
+  .hero-banner {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    object-fit: contain !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .header-actions {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 0.45rem !important;
+  }
+
+  .hero-copy {
+    margin-top: 0.7rem !important;
+  }
+}
