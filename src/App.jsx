@@ -1281,13 +1281,15 @@ export default function App() {
             <HeaderWhatsAppButton />
           </div>
         </div>
-        <h1>CODASOL Investor Introduction Portal</h1>
-        <p className='hero-sub'>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence for asset-intensive enterprises.</p>
-        <div className='hero-actions'>
-          <a className='btn btn-primary' href='#investment'>View Investment Overview</a>
-          <a className='btn btn-secondary' href='#team'>Meet the Team</a>
-          <a className='btn btn-secondary' href='#calculator'>ROI Calculator</a>
-          <a className='btn btn-secondary' href={mailto}>Request NDA Deck</a>
+        <div className='hero-copy'>
+          <h1>CODASOL Investor Introduction Portal</h1>
+          <p className='hero-sub'>CODASOL converts 15+ years of industrial data knowledge into scalable AI-MDM intelligence for asset-intensive enterprises.</p>
+          <div className='hero-actions'>
+            <a className='btn btn-primary' href='#investment'>View Investment Overview</a>
+            <a className='btn btn-secondary' href='#team'>Meet the Team</a>
+            <a className='btn btn-secondary' href='#calculator'>ROI Calculator</a>
+            <a className='btn btn-secondary' href={mailto}>Request NDA Deck</a>
+          </div>
         </div>
       </header>
 
