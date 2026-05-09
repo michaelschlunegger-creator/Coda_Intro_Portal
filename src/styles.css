@@ -1765,19 +1765,44 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
 @media (max-width: 640px) {
   .header-actions,
   .hero-actions {
-    width: 100% !important;
-    max-width: 100% !important;
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    justify-items: center !important;
-    align-items: center !important;
+    width: min(92vw, 390px) !important;
+    max-width: 390px !important;
     margin-left: auto !important;
     margin-right: auto !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    box-sizing: border-box !important;
   }
 
-  .header-action-button,
+  .header-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    gap: 0.55rem !important;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .header-action-button {
+    width: min(55vw, 250px) !important;
+    max-width: 250px !important;
+    min-height: 50px !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    align-items: center !important;
+    gap: 0.65rem !important;
+  }
+
   .hero-actions .btn {
     width: min(92vw, 390px) !important;
     max-width: 390px !important;
@@ -1787,13 +1812,5 @@ input { width: 100%; min-height: 44px; border-radius: 12px; border: 1px solid rg
     margin-right: auto !important;
     text-align: center !important;
     box-sizing: border-box !important;
-  }
-
-  .header-actions {
-    gap: 0.55rem !important;
-  }
-
-  .hero-actions {
-    gap: 0.65rem !important;
   }
 }
